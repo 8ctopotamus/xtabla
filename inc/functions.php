@@ -7,5 +7,6 @@ function filterForSpreadsheets ($doc) {
 function get_spreadsheets() {
   $dir = __DIR__ . '/../uploads';
   $docs = scandir($dir);
-  return array_filter($docs, 'filterForSpreadsheets');
+  $spreadsheets = array_filter($docs, 'filterForSpreadsheets');
+  return count($spreadsheets) > 0 ? $spreadsheets : false;
 }

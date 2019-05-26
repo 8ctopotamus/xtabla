@@ -81,30 +81,49 @@ add_action('admin_menu', 'xtabla_options_page');
  * callback functions
  */
 function xtabla_options_page_html() {
-    // check user capabilities
-    if (!current_user_can('manage_options')) {
-        return;
-    }
-    // add error/update messages
-    // check if the user have submitted the settings
-    // wordpress will add the "settings-updated" $_GET parameter to the url
-    if (isset($_GET['settings-updated'])) {
-        // add settings saved message with the class of "updated"
-        add_settings_error('xtabla_messages', 'xtabla_message', __('Settings Saved', 'xtabla'), 'updated');
-    }
-    // show error/update messages
-    settings_errors('xtabla_messages');
+  // init Thickbox modal 
+  add_thickbox();
+  // check user capabilities
+  if (!current_user_can('manage_options')) {
+      return;
+  }
+  // add error/update messages
+  // check if the user have submitted the settings
+  // wordpress will add the "settings-updated" $_GET parameter to the url
+  if (isset($_GET['settings-updated'])) {
+      // add settings saved message with the class of "updated"
+      add_settings_error('xtabla_messages', 'xtabla_message', __('Settings Saved', 'xtabla'), 'updated');
+  }
+  // show error/update messages
+  settings_errors('xtabla_messages');
 ?>
- <div class="wrap">
- <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+  <div class="wrap">
+  <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
-<?php
-$spreadsheets = get_spreadsheets();
-var_dump($spreadsheets);
-?>
+  <a href="#TB_inline?&width=600&height=550&inlineId=my-content-id" class="thickbox button-secondary">Subir tabla</a>
+  <div id="my-content-id" style="display:none;">
+    <form action="options.php" method="post" enctype="multipart/form-data">
+      Elige el archivo para subir
+      <input type="file" name="fileToUpload" id="fileToUpload">
+      <input type="submit" value="Subir" name="submit">
+    </form>
+  </div>
 
- <form action="options.php" method="post">
- <?php
+  <?php
+    $spreadsheets = get_spreadsheets();
+    if ($spreadsheets):
+      echo '<div class="shortcode-details">';
+      foreach($spreadsheets as $sheet):
+        echo '<input value="[xtabla file=' . $sheet . ']" readonly type="text" />';
+      endforeach;
+      echo '</div>';
+    else:
+      echo 'No hay tablas creadas.';
+    endif;
+  ?>
+
+ <!-- <form action="options.php" method="post">
+  <?php
     // output security fields for the registered setting "xtabla"
     settings_fields('xtabla');
     // output setting sections and their fields
@@ -112,8 +131,8 @@ var_dump($spreadsheets);
     do_settings_sections('xtabla');
     // output save settings button
     submit_button('Save Settings');
-?>
- </form>
- </div>
- <?php
+  ?>
+  </form> -->
+  </div>
+  <?php
 }
