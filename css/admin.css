@@ -1,4 +1,12 @@
-.shortcode-details {
+.wrap-inner {
+  background: white;
+  border: 1px solid #999;
+  padding: 20px;
+}
+
+.shortcodes-list-item {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr ;
+  /* grid-gap: 10px; */
+  /* grid-auto-columns: 200px; */
 }

@@ -1,2 +1,4 @@
+uploads/*
+!*/uploads/index.php
 vendor
 .DS_Store

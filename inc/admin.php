@@ -102,25 +102,40 @@ function xtabla_options_page_html() {
 
   <a href="#TB_inline?&width=600&height=550&inlineId=my-content-id" class="thickbox button-secondary">Subir tabla</a>
   <div id="my-content-id" style="display:none;">
-    <form action="options.php" method="post" enctype="multipart/form-data">
-      Elige el archivo para subir
-      <input type="file" name="fileToUpload" id="fileToUpload">
-      <input type="submit" value="Subir" name="submit">
+    <form action="upload_file.php" method="post" enctype="multipart/form-data">
+      <label for="file">Archivo:</label>
+      <input type="file" name="file" id="file"><br>
+      <input type="submit" name="submit" value="Submit">
     </form>
   </div>
 
-  <?php
-    $spreadsheets = get_spreadsheets();
-    if ($spreadsheets):
-      echo '<div class="shortcode-details">';
-      foreach($spreadsheets as $sheet):
-        echo '<input value="[xtabla file=' . $sheet . ']" readonly type="text" />';
-      endforeach;
-      echo '</div>';
-    else:
-      echo 'No hay tablas creadas.';
-    endif;
-  ?>
+  <div class="wrap-inner">
+    <?php $spreadsheets = get_spreadsheets();
+      if ($spreadsheets):
+        echo '<div class="shortcodes-list">';
+        foreach( $spreadsheets as $sheet ): ?>
+          <div id="sheet-<?php echo $sheet; ?>" class="shortcodes-list-item">
+            <div>
+              <strong><?php echo $sheet; ?></strong>
+            </div>
+            <div>
+              [xtabla file="<?php echo $sheet; ?>"]
+            </div>
+            <div>
+              <button class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">              <span class="dashicons dashicons-welcome-view-site"><span>
+              </button>
+              <button class="delete-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">            <span class="dashicons dashicons-trash"><span>
+              </button>
+            </div>
+          </div>
+          <?php 
+        endforeach;
+        echo '</div>';
+      else:
+        echo 'No hay tablas creadas.';
+      endif;
+    ?>
+  </div>
 
  <!-- <form action="options.php" method="post">
   <?php
