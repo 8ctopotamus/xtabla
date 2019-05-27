@@ -10,3 +10,4 @@ function get_spreadsheets() {
   $spreadsheets = array_filter($docs, 'filterForSpreadsheets');
   return count($spreadsheets) > 0 ? $spreadsheets : false;
 }
+

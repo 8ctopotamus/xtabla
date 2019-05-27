@@ -1,13 +1,21 @@
 <?php
+
 if ( empty($_POST['do']) ) {
   http_response_code(400);
   die();
 }
 
 $do = $_POST['do'];
-$file = $_POST['file'];
-
 $uploads_path = __DIR__ . '/../uploads/';
+
+if ( $do === 'get_spreadsheets' ):
+  $docs = scandir($uploads_path);
+  $spreadsheets = array_filter($docs, function ($doc) {
+    return strpos($doc, '.xlsx') !== false || strpos($doc, '.csv') !== false;
+  });
+  $result = count($spreadsheets) > 0 ? array_values( $spreadsheets ) : false;
+  echo json_encode($result);
+endif;
 
 // upload
 if ( $do === 'upload_spreadsheet'):
@@ -43,11 +51,10 @@ if ( $do === 'upload_spreadsheet'):
   }
 endif;
 
-
 // delete
-if ( $do === 'delete_spreadsheet' && !empty($file)):
-  unlink($uploads_path . $file);
-  echo $file . ' deleted.';
+if ( $do === 'delete_spreadsheet' && !empty($_POST['file'])):
+  unlink($uploads_path . $_POST['file']);
+  echo $_POST['file'] . ' deleted.';
   http_response_code(200);
 endif;
 

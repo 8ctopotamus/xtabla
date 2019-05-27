@@ -2,11 +2,12 @@
   background: white;
   border: 1px solid #999;
   padding: 20px;
+  margin: 25px 0;
 }
 
 .shortcodes-list-item {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr ;
-  /* grid-gap: 10px; */
-  /* grid-auto-columns: 200px; */
+  grid-template-columns: repeat(3, 1fr) ;  
+  grid-gap: 15px;
+  padding: 3px 0;
 }

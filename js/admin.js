@@ -1,14 +1,25 @@
 (function($) {
   const { ajax_url: AJAX_URL } = wp_data
-  const $viewButton = $('.view-spreadsheet')
-  const $deleteButton = $('.delete-spreadsheet')
+  const list = document.getElementById('shortcodes-list')
+  // const $viewButton = $('.view-spreadsheet')
 
   // $viewButton.on('click', function(e) {
   //   console.log($(this).data('spreadsheetid'))
   // })
 
-  $deleteButton.on('click', async function(e) {
-    const file = $(this).data('spreadsheetid')
+  const refreshSheets = () => {
+    var data = {
+      'action': 'xtabla_actions',
+      'do': 'get_spreadsheets',
+    }
+    jQuery.post(AJAX_URL, data, function(response) {
+      console.log(JSON.parse(response))
+    })
+  }
+
+  $('body').on('click', '.delete-spreadsheet', function(e) {
+    const $btn = $(this)
+    const file = $btn.data('spreadsheetid')
     const confirmed = confirm('Are you sure you want to delete ' + file + '?')
     if (confirmed) {
       var data = {
@@ -17,13 +28,12 @@
         file
       }
       jQuery.post(AJAX_URL, data, function(response) {
-        console.log('Got this from the server: ', response)
+        $('#sheet-' + file).remove()
       })
     }
   })
 
   const form = document.querySelector('form')
-
   form.addEventListener('submit', e => {
     e.preventDefault()
     const files = document.querySelector('[type=file]').files
@@ -38,10 +48,9 @@
       method: 'POST',
       body: formData,
     }).then(response => {
-      console.log(response)
-    })
+      // tb_remove()
+      location.reload()
+    }).catch(err => console.log(err))
   })
-
-
 
 })(jQuery)
