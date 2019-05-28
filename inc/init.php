@@ -1,20 +1,5 @@
 <?php
 
-// function myplugin_activate() {
- 
-//   $upload = wp_upload_dir();
-//   $upload_dir = $upload['basedir'];
-//   $upload_dir = $upload_dir . '/mypluginfiles';
-//   if (! is_dir($upload_dir)) {
-//      mkdir( $upload_dir, 0700 );
-//   }
-// }
-
-// register_activation_hook( __FILE__, 'myplugin_activate' );
-
-
-$node_modules_path = plugins_url('/node_modules/', __DIR__);
-
 /*
 ** Set up wp_ajax requests for frontend UI.
 ** NOTE: _nopriv_ makes ajaxurl work for logged out users.
@@ -49,14 +34,17 @@ add_action( 'admin_enqueue_scripts', 'xtabla_wp_admin_assets' );
  */
 function xtabla_scripts_and_styles() {
   global $post, $node_modules_path;
+
   // styles
-  wp_register_style('basictable_css', $node_modules_path . '/basictable/basictable.css');
+  wp_register_style('basictable_css', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.basictable/1.0.9/basictable.min.css');
   wp_register_style('xtabla_css', plugins_url('/css/style.css',  __DIR__ ));
+
   // scripts
-  wp_register_script('basictable_js', $node_modules_path . '/basictable/jquery.basictable.min.js', array('jquery'), '', true );
+  wp_register_script('basictable_js', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.basictable/1.0.9/jquery.basictable.min.js', array('jquery'), '', true );
   wp_register_script('xtabla_frontend_js', plugin_dir_url( __DIR__ ) . '/js/frontend.js', array('jquery'), '', true );
 
   $shortcodePresent = has_shortcode( $post->post_content, 'xtabla');
+
   if ( $shortcodePresent ) {
     wp_enqueue_style('basictable_css');
     wp_enqueue_style('xtabla_css');
