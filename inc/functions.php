@@ -5,20 +5,6 @@ require __DIR__ . '/../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-function testUpdate($file) {
-  // //load spreadsheet
-  // $filepath = __DIR__ .'/../uploads/' . $file;
-  // $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filepath);
-
-  // //change it
-  // $sheet = $spreadsheet->getActiveSheet();
-  // $sheet->setCellValue('A1', 'New Value');
-
-  // //write it again to Filesystem with the same name (=replace)
-  // $writer = new Xlsx($spreadsheet);
-  // $writer->save($filepath);
-}
-
 function renderSheets($file) {
   $parts = explode('.', $file);
   $filename = $parts[0];
@@ -26,7 +12,7 @@ function renderSheets($file) {
 
   $spreadsheet = new Spreadsheet();
   $inputFileType = $extension;
-  $inputFileName = __DIR__ .'/../uploads/' . $file;
+  $inputFileName = XTABLA_UPLOADS_DIR .'/' . $file;
   
   $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
   $reader->setReadDataOnly(true);
