@@ -6,10 +6,9 @@ if ( empty($_POST['do']) ) {
 }
 
 $do = $_POST['do'];
-$uploads_path = __DIR__ . '/../uploads/';
 
 if ( $do === 'get_spreadsheets' ):
-  $docs = scandir($uploads_path);
+  $docs = scandir(XTABLA_UPLOADS_DIR);
   $spreadsheets = array_filter($docs, function ($doc) {
     return strpos($doc, '.xlsx') !== false || strpos($doc, '.csv') !== false;
   });
@@ -26,13 +25,13 @@ if ( $do === 'upload_spreadsheet'):
     $all_files = count($_FILES['files']['tmp_name']);
 
     for ($i = 0; $i < $all_files; $i++) {
-      $file_name = $_FILES['files']['name'][$i];
+      $file_name = slugify_filename($_FILES['files']['name'][$i]);
       $file_tmp = $_FILES['files']['tmp_name'][$i];
       $file_type = $_FILES['files']['type'][$i];
       $file_size = $_FILES['files']['size'][$i];
       $file_ext = strtolower(end(explode('.', $_FILES['files']['name'][$i])));
 
-      $file = $uploads_path . $file_name;
+      $file = XTABLA_UPLOADS_DIR . '/' . $file_name;
 
       if (!in_array($file_ext, $extensions)) {
           $errors[] = 'Extension not allowed: ' . $file_name . ' ' . $file_type;
@@ -53,7 +52,7 @@ endif;
 
 // delete
 if ( $do === 'delete_spreadsheet' && !empty($_POST['file'])):
-  unlink($uploads_path . $_POST['file']);
+  unlink(XTABLA_UPLOADS_DIR . '/' . $_POST['file']);
   echo $_POST['file'] . ' deleted.';
   http_response_code(200);
 endif;

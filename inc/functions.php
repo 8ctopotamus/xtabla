@@ -5,7 +5,21 @@ require __DIR__ . '/../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-function renderSheet($file) {
+function testUpdate($file) {
+  // //load spreadsheet
+  // $filepath = __DIR__ .'/../uploads/' . $file;
+  // $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($filepath);
+
+  // //change it
+  // $sheet = $spreadsheet->getActiveSheet();
+  // $sheet->setCellValue('A1', 'New Value');
+
+  // //write it again to Filesystem with the same name (=replace)
+  // $writer = new Xlsx($spreadsheet);
+  // $writer->save($filepath);
+}
+
+function renderSheets($file) {
   $parts = explode('.', $file);
   $filename = $parts[0];
   $extension = ucfirst( $parts[1] );
@@ -70,8 +84,7 @@ function filterForSpreadsheets( $doc ) {
 }
 
 function get_spreadsheets() {
-  $dir = __DIR__ . '/../uploads';
-  $docs = scandir($dir);
+  $docs = scandir(XTABLA_UPLOADS_DIR);
   $spreadsheets = array_filter($docs, 'filterForSpreadsheets');
   return count($spreadsheets) > 0 ? $spreadsheets : false;
 }
@@ -80,4 +93,9 @@ function redirect($URL) {
   if ( headers_sent() ) { echo ("<script>location.href='$URL'</script>"); }
   else { header("Location: $URL"); }
   exit;
+}
+
+function slugify_filename($string){
+  $slug = preg_replace('/[^A-Za-z0-9-.]+/', '-', $string);
+  return $slug;
 }

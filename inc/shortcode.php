@@ -2,7 +2,7 @@
 
 function xtabla_func( $atts ) {
   if ( isset( $atts['file'] ) ):
-    return renderSheet( $atts['file'] );
+    return renderSheets( $atts['file'] );
   else: 
     return 'No file provided.';
   endif;

@@ -26,14 +26,15 @@ add_action('admin_menu', 'xtabla_options_page');
 
 function xtabla_submenu_page_callback() {
   if (empty($_GET['sheet'])):
-    $URL = admin_url() . '/admin.php?page=xtabla&error=No+sheet';
+    $URL = admin_url() . '/admin.php?page=xtabla&error=No+sheet+provided';
     redirect($URL);
   endif;
   ?>
     <div class="wrap">
       <h1>Xtabla Spreadsheet Viewer</h1>
       <?php if ( isset( $_GET['sheet'] ) ):
-        echo renderSheet( $_GET['sheet'] );
+        echo renderSheets( $_GET['sheet'] );
+        // testUpdate($_GET['sheet']);
       endif; ?>
     </div>
   <?php
@@ -52,7 +53,7 @@ function xtabla_options_page_html() {
 ?>
   <div class="wrap">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-
+    
     <a href="#TB_inline?&width=600&height=550&inlineId=my-content-id" class="thickbox button-secondary">Subir tabla</a>
     <div id="my-content-id" style="display:none;">
       <form action="upload_file.php" method="post" enctype="multipart/form-data">

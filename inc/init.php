@@ -1,6 +1,23 @@
 <?php
 
 /*
+** our plugin's uploads directory
+*/
+$upload_dir = wp_upload_dir();
+$upload_dir = $upload_dir['basedir'];
+$upload_dir = $upload_dir . '/xtabla-uploads';
+define('XTABLA_UPLOADS_DIR', $upload_dir);
+
+/*
+** create xtabla-uploads directory in wp-content/uploads
+*/
+function xtabla_activate() { 
+  if (! is_dir(XTABLA_UPLOADS_DIR)) {
+     mkdir( XTABLA_UPLOADS_DIR, 0700 );
+  }
+}
+
+/*
 ** Set up wp_ajax requests for frontend UI.
 ** NOTE: _nopriv_ makes ajaxurl work for logged out users.
 */
