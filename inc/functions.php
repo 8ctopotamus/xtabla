@@ -5,7 +5,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-function generateSheet($file) {
+function renderSheet($file) {
   $parts = explode('.', $file);
   $filename = $parts[0];
   $extension = ucfirst( $parts[1] );
@@ -27,7 +27,7 @@ function generateSheet($file) {
     $spreadsheet = $reader->load($inputFileName);
     $worksheet = $spreadsheet->getActiveSheet();
     // table
-    $html .= '<table id="xtabla-table"><thead>';
+    $html .= '<table id="xtabla-table" class="form-table widefat"><thead>';
     // headers
     $count = 0;
     foreach ($worksheet->toArray() as $sheet):
@@ -74,4 +74,10 @@ function get_spreadsheets() {
   $docs = scandir($dir);
   $spreadsheets = array_filter($docs, 'filterForSpreadsheets');
   return count($spreadsheets) > 0 ? $spreadsheets : false;
+}
+
+function redirect($URL) {
+  if ( headers_sent() ) { echo ("<script>location.href='$URL'</script>"); }
+  else { header("Location: $URL"); }
+  exit;
 }

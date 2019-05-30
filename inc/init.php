@@ -16,8 +16,11 @@ function xtabla_actions() {
 function xtabla_wp_admin_assets( $hook ) {  
   wp_register_style( 'xtabla_admin_styles', plugin_dir_url( __DIR__ ) . '/css/admin.css', false, '1.0.0' );
   wp_register_script('xtabla_admin_js', plugin_dir_url( __DIR__ ) . '/js/admin.js', array('jquery'), '', true );
-  
+
   if ( $hook != 'toplevel_page_xtabla' ) { return; }
+
+  // init Thickbox modal 
+  add_thickbox();
 
   wp_enqueue_style( 'xtabla_admin_styles' );
   wp_localize_script( 'xtabla_admin_js', 'wp_data', array( 

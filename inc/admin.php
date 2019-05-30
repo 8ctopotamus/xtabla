@@ -1,27 +1,54 @@
 <?php
 
 /**
- * top level menu
+ * add menu pages
  */
 function xtabla_options_page() {
-  // add top level menu page
-  add_menu_page('Xtabla Settings', 'Xtabla', 'manage_options', 'xtabla', 'xtabla_options_page_html', 'dashicons-media-spreadsheet');
+  add_menu_page(
+    'Xtabla Settings',
+    'Xtabla',
+    'manage_options',
+    'xtabla',
+    'xtabla_options_page_html',
+    'dashicons-media-spreadsheet'
+  );
+
+  add_submenu_page( 
+    null,
+    'Xtabla Table Editor',
+    'Xtabla Table Editor',
+    'manage_options',
+    'xtabla-table-editor',
+    'xtabla_submenu_page_callback',
+  );
 }
-/**
- * register our xtabla_options_page to the admin_menu action hook
- */
 add_action('admin_menu', 'xtabla_options_page');
 
+function xtabla_submenu_page_callback() {
+  if (empty($_GET['sheet'])):
+    $URL = admin_url() . '/admin.php?page=xtabla&error=No+sheet';
+    redirect($URL);
+  endif;
+  ?>
+    <div class="wrap">
+      <h1>Xtabla Spreadsheet Viewer</h1>
+      <?php if ( isset( $_GET['sheet'] ) ):
+        echo renderSheet( $_GET['sheet'] );
+      endif; ?>
+    </div>
+  <?php
+}
+
 /**
- * top level menu:
- * callback functions
+ * top level
  */
 function xtabla_options_page_html() {
-  if (!current_user_can('manage_options')) {
+  if ( !current_user_can('manage_options') ) {
     return;
   }
-  // init Thickbox modal 
-  add_thickbox();
+  if ( isset($_GET['error']) ){
+    echo '<p class="notice notice-error">' . $_GET['error'] . '</p>';
+  }
 ?>
   <div class="wrap">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
@@ -52,9 +79,11 @@ function xtabla_options_page_html() {
                 <code>[xtabla file="<?php echo $sheet; ?>"]</code>
               </div>
               <div>
-                <button class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">           <span class="dashicons dashicons-welcome-view-site"><span>
-                </button>
-                <button class="delete-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">         <span class="dashicons dashicons-trash"><span>
+                <a href="<?php echo admin_url() . '/admin.php?page=xtabla-table-editor&sheet=' . $sheet;?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
+                  <span class="dashicons dashicons-welcome-view-site"><span>
+                </a>
+                <button class="delete-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>"> 
+                  <span class="dashicons dashicons-trash"><span>
                 </button>
               </div>
             </div>
