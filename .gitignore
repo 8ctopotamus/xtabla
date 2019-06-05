@@ -1,5 +1,4 @@
-uploads/*
-!*/uploads/index.php
-vendor
 node_modules
+vendor
+
 .DS_Store

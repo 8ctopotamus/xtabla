@@ -1,0 +1,22 @@
+{
+  "name": "xtabla",
+  "version": "1.0.0",
+  "description": "Run `composer install` to install dependencies.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/8ctopotamus/xtabla.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/8ctopotamus/xtabla/issues"
+  },
+  "homepage": "https://github.com/8ctopotamus/xtabla#readme",
+  "dependencies": {
+    "jquery-jeditable": "^2.0.8"
+  }
+}

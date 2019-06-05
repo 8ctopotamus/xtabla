@@ -1,5 +1,7 @@
 <?php
 
+$node_modules_path = plugin_dir_url( __DIR__ ) . 'node_modules/';
+
 /*
 ** our plugin's uploads directory
 */
@@ -30,21 +32,35 @@ function xtabla_actions() {
 /*
  * Admin scripts and styles
  */
-function xtabla_wp_admin_assets( $hook ) {  
+function xtabla_wp_admin_assets( $hook ) {
+  global $node_modules_path;
   wp_register_style( 'xtabla_admin_styles', plugin_dir_url( __DIR__ ) . '/css/admin.css', false, '1.0.0' );
   wp_register_script('xtabla_admin_js', plugin_dir_url( __DIR__ ) . '/js/admin.js', array('jquery'), '', true );
+  wp_register_script('jquery_jeditable', $node_modules_path . '/jquery-jeditable/dist/jquery.jeditable.min.js', array('jquery'), '', true );
+  wp_register_script('xtabla_admin_editor_js', plugin_dir_url( __DIR__ ) . '/js/admin-editor.js', array('jquery'), '', true );
+  // load on both admin views
+  if ( $hook == 'toplevel_page_xtabla' || $hook == 'admin_page_xtabla-table-editor' ){
+    wp_enqueue_style( 'xtabla_admin_styles' );
+  }
+  // main admin view
+  if ( $hook === 'toplevel_page_xtabla' ) {
+    add_thickbox(); // init Thickbox modal 
+    wp_localize_script( 'xtabla_admin_js', 'wp_data', array( 
+      'ajax_url' => admin_url( 'admin-ajax.php' ),
+      'plugin_url' => plugin_dir_url( __DIR__ ),
+    ) );
+    wp_enqueue_script( 'xtabla_admin_js' );
+  }
+  // editor view
+  if( $hook === 'admin_page_xtabla-table-editor' ) {
+    wp_enqueue_script( 'jquery_jeditable' );
+    wp_localize_script( 'xtabla_admin_editor_js', 'wp_data', array( 
+      'ajax_url' => admin_url( 'admin-ajax.php' ),
+      'plugin_url' => plugin_dir_url( __DIR__ ),
+    ) );
+    wp_enqueue_script( 'xtabla_admin_editor_js' );
+  }
 
-  if ( $hook != 'toplevel_page_xtabla' ) { return; }
-
-  // init Thickbox modal 
-  add_thickbox();
-
-  wp_enqueue_style( 'xtabla_admin_styles' );
-  wp_localize_script( 'xtabla_admin_js', 'wp_data', array( 
-    'ajax_url' => admin_url( 'admin-ajax.php' ),
-    'plugin_url' => plugin_dir_url( __DIR__ ),
-  ) );
-  wp_enqueue_script( 'xtabla_admin_js' );
 }
 add_action( 'admin_enqueue_scripts', 'xtabla_wp_admin_assets' );
 
