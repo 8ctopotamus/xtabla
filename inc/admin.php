@@ -25,15 +25,20 @@ function xtabla_options_page() {
 add_action('admin_menu', 'xtabla_options_page');
 
 function xtabla_submenu_page_callback() {
+  $URL = admin_url() . 'admin.php?page=xtabla';
   if (empty($_GET['sheet'])):
-    $URL = admin_url() . 'admin.php?page=xtabla&error=No+sheet+provided';
-    redirect($URL);
+    redirect($URL . '&error=No+sheet+provided');
   endif;
   ?>
-    <div class="wrap">
-      <h1>Xtabla Spreadsheet Editor</h1>
-      <?php if ( isset( $_GET['sheet'] ) ):
-        echo renderSheets( $_GET['sheet'] );
+    <div class="wrap xtabla-editor">
+      <?php 
+      $sheet = $_GET['sheet'];
+      if ( isset( $sheet ) ):
+        echo '<p><a href="' . $URL . '"><< Back to Xtabla dashboard</a></p>';
+        echo '<h1>';
+        echo $sheet;
+        echo '</h1>';
+        echo renderSheets( $sheet );
       endif; ?>
     </div>
   <?php

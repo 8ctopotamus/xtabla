@@ -11,3 +11,9 @@
   grid-gap: 15px;
   padding: 3px 0;
 }
+
+.xtabla-editor th:hover,
+.xtabla-editor td:hover  {
+  border: 1px solid #15bcf5;
+  background: #e6f5fa;
+}

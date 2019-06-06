@@ -9,15 +9,16 @@ $upload_dir = wp_upload_dir();
 $upload_dir = $upload_dir['basedir'];
 $upload_dir = $upload_dir . '/xtabla-uploads';
 define('XTABLA_UPLOADS_DIR', $upload_dir);
+// define('XTABLA_UPLOADS_DIR_RELATIVE', '../../../uploads/xtabla-uploads');
 
 /*
 ** create xtabla-uploads directory in wp-content/uploads
 */
-function xtabla_activate() { 
+// function xtabla_activate() { 
   if (! is_dir(XTABLA_UPLOADS_DIR)) {
      mkdir( XTABLA_UPLOADS_DIR, 0700 );
   }
-}
+// }
 
 /*
 ** Set up wp_ajax requests for frontend UI.

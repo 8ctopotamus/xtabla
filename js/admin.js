@@ -1,5 +1,5 @@
 (function($) {
-  const { ajax_url: AJAX_URL } = wp_data
+  const { ajax_url } = wp_data
   const form = document.querySelector('form')
 
   $('body').on('click', '.delete-spreadsheet', function(e) {
@@ -12,7 +12,7 @@
         'do': 'delete_spreadsheet',
         file
       }
-      $.post(AJAX_URL, data, function(response) {
+      $.post(ajax_url, data, function(response) {
         $('#sheet-' + file).remove()
       })
     }
@@ -28,7 +28,7 @@
     }
     formData.append('action', 'xtabla_actions')
     formData.append('do', 'upload_spreadsheet')
-    fetch(AJAX_URL, {
+    fetch(ajax_url, {
       method: 'POST',
       body: formData,
     }).then(response => {

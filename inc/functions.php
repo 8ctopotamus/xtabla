@@ -5,8 +5,43 @@ require __DIR__ . '/../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-function renderSheets($file) {
+function update_spreadsheet() {
+  $file = $_POST['file'];
+  $cellId = $_POST['cellId'];
+  $value = $_POST['value'];
+  if ( !empty($file) && !empty($cellId) && !empty($value) ) {
+    // current directory
+    $wp_admin_dir = getcwd();
 
+    chdir(XTABLA_UPLOADS_DIR);
+
+    $parts = explode('.', $file);
+    $filename = $parts[0];
+    $extension = ucfirst( $parts[1] );
+    $inputFilePath = XTABLA_UPLOADS_DIR .'/' . $file;
+    
+    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $inputFilePath );
+    $worksheet = $spreadsheet->getActiveSheet();
+    $worksheet->getCell($cellId)->setValue($value);
+
+    $writer = new Xlsx($spreadsheet);
+    $writer->save( 'temp.xlsx' );
+
+    rename('temp.xlsx', 'test.xlsx');
+
+    chdir($wp_admin_dir);
+
+    echo $file . ' saved!';
+    http_response_code(200);
+  } else {
+    echo 'Bad request';
+    http_response_code(200);
+  }
+}
+
+
+
+function renderSheets($file) {
   $parts = explode('.', $file);
   $filename = $parts[0];
   $extension = ucfirst( $parts[1] );
@@ -15,13 +50,13 @@ function renderSheets($file) {
   $inputFileType = $extension;
   $inputFileName = XTABLA_UPLOADS_DIR .'/' . $file;
 
-  $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader( $inputFileType) ;
+  $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader( $inputFileType );
   $reader->setReadDataOnly(TRUE);
   $spreadsheet = $reader->load( $inputFileName );
   
   $worksheet = $spreadsheet->getActiveSheet();
   
-  $html = '<table class="form-table widefat xtabla-table">' . PHP_EOL;
+  $html = '<table class="form-table widefat xtabla-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
   foreach ($worksheet->getRowIterator() as $row) {
     $html .= '<tr>' . PHP_EOL;
     $cellIterator = $row->getCellIterator();
@@ -106,7 +141,7 @@ function get_spreadsheets() {
   return count($spreadsheets) > 0 ? $spreadsheets : false;
 }
 
-function redirect($URL) {
+function redirect( $URL ) {
   if ( headers_sent() ) { echo ("<script>location.href='$URL'</script>"); }
   else { header("Location: $URL"); }
   exit;

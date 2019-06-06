@@ -17,6 +17,9 @@ switch ( $do ) {
   case 'delete_spreadsheet':
     delete_spreadsheet();
     break;
+  case 'update_spreadsheet':
+    update_spreadsheet();
+    break;
 }
 
 wp_die();

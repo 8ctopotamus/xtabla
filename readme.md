@@ -1,4 +1,7 @@
 # Xtabla
+Upload and edit Spreadsheets. Display in your site using the shortcode `[xtabla file="example.xlsx"]`.
+
+Uploaded files saved in `wp-content/uploads/xtabla-uploads`.
 
 # Setup
 Run `composer install` and `npm install` to install dependencies.
@@ -7,9 +10,9 @@ Run `composer install` and `npm install` to install dependencies.
 Same as [PHPOffice/PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet).
 
 ### Project Scope
-- [ ] uploading xlxs/xls/csv, 
 - [ ] editing cell data 
-- [ ] uploading files (to be stored in Media Library) 
+- [ ] sanitize input
+- [ ] User can upload asset to media library, URL to asset is saved in cell
 - [ ] Hyperlinks with file extentions (eg: .pdf) render as linked icons
 
 ### Future Development
