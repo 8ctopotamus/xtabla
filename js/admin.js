@@ -1,8 +1,30 @@
 (function($) {
   const { ajax_url } = wp_data
   const form = document.querySelector('form')
+  const copyEmailBtn = Array.from(document.getElementsByClassName('copy-shortcode'));
 
-  $('body').on('click', '.delete-spreadsheet', function(e) {
+  function copyToClipboard(event) {  
+    var emailLink = this
+    var range = document.createRange();  
+    range.selectNode(emailLink);  
+    window.getSelection().addRange(range);  
+  
+    try {  
+      // Now that we've selected the anchor text, execute the copy command  
+      var successful = document.execCommand('copy');  
+      var msg = successful ? 'successful' : 'unsuccessful';  
+      console.log('Copy email command was ' + msg);  
+    } catch(err) {  
+      console.log('Oops, unable to copy');  
+    }  
+    
+    // Remove the selections - NOTE: Should use
+    removeRange(range) // when it is supported  
+    window.getSelection().removeAllRanges();
+    
+  }
+
+  function deleteSpreadsheet(e) {
     const $btn = $(this)
     const file = $btn.data('spreadsheetid')
     const confirmed = confirm('Are you sure you want to delete ' + file + '?')
@@ -16,9 +38,9 @@
         $('#sheet-' + file).remove()
       })
     }
-  })
+  }
 
-  form.addEventListener('submit', e => {
+  function uploadSpreadsheet(e) {
     e.preventDefault()
     const files = document.querySelector('[type=file]').files
     const formData = new FormData()
@@ -34,6 +56,11 @@
     }).then(response => {
       location.reload()
     }).catch(err => console.log(err))
-  })
+  }
+
+  $('body').on('click', '.delete-spreadsheet', deleteSpreadsheet)
+  form.addEventListener('submit', uploadSpreadsheet)
+  copyEmailBtn.forEach(btn => btn.addEventListener('click', copyToClipboard)) 
+
 
 })(jQuery)

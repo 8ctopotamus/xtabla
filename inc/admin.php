@@ -86,7 +86,7 @@ function xtabla_options_page_html() {
           </a>
               </div>
               <div>
-                <code>[xtabla file="<?php echo $sheet; ?>"]</code>
+                <code class="copy-shortcode">[xtabla file="<?php echo $sheet; ?>"]</code>
               </div>
               <div>
                 <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
