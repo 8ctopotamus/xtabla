@@ -4,6 +4,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
 function update_spreadsheet() {
   $file = $_POST['file'];
@@ -24,10 +25,17 @@ function update_spreadsheet() {
     $worksheet = $spreadsheet->getActiveSheet();
     $worksheet->getCell($cellId)->setValue($value);
 
-    $writer = new Xlsx($spreadsheet);
-    $writer->save( 'temp.xlsx' );
+    if ( $extension === 'Xlsx' ) {
+      $writer = new Xlsx($spreadsheet);
+    } else if ( $extension === 'Csv' ) {
+      $writer = new Csv($spreadsheet);
+    }
 
-    rename('temp.xlsx', 'test.xlsx');
+    $tempFile = 'temp.' . strtolower($extension);
+    
+    $writer->save( $tempFile );
+
+    rename($tempFile, $file);
 
     chdir($wp_admin_dir);
 

@@ -10,6 +10,12 @@
   grid-template-columns: repeat(3, 1fr) ;  
   grid-gap: 15px;
   padding: 3px 0;
+  margin: 12px 0;
+}
+
+.xtabla-editor th,
+.xtabla-editor td {
+  /* border: 1px solid #e6f5fa; */
 }
 
 .xtabla-editor th:hover,

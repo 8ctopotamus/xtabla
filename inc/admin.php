@@ -76,16 +76,20 @@ function xtabla_options_page_html() {
             $parts = explode('.', $sheet);
             $filename = $parts[0];
             $extension = $parts[1];
+            $editLink = admin_url() . 'admin.php?page=xtabla-table-editor&sheet=' . $sheet;
           ?>
             <div id="sheet-<?php echo $filename; ?>" class="shortcodes-list-item <?php echo $extension; ?>">
+
               <div>
+              <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
                 <strong><?php echo $sheet; ?></strong>
+          </a>
               </div>
               <div>
                 <code>[xtabla file="<?php echo $sheet; ?>"]</code>
               </div>
               <div>
-                <a href="<?php echo admin_url() . 'admin.php?page=xtabla-table-editor&sheet=' . $sheet;?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
+                <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
                   <span class="dashicons dashicons-welcome-view-site"><span>
                 </a>
                 <button class="delete-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>"> 
