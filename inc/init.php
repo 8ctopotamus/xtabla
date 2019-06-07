@@ -3,13 +3,12 @@
 $node_modules_path = plugin_dir_url( __DIR__ ) . 'node_modules/';
 
 /*
-** our plugin's uploads directory
+** XTABLA_UPLOADS_DIR: our plugin's uploads directory
 */
 $upload_dir = wp_upload_dir();
 $upload_dir = $upload_dir['basedir'];
 $upload_dir = $upload_dir . '/xtabla-uploads';
 define('XTABLA_UPLOADS_DIR', $upload_dir);
-// define('XTABLA_UPLOADS_DIR_RELATIVE', '../../../uploads/xtabla-uploads');
 
 /*
 ** create xtabla-uploads directory in wp-content/uploads

@@ -1,20 +1,24 @@
 (function($) {
   const { ajax_url } = wp_data
   const $cells = $('.xtabla-table td')
-  const cssShadowVal = '0px 0px 2px green'
 
-  let data = { 'action': 'xtabla_actions' }
+  let params = { 'action': 'xtabla_actions' }
 
   function updateCell(value, settings) {
     var $self = $(this)
-    $self.css({ 'color': 'green', 'text-shadow': cssShadowVal,})
-    data.value = value
-    data.cellId = this.id
-    data.do = 'update_spreadsheet'
-    data.file = $(this).closest('table').data('spreadsheetid')
-    $.post(ajax_url, data, function(response) {
+    params.do = 'update_spreadsheet'
+    params.file = $(this).closest('table').data('spreadsheetid')
+    params.cellId = this.id
+    params.value = value
+    $.post(ajax_url, params, function(response) {
+      $self.addClass('success')
       console.info('Response: ', response)
-      $self.css({ 'color': 'inherit', 'text-shadow': 'none', })
+      setTimeout(() => $self.removeClass('success'), 1000)
+    })
+    .fail(function(err) {
+      $self.addClass('failed')
+      console.info('Error: ', err)
+      setTimeout(() => $self.removeClass('failed'), 1000)
     })
     return value
   }

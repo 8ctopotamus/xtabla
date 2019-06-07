@@ -32,7 +32,7 @@ function update_spreadsheet() {
     }
 
     $tempFile = 'temp.' . strtolower($extension);
-    
+
     $writer->save( $tempFile );
 
     rename($tempFile, $file);
@@ -43,7 +43,7 @@ function update_spreadsheet() {
     http_response_code(200);
   } else {
     echo 'Bad request';
-    http_response_code(200);
+    http_response_code(400);
   }
 }
 

@@ -1,3 +1,12 @@
+:root {
+  --green:rgb(70, 214, 73);
+  --greenRGBA: rgba(70, 214, 73, .5);
+  --green-light: #F0FEF0;
+  --red: rgb(231, 68, 39);
+  --redRGBA: rgba(231, 68, 39, .5);
+  --red-light: #FAB8AD;
+}
+
 .wrap-inner {
   background: white;
   border: 1px solid #999;
@@ -22,4 +31,16 @@
 .xtabla-editor td:hover  {
   border: 1px solid #15bcf5;
   background: #e6f5fa;
+}
+
+.success {
+  color: var(--green);
+  text-shadow: 0px 0px 2px var(--greenRGBA);
+  background: #F0FEF0;
+}
+
+.failed {
+  color: var(--red);
+  text-shadow: 0px 0px 2px var(--redRGBA);
+  background: var(--red-light);
 }
