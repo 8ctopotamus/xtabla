@@ -38,7 +38,6 @@ function xtabla_wp_admin_assets( $hook ) {
   global $node_modules_path;
 
   // Style
-  wp_register_style('font_awesome', '//use.fontawesome.com/releases/v5.8.2/css/all.css');
   wp_register_style('animate_css', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css');
   wp_register_style('dropzone_css', $node_modules_path . '/dropzone/dist/dropzone.css');
   wp_register_style('xtabla_admin_styles', plugin_dir_url( __DIR__ ) . '/css/admin.css', false, '1.0.0');
@@ -49,18 +48,12 @@ function xtabla_wp_admin_assets( $hook ) {
   wp_register_script('xtabla_admin_js', plugin_dir_url( __DIR__ ) . '/js/admin.js', array('jquery'), '', true);
   wp_register_script('xtabla_admin_editor_js', plugin_dir_url( __DIR__ ) . '/js/admin-editor.js', array('jquery'), '', true);
 
-  // load on BOTH admin views
-  if ( $hook == 'toplevel_page_xtabla' || $hook == 'admin_page_xtabla-table-editor' ) {
-    wp_enqueue_media();
-    wp_enqueue_style( 'font_awesome' );
-    wp_enqueue_style( 'xtabla_admin_styles' );
-  }
-
   // main admin view
   if ( $hook === 'toplevel_page_xtabla' ) {
     add_thickbox();
-    wp_enqueue_style( 'animate_css' );
     wp_enqueue_style( 'dropzone_css' );
+    wp_enqueue_style( 'animate_css' );
+    wp_enqueue_style( 'xtabla_admin_styles' );
     wp_enqueue_script( 'dropzone_js' );
     wp_localize_script( 'xtabla_admin_js', 'wp_data', array( 
       'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -71,6 +64,8 @@ function xtabla_wp_admin_assets( $hook ) {
 
   // editor view
   if( $hook === 'admin_page_xtabla-table-editor' ) {
+    wp_enqueue_media();
+    wp_enqueue_style( 'xtabla_admin_styles' );
     wp_enqueue_script( 'jquery_jeditable' );
     wp_localize_script( 'xtabla_admin_editor_js', 'wp_data', array( 
       'ajax_url' => admin_url( 'admin-ajax.php' ),

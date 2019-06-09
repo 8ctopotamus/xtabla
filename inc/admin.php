@@ -39,6 +39,7 @@ function xtabla_submenu_page_callback() {
         echo '<h1>';
         echo $sheet;
         echo '</h1>';
+        echo '<div class="cell-label"></div>';
         echo renderSheets( $sheet );
       endif; ?>
     </div>
@@ -59,17 +60,16 @@ function xtabla_options_page_html() {
   <div class="wrap">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
+    <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary">Subir tabla</a>
+    <div id="file-upload-modal" style="display:none;">
     <!-- <h2>Upload Spreadsheet</h2>
     <form method="POST" enctype="multipart/form-data" action="admin.php?action=xtabla_actions&do=upload_spreadsheet" class="dropzone">
       <div class="fallback">
 	     <input name="file" type="file" multiple /> 
       </div>
       <input type="submit" name="submit" value="Submit">
-    </form>
-    <p class="max-upload-size"><?php printf( __( 'Maximum upload file size: %s.' ), esc_html( size_format( wp_max_upload_size() ) ) ); ?></p> -->
-
-    <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary">Subir tabla</a>
-    <div id="file-upload-modal" style="display:none;">
+    </form> 
+    <p class="max-upload-size"><?php printf( __( 'Maximum upload file size: %s.' ), esc_html( size_format( wp_max_upload_size() ) ) ); ?></p>  -->
       <form action="admin.php?page=xtabla" method="post" enctype="multipart/form-data">
         <label for="file">Archivo:</label>
         <input type="file" name="file" id="file" accept=".csv,.xlsx"><br/>
@@ -92,17 +92,19 @@ function xtabla_options_page_html() {
               <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
                 <strong><?php echo $sheet; ?></strong>
               </a>
-              </div>
-              <div>
-                <!-- <p class="copy-shortcode">fffffffffffff</p> -->
-                <p class="copy-shortcode">[xtabla file="<?php echo $sheet; ?>"]</p>
-              </div>
-              <div>
+            </div>
+            <div>
+              <!-- <p class="copy-shortcode">fffffffffffff</p> -->
+              <p class="copy-shortcode">[xtabla file="<?php echo $sheet; ?>"]</p>
+            </div>
+              <div class="text-right">
                 <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
-                  <span class="dashicons dashicons-welcome-view-site"><span>
+                  <button type="button"> 
+                    <span class="dashicons dashicons-edit"></span>
+                  </button>
                 </a>
                 <button class="delete-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>"> 
-                  <span class="dashicons dashicons-trash"><span>
+                  <span class="dashicons dashicons-trash"></span>
                 </button>
               </div>
             </div>

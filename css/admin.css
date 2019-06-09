@@ -19,7 +19,22 @@
   }
 }
 
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
 #xtabla-loading {
+  position: fixed;
+  bottom: 10%;
+  right: 10%;
   display: none;
   font-size: 100px;
 }
@@ -54,9 +69,31 @@
   margin: 12px 0;
 }
 
+.copy-shortcode {
+  display: inline-block;
+  background: #ececec;
+  margin: 0;
+  font-family: monospace;
+  padding: 3px;
+  cursor: pointer;
+  position: relative;
+}
+
+.copy-shortcode::after {
+  display: none;
+  content: 'copy';
+  position: absolute;
+  right: -38px;
+}
+
+.copy-shortcode:hover::after {
+  display: inline;
+}
+
 .xtabla-editor th,
 .xtabla-editor td {
-  /* border: 1px solid #e6f5fa; */
+  position: relative;
+  border: .5px solid lightgrey;
 }
 
 .xtabla-editor th:hover,
@@ -66,20 +103,47 @@
   cursor: pointer;
 }
 
+.cell-wrap {
+  position: relative;
+}
+
+.cell-label {
+  display: none;
+  font-size: 8px;
+  position: absolute;
+  /* bottom: 20%;
+  left: 20%; */
+  background: #15bcf5;
+  color: white;
+  padding: 2px 4px;
+  z-index: 100;
+}
+
+.cell-label.shown {
+  display: inline-block;
+}
+
+/* .xtabla-editor th:hover .cell-label,
+.xtabla-editor td:hover .cell-label{
+  display: inline;
+} */
+
 td.wp-media-upload-cell {
   text-align: center;
 }
 
 .success {
-  color: var(--green);
+  color: limegreen;
   text-shadow: 0px 0px 2px var(--greenRGBA);
   background: #F0FEF0;
+  font-weight: bold;
 }
 
 .failed {
   color: var(--red);
   text-shadow: 0px 0px 2px var(--redRGBA);
   background: var(--red-light);
+  font-weight: bold;
 }
 
 /* dropzone */

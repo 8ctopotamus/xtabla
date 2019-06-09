@@ -87,7 +87,6 @@ function renderSheets($file) {
   
   $worksheet = $spreadsheet->getActiveSheet();
 
-  // if is admin editor
   // add new row for uploads
   if ( is_admin() ) {
     $newColNum = column_number($worksheet->getHighestColumn()) + 1;
@@ -106,7 +105,10 @@ function renderSheets($file) {
       $isUploadCell = isset($newColLetter) && strpos($cell->getCoordinate(), $newColLetter) === 0;
       $class = $isUploadCell ? 'not-editable wp-media-upload-cell' : '';
       $html .= '<td id="' . $cell->getCoordinate() . '" class="' . $class . '">';
-      $html .= $isUploadCell ? '<i class="fas fa-upload"></i> UPLOAD' : $cell->getValue();
+      $html .= $isUploadCell ? 
+               '<span class="dashicons dashicons-upload"></span> UPLOAD'
+            :
+               $cell->getValue();
       $html .= '</td>' . PHP_EOL;
     }
     $html .= '</tr>' . PHP_EOL;

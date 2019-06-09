@@ -3,6 +3,7 @@
   const $cells = $('.xtabla-table td:not(.not-editable)')
   const $uploadCells = $('.xtabla-table td.wp-media-upload-cell')
   const $loading = $('#xtabla-loading')
+  const $cellLabel = $('.cell-label')
 
   let params = { 'action': 'xtabla_actions' }
 
@@ -23,21 +24,21 @@
     }).open()
     .on('select', function(){
       var uploaded_image = image.state().get('selection').first()
-      console.log(uploaded_image)
       var image_url = uploaded_image.toJSON().url
       $(target).text(image_url)
       updateSpreadsheet(e.target, image_url)
     })
   }
 
-  function updateSpreadsheet(el, value) {
+  function updateSpreadsheet(cell, value) {
     setLoading(true)
-    var $self = $(el)
+    var $self = $(cell)
     params.do = 'update_spreadsheet'
-    params.cellId = el.id
-    params.file = $(el).closest('table').data('spreadsheetid')
+    params.cellId = cell.id
+    params.file = $(cell).closest('table').data('spreadsheetid')
     params.value = value
     console.log(params)
+    // save file
     $.post(ajax_url, params, function(response) {
       $self.addClass('success')
       console.info('Response: ', response)
@@ -56,6 +57,18 @@
     return value
   }
 
+  $cells.hover(function() {
+    $cellLabel
+      .text(this.id)
+      .css({
+        top: $(this).position().top,
+        left: $(this).position().left
+      })  
+      .addClass('shown')
+  }, function() {
+    $cellLabel.removeClass('shown')
+  })
+  
   $cells.editable(handleCellEdit)
   $uploadCells.on('click', openWPMediaLibrary)
 
