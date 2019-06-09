@@ -26,16 +26,18 @@
       console.log(uploaded_image)
       var image_url = uploaded_image.toJSON().url
       $(target).text(image_url)
+      updateSpreadsheet(e.target, image_url)
     })
   }
 
-  function updateCell(value, settings) {
+  function updateSpreadsheet(el, value) {
     setLoading(true)
-    var $self = $(this)
+    var $self = $(el)
     params.do = 'update_spreadsheet'
-    params.file = $(this).closest('table').data('spreadsheetid')
-    params.cellId = this.id
+    params.cellId = el.id
+    params.file = $(el).closest('table').data('spreadsheetid')
     params.value = value
+    console.log(params)
     $.post(ajax_url, params, function(response) {
       $self.addClass('success')
       console.info('Response: ', response)
@@ -47,10 +49,14 @@
       setTimeout(() => $self.removeClass('failed'), 1000)
     })
     .done(() => setLoading(false))
+  }
+
+  function handleCellEdit(value, settings) {
+    updateSpreadsheet(this, value)
     return value
   }
 
-  $cells.editable(updateCell)
+  $cells.editable(handleCellEdit)
   $uploadCells.on('click', openWPMediaLibrary)
 
 })(jQuery)
