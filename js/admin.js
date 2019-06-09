@@ -2,26 +2,27 @@
   const { ajax_url } = wp_data
   const form = document.querySelector('form')
   const copyEmailBtn = Array.from(document.getElementsByClassName('copy-shortcode'));
+  const animationName = 'animated heartBeat fast';
+  const animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
 
   function copyToClipboard(event) {  
-    var emailLink = this
+    var shortcode = this
     var range = document.createRange();  
-    range.selectNode(emailLink);  
+    range.selectNode(shortcode);  
     window.getSelection().addRange(range);  
-  
     try {  
-      // Now that we've selected the anchor text, execute the copy command  
       var successful = document.execCommand('copy');  
       var msg = successful ? 'successful' : 'unsuccessful';  
       console.log('Copy email command was ' + msg);  
+      $(shortcode).addClass(animationName).one(animationend,function() {
+        $(this).removeClass(animationName);
+      });
     } catch(err) {  
       console.log('Oops, unable to copy');  
     }  
-    
     // Remove the selections - NOTE: Should use
     removeRange(range) // when it is supported  
     window.getSelection().removeAllRanges();
-    
   }
 
   function deleteSpreadsheet(e) {
@@ -61,6 +62,5 @@
   $('body').on('click', '.delete-spreadsheet', deleteSpreadsheet)
   form.addEventListener('submit', uploadSpreadsheet)
   copyEmailBtn.forEach(btn => btn.addEventListener('click', copyToClipboard)) 
-
 
 })(jQuery)

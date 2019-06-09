@@ -47,7 +47,30 @@ function update_spreadsheet() {
   }
 }
 
+function columnLetter($c){
+  $c = intval($c);
+  if ($c <= 0) return '';
+  $letter = '';
+  while($c != 0) {
+    $p = ($c - 1) % 26;
+    $c = intval(($c - $p) / 26);
+    $letter = chr(65 + $p) . $letter;
+  }
+  return $letter;
+}
 
+function column_number($col){
+  $col = str_pad($col,3, '0' , STR_PAD_LEFT);
+  $i = 0;
+  if ($col{0} != '0') {
+  $i = ((ord($col{0}) - 64) * 676)+26;
+  $i += ($col{1} == '0') ? 0 : (ord($col{1}) - 65) * 26;
+  } else {
+  $i += ($col{1} == '0') ? 0 : (ord($col{1}) - 64) * 26;
+  }
+  $i += ord($col{2}) - 64;
+  return $i;
+}
 
 function renderSheets($file) {
   $parts = explode('.', $file);
@@ -63,6 +86,14 @@ function renderSheets($file) {
   $spreadsheet = $reader->load( $inputFileName );
   
   $worksheet = $spreadsheet->getActiveSheet();
+
+  // if is admin editor
+  // add new row for uploads
+  if ( is_admin() ) {
+    $newColNum = column_number($worksheet->getHighestColumn()) + 1;
+    $newColLetter = columnLetter($newColNum);
+    $worksheet->insertNewColumnBefore($newColLetter, 1);
+  }
   
   $html = '<table class="form-table widefat xtabla-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
   foreach ($worksheet->getRowIterator() as $row) {
@@ -77,57 +108,6 @@ function renderSheets($file) {
     $html .= '</tr>' . PHP_EOL;
   }
   $html .= '</table>' . PHP_EOL;
-
-
-  // $parts = explode('.', $file);
-  // $filename = $parts[0];
-  // $extension = ucfirst( $parts[1] );
-
-  // $spreadsheet = new Spreadsheet();
-  // $inputFileType = $extension;
-  // $inputFileName = XTABLA_UPLOADS_DIR .'/' . $file;
-  
-  // $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader($inputFileType);
-  // $reader->setReadDataOnly(true);
-  // $worksheetData = $reader->listWorksheetInfo($inputFileName);
-  
-  // $html = '';
-
-  // foreach ($worksheetData as $worksheet) {
-  //   $sheetName = $worksheet['worksheetName'];    
-  //   $html .= "<h3>". $sheetName ."</h3>";
-  //   $reader->setLoadSheetsOnly($sheetName);
-  //   $spreadsheet = $reader->load($inputFileName);
-  //   $worksheet = $spreadsheet->getActiveSheet();
-  //   // table
-  //   $html .= '<table class="form-table widefat xtabla-table"><thead>';
-  //   // headers
-  //   $count = 0;
-  //   foreach ($worksheet->toArray() as $sheet):
-  //     if ( $count === 0 ):
-  //       $html .= '<tr>';
-  //         foreach($sheet as $cell):
-  //           var_dump($cell->getCoordinate() );
-  //           $html .= '<th>' . $cell . '</th>';
-  //         endforeach;
-  //       $html .= '</tr>';
-  //       $count++;
-  //     endif;
-  //   endforeach;
-  //   $html .= '</thead><tbody>';
-  //   // body
-  //   foreach ($worksheet->toArray() as $sheet):
-  //     if ( $count > 1 ):
-  //       $html .= '<tr>';
-  //         foreach($sheet as $cell):
-  //           $html .= renderCell($cell);
-  //         endforeach;
-  //       $html .= '</tr>';
-  //     endif;
-  //     $count++;
-  //   endforeach;
-  //   $html .= '</tbody></table>';
-  // }
 
   return $html;
 }

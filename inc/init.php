@@ -34,23 +34,37 @@ function xtabla_actions() {
  */
 function xtabla_wp_admin_assets( $hook ) {
   global $node_modules_path;
-  wp_register_style( 'xtabla_admin_styles', plugin_dir_url( __DIR__ ) . '/css/admin.css', false, '1.0.0' );
-  wp_register_script('xtabla_admin_js', plugin_dir_url( __DIR__ ) . '/js/admin.js', array('jquery'), '', true );
-  wp_register_script('jquery_jeditable', $node_modules_path . '/jquery-jeditable/dist/jquery.jeditable.min.js', array('jquery'), '', true );
-  wp_register_script('xtabla_admin_editor_js', plugin_dir_url( __DIR__ ) . '/js/admin-editor.js', array('jquery'), '', true );
-  // load on both admin views
-  if ( $hook == 'toplevel_page_xtabla' || $hook == 'admin_page_xtabla-table-editor' ){
+
+  // Style
+  wp_register_style('animate_css', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css');
+  wp_register_style('dropzone_css', $node_modules_path . '/dropzone/dist/dropzone.css');
+  wp_register_style('xtabla_admin_styles', plugin_dir_url( __DIR__ ) . '/css/admin.css', false, '1.0.0');
+
+  // Script
+  wp_register_script('dropzone_js', $node_modules_path . '/dropzone/dist/dropzone.js', '', '', true);
+  wp_register_script('jquery_jeditable', $node_modules_path . '/jquery-jeditable/dist/jquery.jeditable.min.js', array('jquery'), '', true);
+  wp_register_script('xtabla_admin_js', plugin_dir_url( __DIR__ ) . '/js/admin.js', array('jquery'), '', true);
+  wp_register_script('xtabla_admin_editor_js', plugin_dir_url( __DIR__ ) . '/js/admin-editor.js', array('jquery'), '', true);
+
+  // load on BOTH admin views
+  if ( $hook == 'toplevel_page_xtabla' || $hook == 'admin_page_xtabla-table-editor' ) {
+    wp_enqueue_media();
+    wp_enqueue_style( 'dropzone_css' );
     wp_enqueue_style( 'xtabla_admin_styles' );
+    wp_enqueue_script( 'dropzone_js' );
   }
+
   // main admin view
   if ( $hook === 'toplevel_page_xtabla' ) {
     add_thickbox(); // init Thickbox modal 
+    wp_enqueue_style( 'animate_css' );
     wp_localize_script( 'xtabla_admin_js', 'wp_data', array( 
       'ajax_url' => admin_url( 'admin-ajax.php' ),
       'plugin_url' => plugin_dir_url( __DIR__ ),
     ) );
     wp_enqueue_script( 'xtabla_admin_js' );
   }
+
   // editor view
   if( $hook === 'admin_page_xtabla-table-editor' ) {
     wp_enqueue_script( 'jquery_jeditable' );

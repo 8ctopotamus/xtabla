@@ -1,10 +1,20 @@
 (function($) {
   const { ajax_url } = wp_data
   const $cells = $('.xtabla-table td')
+  const $loading = $('#xtabla-loading')
 
   let params = { 'action': 'xtabla_actions' }
 
+  const setLoading = bool => {
+    if (bool) {
+      $loading.show()
+    } else {
+      $loading.hide()
+    }
+  }
+
   function updateCell(value, settings) {
+    setLoading(true)
     var $self = $(this)
     params.do = 'update_spreadsheet'
     params.file = $(this).closest('table').data('spreadsheetid')
@@ -20,6 +30,7 @@
       console.info('Error: ', err)
       setTimeout(() => $self.removeClass('failed'), 1000)
     })
+    .done(() => setLoading(false))
     return value
   }
 

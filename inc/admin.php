@@ -35,6 +35,7 @@ function xtabla_submenu_page_callback() {
       $sheet = $_GET['sheet'];
       if ( isset( $sheet ) ):
         echo '<p><a href="' . $URL . '"><< Back to Xtabla dashboard</a></p>';
+        echo '<span id="xtabla-loading" class="saving"><span>.</span><span>.</span><span>.</span></span>';
         echo '<h1>';
         echo $sheet;
         echo '</h1>';
@@ -58,14 +59,22 @@ function xtabla_options_page_html() {
   <div class="wrap">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
-    <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary">Subir tabla</a>
+    <!-- <h2>Upload Spreadsheet</h2>
+    <form method="POST" enctype="multipart/form-data" action="admin.php?action=xtabla_actions&do=upload_spreadsheet" class="dropzone">
+      <div class="fallback">
+	     <input name="file" type="file" multiple /> 
+      </div>
+      <input type="submit" name="submit" value="Submit">
+    </form>
+    <p class="max-upload-size"><?php printf( __( 'Maximum upload file size: %s.' ), esc_html( size_format( wp_max_upload_size() ) ) ); ?></p> -->
 
+    <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary">Subir tabla</a>
     <div id="file-upload-modal" style="display:none;">
-      <form action="upload_file.php" method="post" enctype="multipart/form-data">
+      <form action="admin.php?page=xtabla" method="post" enctype="multipart/form-data">
         <label for="file">Archivo:</label>
-        <input type="file" name="file" id="file"><br>
+        <input type="file" name="file" id="file"><br/>
         <input type="submit" name="submit" value="Submit">
-      </form>
+      </form> 
     </div>
 
     <div class="wrap-inner">
@@ -78,15 +87,15 @@ function xtabla_options_page_html() {
             $extension = $parts[1];
             $editLink = admin_url() . 'admin.php?page=xtabla-table-editor&sheet=' . $sheet;
           ?>
-            <div id="sheet-<?php echo $filename; ?>" class="shortcodes-list-item <?php echo $extension; ?>">
-
-              <div>
+          <div id="sheet-<?php echo $filename; ?>" class="shortcodes-list-item <?php echo $extension; ?>">
+            <div>
               <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
                 <strong><?php echo $sheet; ?></strong>
-          </a>
+              </a>
               </div>
               <div>
-                <code class="copy-shortcode">[xtabla file="<?php echo $sheet; ?>"]</code>
+                <!-- <p class="copy-shortcode">fffffffffffff</p> -->
+                <p class="copy-shortcode">[xtabla file="<?php echo $sheet; ?>"]</p>
               </div>
               <div>
                 <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
@@ -97,7 +106,7 @@ function xtabla_options_page_html() {
                 </button>
               </div>
             </div>
-            <?php 
+          <?php 
           endforeach;
         else:
           echo 'No hay tablas creadas.';
