@@ -1,6 +1,7 @@
 (function($) {
   const { ajax_url } = wp_data
-  const $cells = $('.xtabla-table td')
+  const $cells = $('.xtabla-table td:not(.not-editable)')
+  const $uploadCells = $('.xtabla-table td.wp-media-upload-cell')
   const $loading = $('#xtabla-loading')
 
   let params = { 'action': 'xtabla_actions' }
@@ -11,6 +12,21 @@
     } else {
       $loading.hide()
     }
+  }
+
+  function openWPMediaLibrary(e) {
+    e.preventDefault()
+    var target = e.target
+    var image = wp.media({ 
+      title: 'Upload Image',
+      multiple: false
+    }).open()
+    .on('select', function(){
+      var uploaded_image = image.state().get('selection').first()
+      console.log(uploaded_image)
+      var image_url = uploaded_image.toJSON().url
+      $(target).text(image_url)
+    })
   }
 
   function updateCell(value, settings) {
@@ -34,6 +50,7 @@
     return value
   }
 
-  $cells.editable(updateCell);
+  $cells.editable(updateCell)
+  $uploadCells.on('click', openWPMediaLibrary)
 
 })(jQuery)

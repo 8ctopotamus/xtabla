@@ -1,11 +1,11 @@
 (function($) {
   const { ajax_url } = wp_data
   const form = document.querySelector('form')
-  const copyEmailBtn = Array.from(document.getElementsByClassName('copy-shortcode'));
+  const copyEmailBtn = Array.from(document.getElementsByClassName('copy-shortcode'))
   const animationName = 'animated heartBeat fast';
   const animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
 
-  function copyToClipboard(event) {  
+  function copyToClipboard() {  
     var shortcode = this
     var range = document.createRange();  
     range.selectNode(shortcode);  
@@ -25,7 +25,7 @@
     window.getSelection().removeAllRanges();
   }
 
-  function deleteSpreadsheet(e) {
+  function deleteSpreadsheet() {
     const $btn = $(this)
     const file = $btn.data('spreadsheetid')
     const confirmed = confirm('Are you sure you want to delete ' + file + '?')

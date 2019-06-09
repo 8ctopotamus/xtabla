@@ -72,7 +72,7 @@ function xtabla_options_page_html() {
     <div id="file-upload-modal" style="display:none;">
       <form action="admin.php?page=xtabla" method="post" enctype="multipart/form-data">
         <label for="file">Archivo:</label>
-        <input type="file" name="file" id="file"><br/>
+        <input type="file" name="file" id="file" accept=".csv,.xlsx"><br/>
         <input type="submit" name="submit" value="Submit">
       </form> 
     </div>

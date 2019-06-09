@@ -63,6 +63,11 @@
 .xtabla-editor td:hover  {
   border: 1px solid #15bcf5;
   background: #e6f5fa;
+  cursor: pointer;
+}
+
+td.wp-media-upload-cell {
+  text-align: center;
 }
 
 .success {

@@ -95,19 +95,24 @@ function renderSheets($file) {
     $worksheet->insertNewColumnBefore($newColLetter, 1);
   }
   
-  $html = '<table class="form-table widefat xtabla-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
+  $html = '';
+  $html .= '<div style="overflow-x: auto;">';
+  $html .= '<table class="form-table widefat xtabla-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
   foreach ($worksheet->getRowIterator() as $row) {
     $html .= '<tr>' . PHP_EOL;
     $cellIterator = $row->getCellIterator();
     $cellIterator->setIterateOnlyExistingCells(FALSE);
     foreach ($cellIterator as $cell) {
-      $html .= '<td id="' . $cell->getCoordinate() . '">';
-      $html .= $cell->getValue();
+      $isUploadCell = isset($newColLetter) && strpos($cell->getCoordinate(), $newColLetter) === 0;
+      $class = $isUploadCell ? 'not-editable wp-media-upload-cell' : '';
+      $html .= '<td id="' . $cell->getCoordinate() . '" class="' . $class . '">';
+      $html .= $isUploadCell ? '<i class="fas fa-upload"></i> UPLOAD' : $cell->getValue();
       $html .= '</td>' . PHP_EOL;
     }
     $html .= '</tr>' . PHP_EOL;
   }
   $html .= '</table>' . PHP_EOL;
+  $html .= '</div>' . PHP_EOL;
 
   return $html;
 }
