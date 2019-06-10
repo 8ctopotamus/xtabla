@@ -68,7 +68,7 @@
   }, function() {
     $cellLabel.removeClass('shown')
   })
-  
+
   $cells.editable(handleCellEdit)
   $uploadCells.on('click', openWPMediaLibrary)
 

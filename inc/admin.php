@@ -39,6 +39,7 @@ function xtabla_submenu_page_callback() {
         echo '<h1>';
         echo $sheet;
         echo '</h1>';
+        echo '<a href="' . XTABLA_UPLOADS_DIR . '/' . $sheet .'" download>Download Spreadsheet</a>';
         echo '<div class="cell-label"></div>';
         echo renderSheets( $sheet );
       endif; ?>

@@ -90,6 +90,16 @@
   display: inline;
 }
 
+.xtabla-editor .table-wrap {
+  width: 100%;
+  height: 80vh;
+  overflow: auto;
+}
+
+.xtabla-editor tr:first-child {
+  font-weight: bold;
+}
+
 .xtabla-editor th,
 .xtabla-editor td {
   position: relative;

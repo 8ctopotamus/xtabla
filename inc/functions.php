@@ -95,7 +95,7 @@ function renderSheets($file) {
   }
   
   $html = '';
-  $html .= '<div style="overflow-x: auto;">';
+  $html .= '<div class="table-wrap">';
   $html .= '<table class="form-table widefat xtabla-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
   foreach ($worksheet->getRowIterator() as $row) {
     $html .= '<tr>' . PHP_EOL;
