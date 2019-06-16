@@ -10,14 +10,13 @@ Run `composer install` and `npm install` to install dependencies.
 Same as [PHPOffice/PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet).
 
 ### Project Scope
-- [ ] editing cell data 
+- [x] editing cell data 
 - [ ] sanitize input
-- [ ] click to copy shortcode to clipboard
+- [x] click to copy shortcode to clipboard
 - [ ] add/delete rows and columns
-- [ ] User can upload asset to media library, URL to asset is saved in cell
-- [ ] Hyperlinks with file extentions (eg: .pdf) render as linked icons
+- [x] User can upload asset to media library, URL to asset is saved in cell
+- [x] Hyperlinks with file extentions (eg: .pdf) render as linked icons
 
 ### Future Development
 - [ ] Spreadsheet Filtering
 - [ ] Spreadsheet Pagination
-- [ ] Add new Rows/Columns

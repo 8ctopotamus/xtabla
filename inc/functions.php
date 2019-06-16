@@ -6,6 +6,8 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
+$imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+
 function update_spreadsheet() {
   $file = $_POST['file'];
   $cellId = $_POST['cellId'];
@@ -72,6 +74,21 @@ function column_number($col){
   return $i;
 }
 
+function renderCellContents( $cell ) {
+  global $imageFileExtensions;
+  if ( strpos($cell, 'http://') !== false || strpos($cell, 'https://') !== false ) {
+    $preceedingEl = '<span class="dashicons dashicons-format-aside"></span>';
+    foreach ( $imageFileExtensions as $ext) {
+      if ( strpos($cell, $ext) ) {
+        $preceedingEl = '<img src="' . $cell . '" width="50" height="auto" />';
+        break;
+      }
+    }
+    $cell = '<a href="'. $cell .'" target="_blank" rel="noreferrer noopener">' . $preceedingEl . '<span class="hidden-cell-val" style="display: none;">' . $cell . '</span></a>';
+  }
+  return $cell;
+}
+
 function renderSheets($file) {
   $parts = explode('.', $file);
   $filename = $parts[0];
@@ -86,13 +103,6 @@ function renderSheets($file) {
   $spreadsheet = $reader->load( $inputFileName );
   
   $worksheet = $spreadsheet->getActiveSheet();
-
-  // add new row for uploads
-  // if ( is_admin() ) {
-  //   $newColNum = column_number($worksheet->getHighestColumn()) + 1;
-  //   $newColLetter = columnLetter($newColNum);
-  //   $worksheet->insertNewColumnBefore($newColLetter, 1);
-  // }
   
   $html = '';
   $html .= '<div class="table-wrap">';
@@ -102,13 +112,8 @@ function renderSheets($file) {
     $cellIterator = $row->getCellIterator();
     $cellIterator->setIterateOnlyExistingCells(FALSE);
     foreach ($cellIterator as $cell) {
-      $isUploadCell = isset($newColLetter) && strpos($cell->getCoordinate(), $newColLetter) === 0;
-      $class = $isUploadCell ? 'not-editable open-wp-media' : '';
-      $html .= '<td id="' . $cell->getCoordinate() . '" class="' . $class . '">';
-      $html .= $isUploadCell ? 
-               '<span class="dashicons dashicons-upload"></span> UPLOAD'
-            :
-               $cell->getValue();
+      $html .= '<td id="' . $cell->getCoordinate() . '">';
+      $html .= renderCellContents( $cell->getValue() );
       $html .= '</td>' . PHP_EOL;
     }
     $html .= '</tr>' . PHP_EOL;
@@ -117,13 +122,6 @@ function renderSheets($file) {
   $html .= '</div>' . PHP_EOL;
 
   return $html;
-}
-
-function renderCell( $cell ) {
-  if ( strpos($cell, 'http://') !== false || strpos($cell, 'https://') !== false ) {
-    $cell = '<a href="'. $cell .'" target="_blank" rel="noreferrer noopener">' . $cell . '</a>';
-  }
-  return '<td>' . $cell . '</td>';
 }
 
 function filterForSpreadsheets( $doc ) {

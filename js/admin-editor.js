@@ -1,8 +1,9 @@
 (function($) {
   const { ajax_url } = wp_data
-  const $cells = $('.xtabla-table td:not(.not-editable)')
-  const $loading = $('#xtabla-loading')
-  const $cellLabel = $('.cell-label')
+  const $body = $('body')
+  const $cells = $body.find('.xtabla-table td:not(.not-editable)')
+  const $loading = $body.find('#xtabla-loading')
+  const $cellLabel = $body.find('.cell-label')
   const $uploadButton = $('<button class="open-wp-media"><span class="dashicons dashicons-upload"></span></button>')
 
   let params = { 'action': 'xtabla_actions' }
@@ -17,7 +18,6 @@
 
   function openWPMediaLibrary(e) {
     e.preventDefault()
-    var self = this
     var $target = $(this).closest('td')    
     var image = wp.media({ 
       title: 'Upload Image',
@@ -54,33 +54,33 @@
   }
 
   function handleCellEdit(value, settings) {
+    console.log(this)
     updateSpreadsheet(this, value)
     return value
   }
   
   $cells.editable(handleCellEdit, {
-    // type      : 'textarea',
     cancel    : 'Cancel',
     submit    : 'OK',
     tooltip   : 'Click to edit...'
   })
 
+  $cells.hover(function() {
+    $cellLabel
+    .text(this.id)
+    .css({
+      top: $(this).position().top,
+      left: $(this).position().left
+    })  
+    .addClass('shown')
+  }, function() {
+    $cellLabel.removeClass('shown')
+  })
+  
   $cells.on('click', function() {
     $(this).find('form').append($uploadButton)
   })
 
-  $('body').on('click', '.open-wp-media', openWPMediaLibrary)
-  
-  $cells.hover(function() {
-    $cellLabel
-      .text(this.id)
-      .css({
-        top: $(this).position().top,
-        left: $(this).position().left
-      })  
-      .addClass('shown')
-  }, function() {
-    $cellLabel.removeClass('shown')
-  })
+  $body.on('click', '.open-wp-media', openWPMediaLibrary)
 
 })(jQuery)
