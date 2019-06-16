@@ -13,6 +13,7 @@ Same as [PHPOffice/PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet).
 - [ ] editing cell data 
 - [ ] sanitize input
 - [ ] click to copy shortcode to clipboard
+- [ ] add/delete rows and columns
 - [ ] User can upload asset to media library, URL to asset is saved in cell
 - [ ] Hyperlinks with file extentions (eg: .pdf) render as linked icons
 

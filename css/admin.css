@@ -138,10 +138,6 @@
   display: inline;
 } */
 
-td.wp-media-upload-cell {
-  text-align: center;
-}
-
 .success {
   color: limegreen;
   text-shadow: 0px 0px 2px var(--greenRGBA);

@@ -19,7 +19,7 @@ function xtabla_options_page() {
     'Xtabla Table Editor',
     'manage_options',
     'xtabla-table-editor',
-    'xtabla_submenu_page_callback',
+    'xtabla_submenu_page_callback'
   );
 }
 add_action('admin_menu', 'xtabla_options_page');

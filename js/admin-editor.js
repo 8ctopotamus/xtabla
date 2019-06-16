@@ -1,9 +1,9 @@
 (function($) {
   const { ajax_url } = wp_data
   const $cells = $('.xtabla-table td:not(.not-editable)')
-  const $uploadCells = $('.xtabla-table td.wp-media-upload-cell')
   const $loading = $('#xtabla-loading')
   const $cellLabel = $('.cell-label')
+  const $uploadButton = $('<button class="open-wp-media"><span class="dashicons dashicons-upload"></span></button>')
 
   let params = { 'action': 'xtabla_actions' }
 
@@ -17,16 +17,17 @@
 
   function openWPMediaLibrary(e) {
     e.preventDefault()
-    var target = e.target
+    var self = this
+    var $target = $(this).closest('td')    
     var image = wp.media({ 
       title: 'Upload Image',
       multiple: false
     }).open()
-    .on('select', function(){
+    .on('select', function() {
       var uploaded_image = image.state().get('selection').first()
       var image_url = uploaded_image.toJSON().url
-      $(target).text(image_url)
-      updateSpreadsheet(e.target, image_url)
+      $target.text(image_url)
+      updateSpreadsheet($target.get(0), image_url)
     })
   }
 
@@ -37,7 +38,7 @@
     params.cellId = cell.id
     params.file = $(cell).closest('table').data('spreadsheetid')
     params.value = value
-    console.log(params)
+    console.log('[updateSpreadsheet] params', params)
     // save file
     $.post(ajax_url, params, function(response) {
       $self.addClass('success')
@@ -56,7 +57,20 @@
     updateSpreadsheet(this, value)
     return value
   }
+  
+  $cells.editable(handleCellEdit, {
+    // type      : 'textarea',
+    cancel    : 'Cancel',
+    submit    : 'OK',
+    tooltip   : 'Click to edit...'
+  })
 
+  $cells.on('click', function() {
+    $(this).find('form').append($uploadButton)
+  })
+
+  $('body').on('click', '.open-wp-media', openWPMediaLibrary)
+  
   $cells.hover(function() {
     $cellLabel
       .text(this.id)
@@ -68,8 +82,5 @@
   }, function() {
     $cellLabel.removeClass('shown')
   })
-
-  $cells.editable(handleCellEdit)
-  $uploadCells.on('click', openWPMediaLibrary)
 
 })(jQuery)

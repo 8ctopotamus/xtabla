@@ -12,7 +12,7 @@ function update_spreadsheet() {
   $value = $_POST['value'];
   if ( !empty($file) && !empty($cellId) && !empty($value) ) {
     // current directory
-    $wp_admin_dir = getcwd();
+    $wp_admin_dir = getcwd(); // wp-admin
 
     chdir(XTABLA_UPLOADS_DIR);
 
@@ -88,11 +88,11 @@ function renderSheets($file) {
   $worksheet = $spreadsheet->getActiveSheet();
 
   // add new row for uploads
-  if ( is_admin() ) {
-    $newColNum = column_number($worksheet->getHighestColumn()) + 1;
-    $newColLetter = columnLetter($newColNum);
-    $worksheet->insertNewColumnBefore($newColLetter, 1);
-  }
+  // if ( is_admin() ) {
+  //   $newColNum = column_number($worksheet->getHighestColumn()) + 1;
+  //   $newColLetter = columnLetter($newColNum);
+  //   $worksheet->insertNewColumnBefore($newColLetter, 1);
+  // }
   
   $html = '';
   $html .= '<div class="table-wrap">';
@@ -103,7 +103,7 @@ function renderSheets($file) {
     $cellIterator->setIterateOnlyExistingCells(FALSE);
     foreach ($cellIterator as $cell) {
       $isUploadCell = isset($newColLetter) && strpos($cell->getCoordinate(), $newColLetter) === 0;
-      $class = $isUploadCell ? 'not-editable wp-media-upload-cell' : '';
+      $class = $isUploadCell ? 'not-editable open-wp-media' : '';
       $html .= '<td id="' . $cell->getCoordinate() . '" class="' . $class . '">';
       $html .= $isUploadCell ? 
                '<span class="dashicons dashicons-upload"></span> UPLOAD'
