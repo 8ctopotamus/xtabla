@@ -12,7 +12,7 @@ Domain Path: /languages
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-register_activation_hook( __FILE__, 'xtabla_activate' );
+// register_activation_hook( __FILE__, 'xtabla_activate' );
 
 include 'inc/init.php';
 include 'inc/functions.php';

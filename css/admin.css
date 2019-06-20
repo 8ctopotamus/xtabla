@@ -91,10 +91,11 @@
 }
 
 .xtabla-editor h1 {
-  background: darkslateblue;
+  background: #0074a2;
   color: white;
   margin-bottom: 0;
   padding: 10px;
+  font-weight: bold;
 }
 
 .xtabla-table {
@@ -124,9 +125,13 @@
   cursor: pointer;
 }
 
-.cell-wrap {
-  position: relative;
+.xtabla-table input {
+  display: block;
 }
+
+/* .cell-wrap {
+  position: relative;
+} */
 
 .cell-label
 /* .add-row,
@@ -172,19 +177,42 @@
   font-weight: bold;
 }
 
-/* dropzone */
-.dropzone {
-	border: 4px dashed rgb(0, 115, 170);
-	background: none;
-	height: 200px;
-	margin-top: 20px;
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
 }
 
-.dropzone .dz-message {
-	font-size: 25px;
-	color: #a0a5aa;
+.upload-btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
-.dropzone .dz-preview.dz-image-preview {
-	background-color: transparent;
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.hidden-cell-val {
+  display: none;
+}
+
+.xtabla-table td {
+  vertical-align: middle;
+}
+
+.xtabla-table .dashicons-media-spreadsheet {
+  font-size: 50px;
+  display: block;
+  height: 50px;
+  width: 50px;
 }

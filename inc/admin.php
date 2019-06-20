@@ -49,8 +49,6 @@ function xtable_design_settings_section_callback() {
 // design fields
 function xtable_design_settings_render() { 
   $options = get_option( 'xtable_design_settings' ); 
-  
-  // var_dump($options);
   ?>
 	  <textarea id="xtable-custom-css" name='xtable_design_settings[xtable_custom_css]' class="code-preview"><?php echo wp_unslash( $options['xtable_custom_css'] ); ?></textarea>
 <?php	}
@@ -98,29 +96,14 @@ function xtabla_options_page_html() {
 
     <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary">Subir tabla</a>
     <div id="file-upload-modal" style="display:none;">
-    <!-- <h2>Upload Spreadsheet</h2>
-    <form method="POST" enctype="multipart/form-data" action="admin.php?action=xtabla_actions&do=upload_spreadsheet" class="dropzone">
-      <div class="fallback">
-	     <input name="file" type="file" multiple /> 
-      </div>
-      <input type="submit" name="submit" value="Submit">
-    </form> 
-    <p class="max-upload-size"><?php printf( __( 'Maximum upload file size: %s.' ), esc_html( size_format( wp_max_upload_size() ) ) ); ?></p>  -->
       <form action="admin.php?page=xtabla" method="post" enctype="multipart/form-data">
-        <label for="file">Archivo:</label>
+        <label for="file">Archivo:</label><br/>
         <input type="file" name="file" id="file" accept=".csv,.xlsx"><br/>
-        <input type="submit" name="submit" value="Submit">
+        <input type="submit" name="submit" value="Submit" class="button-primary">
       </form> 
     </div>
 
-    <form method="post" action="options.php">
-      <?php
-        settings_fields( 'xtableCustomCSS' );
-        do_settings_sections( 'xtableCustomCSS' );
-        submit_button();
-      ?>
-    </form>
-
+    <h2>Spreadsheets</h2>
     <div class="wrap-inner">
       <?php $spreadsheets = get_spreadsheets();
         echo '<div id="shortcodes-list">';
@@ -158,7 +141,15 @@ function xtabla_options_page_html() {
         endif;
         echo '</div>';
       ?>
-    </div>
+    </div><!-- /.wrap-inner -->
+
+    <form method="post" action="options.php">
+      <?php
+        settings_fields( 'xtableCustomCSS' );
+        do_settings_sections( 'xtableCustomCSS' );
+        submit_button();
+      ?>
+    </form>
   </div>
   <?php
 }

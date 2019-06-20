@@ -1,0 +1,14 @@
+.hidden-cell-val {
+  display: none;
+}
+
+.xtabla-table td {
+  vertical-align: middle;
+}
+
+.xtabla-table .dashicons-media-spreadsheet {
+  font-size: 50px;
+  display: block;
+  height: 50px;
+  width: 50px;
+}

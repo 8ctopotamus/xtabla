@@ -77,14 +77,14 @@ function column_number($col){
 function renderCellContents( $cell ) {
   global $imageFileExtensions;
   if ( strpos($cell, 'http://') !== false || strpos($cell, 'https://') !== false ) {
-    $preceedingEl = '<span class="dashicons dashicons-format-aside"></span>';
+    $preceedingEl = '<span class="dashicons dashicons-media-spreadsheet"></span>';
     foreach ( $imageFileExtensions as $ext) {
       if ( strpos($cell, $ext) ) {
         $preceedingEl = '<img src="' . $cell . '" width="50" height="auto" />';
         break;
       }
     }
-    $cell = '<a href="'. $cell .'" target="_blank" rel="noreferrer noopener">' . $preceedingEl . '<span class="hidden-cell-val" style="display: none;">' . $cell . '</span></a>';
+    $cell = '<a href="'. $cell .'" target="_blank" rel="noreferrer noopener" download>' . $preceedingEl . '<br/><small class="hidden-cell-val">' . $cell . '</small></a>';
   }
   return $cell;
 }
