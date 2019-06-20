@@ -50,6 +50,13 @@ function xtabla_wp_admin_assets( $hook ) {
 
   // main admin view
   if ( $hook === 'toplevel_page_xtabla' ) {
+
+    // codemirror
+    $cm_settings['codeEditor'] = wp_enqueue_code_editor(array('type' => 'text/css'));
+    wp_localize_script('jquery', 'cm_settings', $cm_settings);
+    wp_enqueue_script('wp-theme-plugin-editor');
+    wp_enqueue_style('wp-codemirror');
+
     add_thickbox();
     wp_enqueue_style( 'dropzone_css' );
     wp_enqueue_style( 'animate_css' );
@@ -101,3 +108,17 @@ function xtabla_scripts_and_styles() {
   }
 }
 add_action('wp_enqueue_scripts', 'xtabla_scripts_and_styles');
+
+/*
+ * Output Custom CSS
+ */
+function xtable_custom_head() {
+  $customCSS = get_option( 'xtable_design_settings' )['xtable_custom_css'];
+  if ( $customCSS ):
+    echo '<!-- Xtable Custom CSS -->';
+    echo '<style>';
+    echo wp_unslash( $customCSS );
+    echo '</style>';
+  endif;
+}
+add_action('wp_head', 'xtable_custom_head');

@@ -1,9 +1,13 @@
 (function($) {
   const { ajax_url } = wp_data
+  const $customCSS = $('#xtable-custom-css')
   const form = document.querySelector('form')
   const copyEmailBtn = Array.from(document.getElementsByClassName('copy-shortcode'))
   const animationName = 'animated heartBeat fast';
-  const animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+  const animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend'
+
+  // init codemirror
+  wp.codeEditor.initialize($customCSS, cm_settings)
 
   function copyToClipboard() {  
     var shortcode = this

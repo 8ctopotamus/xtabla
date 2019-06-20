@@ -1,4 +1,5 @@
 (function($) {
-  // $('#table').basictable()
-  // $('#xtabla-table').basictable()
+  const $xtables = $('.xtabla-table')
+  $xtables.basictable()
 })(jQuery)
+

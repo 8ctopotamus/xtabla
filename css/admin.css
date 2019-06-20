@@ -90,6 +90,17 @@
   display: inline;
 }
 
+.xtabla-editor h1 {
+  background: darkslateblue;
+  color: white;
+  margin-bottom: 0;
+  padding: 10px;
+}
+
+.xtabla-table {
+  margin-top: 0;
+}
+
 .xtabla-editor .table-wrap {
   width: 100%;
   height: 80vh;
@@ -117,19 +128,28 @@
   position: relative;
 }
 
-.cell-label {
+.cell-label
+/* .add-row,
+.add-col  */
+{
   display: none;
   font-size: 8px;
   position: absolute;
-  /* bottom: 20%;
-  left: 20%; */
+  z-index: 12;
+}
+
+.cell-label {
   background: #15bcf5;
   color: white;
   padding: 2px 4px;
-  z-index: 100;
 }
 
-.cell-label.shown {
+/* .add-row,
+.add-col {
+  border-radius: 100%;
+} */
+
+.shown {
   display: inline-block;
 }
 
