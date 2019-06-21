@@ -5,6 +5,7 @@
   --red: rgb(231, 68, 39);
   --redRGBA: rgba(231, 68, 39, .5);
   --red-light: #FAB8AD;
+  --copyMsgColor: inherit;
 }
 
 @keyframes blink {
@@ -81,9 +82,10 @@
 
 .copy-shortcode::after {
   display: none;
-  content: 'copy';
+  content: attr(data-msg);
+  color: var(--copyMsgColor);
   position: absolute;
-  right: -38px;
+  right: -60px;
 }
 
 .copy-shortcode:hover::after {

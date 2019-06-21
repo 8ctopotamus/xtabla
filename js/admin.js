@@ -6,21 +6,34 @@
   const animationName = 'animated heartBeat fast';
   const animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend'
 
+  const copyMsg = 'copy'
+
+  let intervalId
+
   // init codemirror
   wp.codeEditor.initialize($customCSS, cm_settings)
 
-  function copyToClipboard() {  
+  function copyToClipboard() {
     var shortcode = this
     var range = document.createRange();  
-    range.selectNode(shortcode);  
-    window.getSelection().addRange(range);  
+    range.selectNode(shortcode);
+    window.getSelection().addRange(range);    
     try {  
       var successful = document.execCommand('copy');  
       var msg = successful ? 'successful' : 'unsuccessful';  
       console.log('Copy email command was ' + msg);  
-      $(shortcode).addClass(animationName).one(animationend,function() {
-        $(this).removeClass(animationName);
-      });
+      
+      shortcode.setAttribute('data-msg', 'copied!')
+      document.documentElement.style.setProperty('--copyMsgColor', 'green')
+      clearInterval(intervalId)
+      intervalId = setInterval(() => {
+        shortcode.setAttribute('data-msg', copyMsg)
+        document.documentElement.style.setProperty('--copyMsgColor', 'inherit')
+      }, 1400)
+
+      // $(shortcode).addClass(animationName).one(animationend,function() {
+      //   $(this).removeClass(animationName);
+      // });
     } catch(err) {  
       console.log('Oops, unable to copy');  
     }  
@@ -65,6 +78,9 @@
 
   $('body').on('click', '.delete-spreadsheet', deleteSpreadsheet)
   form.addEventListener('submit', uploadSpreadsheet)
-  copyEmailBtn.forEach(btn => btn.addEventListener('click', copyToClipboard)) 
+  copyEmailBtn.forEach(btn => {
+    btn.setAttribute('data-msg', copyMsg);
+    btn.addEventListener('click', copyToClipboard)
+  }) 
 
 })(jQuery)
