@@ -77,7 +77,8 @@ function column_number($col){
 function renderCellContents( $cell ) {
   global $imageFileExtensions;
   if ( strpos($cell, 'http://') !== false || strpos($cell, 'https://') !== false ) {
-    $preceedingEl = '<span class="dashicons dashicons-media-spreadsheet"></span>';
+    $preceedingEl = '<img class="download-file-icon" src="' . plugin_dir_url( __DIR__ ) . "/img/download-file-icon.svg" . '" />';
+    // $preceedingEl = '<span class="dashicons dashicons-media-spreadsheet"></span>';
     foreach ( $imageFileExtensions as $ext) {
       if ( strpos($cell, $ext) ) {
         $preceedingEl = '<img src="' . $cell . '" width="50" height="auto" />';

@@ -218,3 +218,10 @@
   height: 50px;
   width: 50px;
 }
+
+.download-file-icon {
+  display: block;
+  height: 35px;
+  width: auto;
+  margin: 0 auto;
+}

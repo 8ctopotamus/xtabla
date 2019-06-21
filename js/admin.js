@@ -22,7 +22,6 @@
       var successful = document.execCommand('copy');  
       var msg = successful ? 'successful' : 'unsuccessful';  
       console.log('Copy email command was ' + msg);  
-      
       shortcode.setAttribute('data-msg', 'copied!')
       document.documentElement.style.setProperty('--copyMsgColor', 'green')
       clearInterval(intervalId)
@@ -30,7 +29,6 @@
         shortcode.setAttribute('data-msg', copyMsg)
         document.documentElement.style.setProperty('--copyMsgColor', 'inherit')
       }, 1400)
-
       // $(shortcode).addClass(animationName).one(animationend,function() {
       //   $(this).removeClass(animationName);
       // });
