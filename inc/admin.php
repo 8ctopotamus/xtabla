@@ -84,6 +84,8 @@ function xtabla_submenu_page_callback() {
  * top level
  */
 function xtabla_options_page_html() {
+  global $spreadsheetFileExtensions;
+
   if ( !current_user_can('manage_options') ) {
     return;
   }
@@ -95,10 +97,19 @@ function xtabla_options_page_html() {
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
     <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary">Subir tabla</a>
+
     <div id="file-upload-modal" style="display:none;">
       <form action="admin.php?page=xtabla" method="post" enctype="multipart/form-data">
         <label for="file">Archivo:</label><br/>
-        <input type="file" name="file" id="file" accept=".csv,.xlsx"><br/>
+        <input id="file" 
+               name="file" 
+               type="file"
+               accept="<?php 
+               // add a period . to the first one
+               $spreadsheetFileExtensions[0] = '.'.$spreadsheetFileExtensions[0];
+               echo implode(', .', $spreadsheetFileExtensions); 
+        ?>" />
+        <br/>
         <input type="submit" name="submit" value="Submit" class="button-primary">
       </form> 
     </div>

@@ -10,10 +10,12 @@ Run `composer install` and `npm install` to install dependencies.
 Same as [PHPOffice/PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet).
 
 ### Project Scope
+- [ ] can support xls
+- [ ] can add rows and columns
+- [ ] can delete rows and colums
+- [ ] sanitize inputs
 - [x] editing cell data 
-- [ ] sanitize input
 - [x] click to copy shortcode to clipboard
-- [ ] add/delete rows and columns
 - [x] User can upload asset to media library, URL to asset is saved in cell
 - [x] Hyperlinks with file extentions (eg: .pdf) render as linked icons
 

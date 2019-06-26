@@ -12,6 +12,9 @@ define('XTABLA_UPLOADS_DIR', $upload_dir);
 */
 $node_modules_path = plugin_dir_url( __DIR__ ) . 'node_modules/';
 
+$spreadsheetFileExtensions = ['.csv', '.xlsx', '.xls'];
+$imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+
 /*
 ** create xtabla-uploads directory in wp-content/uploads
 */
@@ -38,6 +41,11 @@ function xtabla_wp_admin_assets( $hook ) {
   global $node_modules_path;
 
   // Style
+  if (!wp_style_is( 'fontawesome', 'enqueued' )) {
+    wp_register_style( 'fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', false, '4.6.1' );
+    wp_enqueue_style( 'fontawesome' );
+  } 
+
   wp_register_style('animate_css', 'https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css');
   wp_register_style('dropzone_css', $node_modules_path . '/dropzone/dist/dropzone.css');
   wp_register_style('xtabla_admin_styles', plugin_dir_url( __DIR__ ) . '/css/admin.css', false, '1.0.0');
@@ -89,6 +97,11 @@ add_action( 'admin_enqueue_scripts', 'xtabla_wp_admin_assets' );
  */
 function xtabla_scripts_and_styles() {
   global $post, $node_modules_path;
+
+  if (!wp_style_is( 'fontawesome', 'enqueued' )) {
+    wp_register_style( 'fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', false, '4.6.1' );
+    wp_enqueue_style( 'fontawesome' );
+  } 
 
   // styles
   wp_register_style('basictable_css', 'https://cdnjs.cloudflare.com/ajax/libs/jquery.basictable/1.0.9/basictable.min.css');

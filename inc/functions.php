@@ -3,10 +3,9 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
-
-$imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 function update_spreadsheet() {
   $file = $_POST['file'];
@@ -27,20 +26,24 @@ function update_spreadsheet() {
     $worksheet = $spreadsheet->getActiveSheet();
     $worksheet->getCell($cellId)->setValue($value);
 
+    
     if ( $extension === 'Xlsx' ) {
       $writer = new Xlsx($spreadsheet);
+    } else if ( $extension === 'Xls' ) {
+      $writer = new Xls($spreadsheet);
+      echo 'yarrrr';
     } else if ( $extension === 'Csv' ) {
       $writer = new Csv($spreadsheet);
     }
-
+    
     $tempFile = 'temp.' . strtolower($extension);
-
+    
     $writer->save( $tempFile );
-
+    
     rename($tempFile, $file);
-
+    
     chdir($wp_admin_dir);
-
+    
     echo $file . ' saved!';
     http_response_code(200);
   } else {
@@ -77,7 +80,7 @@ function column_number($col){
 function renderCellContents( $cell ) {
   global $imageFileExtensions;
   if ( strpos($cell, 'http://') !== false || strpos($cell, 'https://') !== false ) {
-    $preceedingEl = '<img class="download-file-icon" src="' . plugin_dir_url( __DIR__ ) . "/img/download-file-icon.svg" . '" />';
+    $preceedingEl = '<i class="fa fa-file-pdf-o fa-2x"></i>';
     // $preceedingEl = '<span class="dashicons dashicons-media-spreadsheet"></span>';
     foreach ( $imageFileExtensions as $ext) {
       if ( strpos($cell, $ext) ) {
@@ -126,7 +129,9 @@ function renderSheets($file) {
 }
 
 function filterForSpreadsheets( $doc ) {
-  return strpos($doc, '.xlsx') !== false || strpos($doc, '.csv') !== false;
+  return strpos($doc, '.xlsx') !== false || 
+         strpos($doc, '.xls') !== false || 
+         strpos($doc, '.csv') !== false;
 }
 
 function get_spreadsheets() {
@@ -149,7 +154,7 @@ function slugify_filename($string){
 function upload_spreadsheet() {
   if (isset($_FILES['files'])) {
     $errors = [];    
-    $extensions = ['xlsx', 'csv'];
+    $extensions = ['csv', 'xlsx', 'xls'];
 
     $all_files = count($_FILES['files']['tmp_name']);
 
