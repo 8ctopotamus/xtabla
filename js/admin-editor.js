@@ -6,10 +6,12 @@
   const $loading = $body.find('#xtabla-loading')
   const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-upload"></span></button>')
   const $cellLabel = $body.find('.cell-label')
-  // const $addRowTop = $body.find('.add-row-top')
-  // const $addRowBottom = $body.find('.add-row-bottom')
-  // const $addColLeft = $body.find('.add-col-left')
-  // const $addColRight = $body.find('.add-col-right')
+
+  const editableCellOptions = {
+    cancel    : 'Cancel',
+    submit    : 'OK',
+    tooltip   : 'Click to edit...'
+  }
 
   let params = { 'action': 'xtabla_actions' }
 
@@ -63,12 +65,33 @@
     updateSpreadsheetCell(this, value)
     return value
   }
+
+  function addRow() {
+    $clonedRow = $tables.find('tr:last-child').clone()
+    $clonedRow.children().each(function() {
+      $(this).text('')
+      // var id = $(this).attr('id')
+      // for (var i = 0; i < id.length; i++) {
+      //   if (!isNaN(parseInt(id[i]))) {
+          
+      //   }
+      // }      
+      $(this).editable(handleCellEdit, editableCellOptions)
+    })
+    $tables.append($clonedRow)
+  }
+
+  function addColumn() {
+    console.log('adding col...')
+    $rows = $tables.find('tr')
+    $rows.each((i, row) => {
+      $newCell = $('<td></td>')
+      $newCell.editable(handleCellEdit, editableCellOptions)
+      $(row).append($newCell)
+    })
+  }
   
-  $cells.editable(handleCellEdit, {
-    cancel    : 'Cancel',
-    submit    : 'OK',
-    tooltip   : 'Click to edit...'
-  })
+  $cells.editable(handleCellEdit, editableCellOptions)
 
   $cells.hover(function() {
     const $cell = $(this)
@@ -79,30 +102,6 @@
         left: $cell.position().left
       })  
       .addClass('shown')
-    // $addRowTop
-    //   .css({
-    //     top: $cell.position().top,
-    //     left: $cell.position().left + $cell.width() / 2
-    //   })  
-    //   .addClass('shown')
-    // $addRowBottom
-    //   .css({
-    //     top: $cell.position().top + $cell.height(),
-    //     left: $cell.position().left + $cell.width() / 2
-    //   })  
-    //   .addClass('shown')
-    // $addColLeft
-    //   .css({
-    //     top: $cell.position().top + $cell.height() / 2,
-    //     left: $cell.position().left
-    //   })  
-    //   .addClass('shown')
-    // $addColRight
-    //   .css({
-    //     top: $cell.position().top + $cell.height() / 2,
-    //     left: $cell.position().left + $cell.width()
-    //   })  
-    //   .addClass('shown')
   }, function() {
     $cellLabel.removeClass('shown')
     // $addRowTop.removeClass('shown')
@@ -117,23 +116,16 @@
 
   $body.on('click', '.open-wp-media', openWPMediaLibrary)
 
-  $('.add-row').on('click', function() {
-    $clonedRow = $tables.find('tr:last-child').clone()
-    $clonedRow.children().each(function() {
-      $(this).text('')
-      var id = $(this).attr('id')
-      for (var i = 0; i < id.length; i++) {
-        if (!isNaN(parseInt(id[i]))) {
-          
-        }
-      }      
-      $(this).editable(handleCellEdit, {
-        cancel    : 'Cancel',
-        submit    : 'OK',
-        tooltip   : 'Click to edit...'
-      })
-    })
-    $tables.append($clonedRow)
+  $('.add').on('click', function() {
+    const direction = $(this).data('add')
+    switch(direction) {
+      case 'row':
+        addRow()
+        break
+      case 'column':
+        addColumn()
+        break
+    }
   })
 
 })(jQuery)
