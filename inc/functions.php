@@ -7,12 +7,90 @@ use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+function add_spreadsheet_row() {
+  $file = $_POST['file'];
+  if (!empty($file)) {
+    $wp_admin_dir = getcwd(); // wp-admin
+    chdir(XTABLA_UPLOADS_DIR);
+
+    $parts = explode('.', $file);
+    $filename = $parts[0];
+    $extension = ucfirst( $parts[1] );
+    $inputFilePath = XTABLA_UPLOADS_DIR .'/' . $file;
+    
+    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $inputFilePath );
+    $worksheet = $spreadsheet->getActiveSheet();
+
+    // insert new row
+    $num_rows = $worksheet->getHighestRow();
+    $worksheet->insertNewRowBefore($num_rows + 1, 1);
+    
+    if ( $extension === 'Xlsx' ) {
+      $writer = new Xlsx($spreadsheet);
+    } else if ( $extension === 'Xls' ) {
+      $writer = new Xls($spreadsheet);
+      echo 'yarrrr';
+    } else if ( $extension === 'Csv' ) {
+      $writer = new Csv($spreadsheet);
+    }
+    
+    $tempFile = 'temp.' . strtolower($extension);
+    
+    $writer->save( $tempFile );
+    
+    rename($tempFile, $file);
+
+
+    chdir($wp_admin_dir);
+    echo $file . ' - New row added!';
+  }
+}
+
+function add_spreadsheet_column() {
+  $file = $_POST['file'];
+  if (!empty($file)) {
+    $wp_admin_dir = getcwd(); // wp-admin
+    chdir(XTABLA_UPLOADS_DIR);
+
+    $parts = explode('.', $file);
+    $filename = $parts[0];
+    $extension = ucfirst( $parts[1] );
+    $inputFilePath = XTABLA_UPLOADS_DIR .'/' . $file;
+    
+    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $inputFilePath );
+    $worksheet = $spreadsheet->getActiveSheet();
+
+    // insert new row
+    $newColNum = column_number($worksheet->getHighestColumn()) + 1;
+    $newColLetter = columnLetter($newColNum);
+    $worksheet->insertNewColumnBefore($newColLetter, 1);
+    
+    if ( $extension === 'Xlsx' ) {
+      $writer = new Xlsx($spreadsheet);
+    } else if ( $extension === 'Xls' ) {
+      $writer = new Xls($spreadsheet);
+      echo 'yarrrr';
+    } else if ( $extension === 'Csv' ) {
+      $writer = new Csv($spreadsheet);
+    }
+    
+    $tempFile = 'temp.' . strtolower($extension);
+    
+    $writer->save( $tempFile );
+    
+    rename($tempFile, $file);
+
+
+    chdir($wp_admin_dir);
+    echo $file . ' - New row added!';
+  }
+}
+
 function update_spreadsheet() {
   $file = $_POST['file'];
   $cellId = $_POST['cellId'];
   $value = $_POST['value'];
   if ( !empty($file) && !empty($cellId) && !empty($value) ) {
-    // current directory
     $wp_admin_dir = getcwd(); // wp-admin
 
     chdir(XTABLA_UPLOADS_DIR);
@@ -25,13 +103,11 @@ function update_spreadsheet() {
     $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $inputFilePath );
     $worksheet = $spreadsheet->getActiveSheet();
     $worksheet->getCell($cellId)->setValue($value);
-
     
     if ( $extension === 'Xlsx' ) {
       $writer = new Xlsx($spreadsheet);
     } else if ( $extension === 'Xls' ) {
       $writer = new Xls($spreadsheet);
-      echo 'yarrrr';
     } else if ( $extension === 'Csv' ) {
       $writer = new Csv($spreadsheet);
     }

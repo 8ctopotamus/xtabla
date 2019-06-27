@@ -3,23 +3,11 @@
 $do = $_POST['do'];
 
 if ( empty( $do ) ) {
+  echo '[xtabla_actions] No action specified. ';
   http_response_code(400);
-  die();
+  wp_die();
 }
 
-switch ( $do ) {
-  case 'get_spreadsheets':
-    get_spreadsheets();
-    break;
-  case 'upload_spreadsheet':
-    upload_spreadsheet();
-    break;
-  case 'delete_spreadsheet':
-    delete_spreadsheet();
-    break;
-  case 'update_spreadsheet':
-    update_spreadsheet();
-    break;
-}
+$do();
 
 wp_die();

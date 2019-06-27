@@ -6,6 +6,7 @@
   const $loading = $body.find('#xtabla-loading')
   const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-upload"></span></button>')
   const $cellLabel = $body.find('.cell-label')
+  const $addBtns = $('.add')
 
   const editableCellOptions = {
     cancel    : 'Cancel',
@@ -23,6 +24,10 @@
     }
   }
 
+  function disableControls(bool) {
+    $addBtns.attr('disabled', bool)
+  }
+
   function openWPMediaLibrary(e) {
     e.preventDefault()
     var $target = $(this).closest('td')    
@@ -34,18 +39,36 @@
       var uploaded_image = image.state().get('selection').first()
       var image_url = uploaded_image.toJSON().url
       $target.text(image_url)
-      updateSpreadsheetCell($target.get(0), image_url)
+      updateCell($target.get(0), image_url)
     })
   }
 
-  function updateSpreadsheetCell(cell, value) {
+  function nextString(str) {
+    if (! str)
+        return 'A' // return 'A' if str is empty or null
+    let tail = ''
+    let i = str.length -1
+    let char = str[i]
+    // find the index of the first character from the right that is not a 'Z'
+    while (char === 'Z' && i > 0) {
+        i--
+        char = str[i]
+        tail = 'A' + tail // tail contains a string of 'A'
+    }
+    if (char === 'Z') // the string was made only of 'Z'
+        return 'AA' + tail
+    // increment the character that was not a 'Z'
+    return str.slice(0, i) + String.fromCharCode(char.charCodeAt(0) + 1) + tail
+  }
+  
+  function updateCell(cell, value) {
     setLoading(true)
     var $self = $(cell)
     params.do = 'update_spreadsheet'
     params.cellId = cell.id
     params.file = $(cell).closest('table').data('spreadsheetid')
     params.value = value
-    console.log('[updateSpreadsheetCell] params', params)
+    console.log('[updateCell] params', params)
     // save file
     $.post(ajax_url, params, function(response) {
       $self.addClass('success')
@@ -62,33 +85,60 @@
 
   function handleCellEdit(value, settings) {
     console.log(this)
-    updateSpreadsheetCell(this, value)
+    updateCell(this, value)
     return value
   }
 
   function addRow() {
-    $clonedRow = $tables.find('tr:last-child').clone()
-    $clonedRow.children().each(function() {
-      $(this).text('')
-      // var id = $(this).attr('id')
-      // for (var i = 0; i < id.length; i++) {
-      //   if (!isNaN(parseInt(id[i]))) {
-          
-      //   }
-      // }      
-      $(this).editable(handleCellEdit, editableCellOptions)
+    setLoading(true)
+    disableControls(true)
+    params.do = 'add_spreadsheet_row'
+    params.file = $tables.first().data('spreadsheetid')
+    $.post(ajax_url, params, function(response) {
+      console.log(response)
+      location.reload()
+      // $clonedRow = $tables.find('tr:last-child').clone()
+      // $clonedRow.children().each(function() {
+      //   $(this).text('')
+      //   // var id = $(this).attr('id')
+      //   // for (var i = 0; i < id.length; i++) {
+      //   //   if (!isNaN(parseInt(id[i]))) {
+            
+      //   //   }
+      //   // }
+      //   $(this).editable(handleCellEdit, editableCellOptions)
+      // })
+      $tables.append($clonedRow)
     })
-    $tables.append($clonedRow)
+    .fail(function(err) {
+      $self.addClass('failed')
+      console.info('Error: ', err)
+      setTimeout(() => $self.removeClass('failed'), 1000)
+    })
+    .done(() => setLoading(false))    
   }
 
   function addColumn() {
-    console.log('adding col...')
-    $rows = $tables.find('tr')
-    $rows.each((i, row) => {
-      $newCell = $('<td></td>')
-      $newCell.editable(handleCellEdit, editableCellOptions)
-      $(row).append($newCell)
+    setLoading(true)
+    disableControls(true)
+    params.do = 'add_spreadsheet_column'
+    params.file = $tables.first().data('spreadsheetid')
+    $.post(ajax_url, params, function(response) {
+      console.log(response)
+      location.reload()
+      // $rows = $tables.find('tr')
+      // $rows.each((i, row) => {
+      //   $newCell = $('<td></td>')
+      //   $newCell.editable(handleCellEdit, editableCellOptions)
+      //   $(row).append($newCell)
+      // })
     })
+    .fail(function(err) {
+      $self.addClass('failed')
+      console.info('Error: ', err)
+      setTimeout(() => $self.removeClass('failed'), 1000)
+    })
+    .done(() => setLoading(false))    
   }
   
   $cells.editable(handleCellEdit, editableCellOptions)
@@ -104,10 +154,6 @@
       .addClass('shown')
   }, function() {
     $cellLabel.removeClass('shown')
-    // $addRowTop.removeClass('shown')
-    // $addRowBottom.removeClass('shown')
-    // $addRowLeft.removeClass('shown')
-    // $addRowRight.removeClass('shown')
   })
   
   $cells.on('click', function() {
@@ -116,7 +162,7 @@
 
   $body.on('click', '.open-wp-media', openWPMediaLibrary)
 
-  $('.add').on('click', function() {
+  $addBtns.on('click', function() {
     const direction = $(this).data('add')
     switch(direction) {
       case 'row':
