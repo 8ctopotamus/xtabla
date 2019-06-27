@@ -224,6 +224,9 @@
   height: 35px;
   width: auto;
   margin: 0 auto;
+  background: #0074AD; 
+  padding: 4px;
+  border-radius: 5px;
 }
 
 .add,

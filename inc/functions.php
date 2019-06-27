@@ -199,7 +199,8 @@ function column_number($col){
 function renderCellContents( $cell ) {
   global $imageFileExtensions;
   if ( strpos($cell, 'http://') !== false || strpos($cell, 'https://') !== false ) {
-    $preceedingEl = '<i class="fa fa-file-pdf-o fa-2x"></i>';
+    $preceedingEl = '<img class="download-file-icon" src="' . plugin_dir_url( __DIR__ ) . "/img/download-file-icon.svg" . '" />';
+    // $preceedingEl = '<i class="fa fa-file-pdf-o fa-2x"></i>';
     // $preceedingEl = '<span class="dashicons dashicons-media-spreadsheet"></span>';
     foreach ( $imageFileExtensions as $ext) {
       if ( strpos($cell, $ext) ) {

@@ -5,7 +5,7 @@
  */
 function xtabla_options_page() {
   add_menu_page(
-    'Xtabla Settings',
+    'Xtabla',
     'Xtabla',
     'manage_options',
     'xtabla',
@@ -91,6 +91,8 @@ function xtabla_options_page_html() {
   }
 ?>
   <div class="wrap">
+    <a href="#custom-css-section" style="float: right;">Jump to Custom CSS</a>
+
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
 
     <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary">Subir tabla</a>
@@ -150,7 +152,8 @@ function xtabla_options_page_html() {
         echo '</div>';
       ?>
     </div><!-- /.wrap-inner -->
-
+      
+    <div id="custom-css-section"></div>
     <form method="post" action="options.php">
       <?php
         settings_fields( 'xtableCustomCSS' );

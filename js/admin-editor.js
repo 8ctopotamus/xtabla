@@ -193,7 +193,7 @@
     console.log(params.selected)
     $.post(ajax_url, params, function(response) {
       console.log(response)
-      // location.reload()
+      location.reload()
       // $rows = $tables.find('tr')
       // $rows.each((i, row) => {
       //   $newCell = $('<td id=""></td>')
