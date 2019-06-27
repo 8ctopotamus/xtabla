@@ -65,8 +65,9 @@ function xtabla_submenu_page_callback() {
       if ( isset( $sheet ) ):
         echo '<p><a href="' . $URL . '"><< Back to Xtabla dashboard</a></p>';
         echo '<span id="xtabla-loading" class="saving"><span>.</span><span>.</span><span>.</span></span>';
-        echo '<button class="add" data-add="row">+ Add Row</button>';
-        echo '<button class="add" data-add="column">+ Add Column</button>';
+        echo '<button class="button-secondary add" data-add="row">+ Row</button>';
+        echo '<button class="button-secondary add" data-add="column">+ Column</button>';
+        echo '<button class="button-secondary delete">- Delete Selected</button>';
         echo '<h1>' . $sheet . '</h1>';
         // echo '<a href="' . XTABLA_UPLOADS_DIR . '/' . $sheet .'" download>Download Spreadsheet</a>';
         echo '<div class="cell-label"></div>';

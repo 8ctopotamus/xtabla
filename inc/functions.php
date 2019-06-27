@@ -86,6 +86,13 @@ function add_spreadsheet_column() {
   }
 }
 
+function delete_selected_rows_columns() {
+  $file = $_POST['file'];
+  $cells = $_POST['rowsAndCells'];
+
+  echo $cells;
+}
+
 function update_spreadsheet() {
   $file = $_POST['file'];
   $cellId = $_POST['cellId'];
@@ -169,6 +176,35 @@ function renderCellContents( $cell ) {
   return $cell;
 }
 
+// add delete row control
+function renderAdminControl($controlName, $count) {
+  $html = '';
+  if ( is_admin() ) {
+    switch($controlName) {
+      case 'delete-row':
+        $html .= '<td class="not-editable row-control">';
+        $html .= '<input type="checkbox" class="delete-row" value="row">';        
+        $html .= '</td>';
+        break;
+      case 'delete-column':
+          // add a row to hold column controls
+        $html .='<tr id="column-control">';
+        // if ($iterator) {
+        //   $count = 0;
+        //   foreach ($iterator as $cell) {
+            // $cellContent = $count > 0 ? '<input type="checkbox" name="vehicle1" value="Bike"> X' : '';
+            $html .= '<td class="not-editable"><input class="delete-column" type="checkbox" value="Bike"></td>';
+            // $html .= '<td class="not-editable">' . $cellContent . '</td>';
+        //     $count++;
+        //   }
+        // }
+        $html .= '</tr>';
+        break;
+    }
+  }
+  return $html;
+}
+
 function renderSheets($file) {
   $parts = explode('.', $file);
   $filename = $parts[0];
@@ -187,16 +223,20 @@ function renderSheets($file) {
   $html = '';
   $html .= '<div class="table-wrap">';
   $html .= '<table class="form-table widefat xtabla-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
+  $rowCount = 1;
+  $html .= renderAdminControl('delete-column', $worksheet->getHighestColumn());
   foreach ($worksheet->getRowIterator() as $row) {
-    $html .= '<tr>' . PHP_EOL;
     $cellIterator = $row->getCellIterator();
     $cellIterator->setIterateOnlyExistingCells(FALSE);
+    $html .= '<tr id="row-' . $rowCount . '">' . PHP_EOL;
+    $html .= renderAdminControl('delete-row', false);
     foreach ($cellIterator as $cell) {
       $html .= '<td id="' . $cell->getCoordinate() . '">';
       $html .= renderCellContents( $cell->getValue() );
       $html .= '</td>' . PHP_EOL;
     }
     $html .= '</tr>' . PHP_EOL;
+    $rowCount++;
   }
   $html .= '</table>' . PHP_EOL;
   $html .= '</div>' . PHP_EOL;

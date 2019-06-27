@@ -225,3 +225,8 @@
   width: auto;
   margin: 0 auto;
 }
+
+.add,
+.delete {
+  margin: 12px 5px 12px 0 !important;
+}

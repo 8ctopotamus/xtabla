@@ -1,12 +1,13 @@
 (function($) {
   const { ajax_url } = wp_data
   const $body = $('body')
-  const $tables = $('.xtabla-table')
+  const $tables = $body.find('.xtabla-table')
   const $cells = $body.find('.xtabla-table td:not(.not-editable)')
   const $loading = $body.find('#xtabla-loading')
-  const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-upload"></span></button>')
   const $cellLabel = $body.find('.cell-label')
-  const $addBtns = $('.add')
+  const $addBtns = $body.find('.add')
+  const $deleteBtns = $body.find('.delete')
+  const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-upload"></span></button>')
 
   const editableCellOptions = {
     cancel    : 'Cancel',
@@ -60,7 +61,7 @@
     // increment the character that was not a 'Z'
     return str.slice(0, i) + String.fromCharCode(char.charCodeAt(0) + 1) + tail
   }
-  
+
   function updateCell(cell, value) {
     setLoading(true)
     var $self = $(cell)
@@ -111,11 +112,12 @@
       $tables.append($clonedRow)
     })
     .fail(function(err) {
-      $self.addClass('failed')
-      console.info('Error: ', err)
-      setTimeout(() => $self.removeClass('failed'), 1000)
+      alert('Addition failed :(')
     })
-    .done(() => setLoading(false))    
+    .done(() => {
+      setLoading(false)
+      disableControls(false)
+    }) 
   }
 
   function addColumn() {
@@ -128,17 +130,18 @@
       location.reload()
       // $rows = $tables.find('tr')
       // $rows.each((i, row) => {
-      //   $newCell = $('<td></td>')
+      //   $newCell = $('<td id=""></td>')
       //   $newCell.editable(handleCellEdit, editableCellOptions)
       //   $(row).append($newCell)
       // })
     })
     .fail(function(err) {
-      $self.addClass('failed')
-      console.info('Error: ', err)
-      setTimeout(() => $self.removeClass('failed'), 1000)
+      alert('Addition failed :(')
     })
-    .done(() => setLoading(false))    
+    .done(() => {
+      setLoading(false)
+      disableControls(false)
+    })    
   }
   
   $cells.editable(handleCellEdit, editableCellOptions)
@@ -172,6 +175,38 @@
         addColumn()
         break
     }
+  })
+
+  $deleteBtns.on('click', function() {
+    params.do = 'delete_selected_rows_columns'
+    params.file = $tables.first().data('spreadsheetid')
+    params.selected = { columns: [], rows: [] }
+    $checked = $('input[type="checkbox"]:checked')
+    $checked.each((i, el) => {
+      $el = $(el)
+      if ($el.hasClass('delete-row')) {
+        params.selected.rows.push($el.val())
+      } else if ($el.hasClass('delete-column')) {
+        params.selected.columns.push($el.val())
+      }
+    })
+    $.post(ajax_url, params, function(response) {
+      console.log(response)
+      // location.reload()
+      // $rows = $tables.find('tr')
+      // $rows.each((i, row) => {
+      //   $newCell = $('<td id=""></td>')
+      //   $newCell.editable(handleCellEdit, editableCellOptions)
+      //   $(row).append($newCell)
+      // })
+    })
+    .fail(function(err) {
+      alert('Deletion failed :(')
+    })
+    .done(() => {
+      setLoading(false)
+      disableControls(false)
+    })  
   })
 
 })(jQuery)
