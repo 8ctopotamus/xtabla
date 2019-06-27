@@ -91,8 +91,6 @@
   }
 
   function addRow() {
-    setLoading(true)
-    disableControls(true)
     params.do = 'add_spreadsheet_row'
     params.file = $tables.first().data('spreadsheetid')
     $.post(ajax_url, params, function(response) {
@@ -121,8 +119,6 @@
   }
 
   function addColumn() {
-    setLoading(true)
-    disableControls(true)
     params.do = 'add_spreadsheet_column'
     params.file = $tables.first().data('spreadsheetid')
     $.post(ajax_url, params, function(response) {
@@ -166,6 +162,8 @@
   $body.on('click', '.open-wp-media', openWPMediaLibrary)
 
   $addBtns.on('click', function() {
+    setLoading(true)
+    disableControls(true)
     const direction = $(this).data('add')
     switch(direction) {
       case 'row':
@@ -178,6 +176,8 @@
   })
 
   $deleteBtns.on('click', function() {
+    setLoading(true)
+    disableControls(true)
     params.do = 'delete_selected_rows_columns'
     params.file = $tables.first().data('spreadsheetid')
     params.selected = { columns: [], rows: [] }
@@ -190,6 +190,7 @@
         params.selected.columns.push($el.val())
       }
     })
+    console.log(params.selected)
     $.post(ajax_url, params, function(response) {
       console.log(response)
       // location.reload()

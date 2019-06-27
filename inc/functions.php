@@ -62,7 +62,7 @@ function add_spreadsheet_column() {
 
     // insert new row
     $newColNum = column_number($worksheet->getHighestColumn()) + 1;
-    $newColLetter = columnLetter($newColNum);
+    $newColLetter = column_letter($newColNum);
     $worksheet->insertNewColumnBefore($newColLetter, 1);
     
     if ( $extension === 'Xlsx' ) {
@@ -88,9 +88,45 @@ function add_spreadsheet_column() {
 
 function delete_selected_rows_columns() {
   $file = $_POST['file'];
-  $cells = $_POST['rowsAndCells'];
+  $selected = $_POST['selected'];
+  if ( !empty($file) ) {
+    $wp_admin_dir = getcwd(); // wp-admin
+    chdir(XTABLA_UPLOADS_DIR);
 
-  echo $cells;
+    $parts = explode('.', $file);
+    $filename = $parts[0];
+    $extension = ucfirst( $parts[1] );
+    $inputFilePath = XTABLA_UPLOADS_DIR .'/' . $file;
+    
+    $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $inputFilePath );
+    $worksheet = $spreadsheet->getActiveSheet();
+
+    foreach ($selected['rows'] as $row) {
+      $worksheet->removeRow( $row, 1);
+    }
+
+    foreach ($selected['columns'] as $col) {
+      $worksheet->removeColumn( $col, 1);
+    }
+    
+    if ( $extension === 'Xlsx' ) {
+      $writer = new Xlsx($spreadsheet);
+    } else if ( $extension === 'Xls' ) {
+      $writer = new Xls($spreadsheet);
+      echo 'yarrrr';
+    } else if ( $extension === 'Csv' ) {
+      $writer = new Csv($spreadsheet);
+    }
+    
+    $tempFile = 'temp.' . strtolower($extension);
+    
+    $writer->save( $tempFile );
+    
+    rename($tempFile, $file);
+
+    chdir($wp_admin_dir);
+    echo $file . ' - Row and cols removed';
+  }
 }
 
 function update_spreadsheet() {
@@ -135,7 +171,7 @@ function update_spreadsheet() {
   }
 }
 
-function columnLetter($c){
+function column_letter($c){
   $c = intval($c);
   if ($c <= 0) return '';
   $letter = '';
@@ -177,27 +213,23 @@ function renderCellContents( $cell ) {
 }
 
 // add delete row control
-function renderAdminControl($controlName, $count) {
+function renderAdminControl($controlName, $id) {
   $html = '';
   if ( is_admin() ) {
     switch($controlName) {
       case 'delete-row':
         $html .= '<td class="not-editable row-control">';
-        $html .= '<input type="checkbox" class="delete-row" value="row">';        
+        $html .= '<input type="checkbox" class="delete-row" value="' . $id . '">';        
         $html .= '</td>';
         break;
       case 'delete-column':
           // add a row to hold column controls
         $html .='<tr id="column-control">';
-        // if ($iterator) {
-        //   $count = 0;
-        //   foreach ($iterator as $cell) {
-            // $cellContent = $count > 0 ? '<input type="checkbox" name="vehicle1" value="Bike"> X' : '';
-            $html .= '<td class="not-editable"><input class="delete-column" type="checkbox" value="Bike"></td>';
-            // $html .= '<td class="not-editable">' . $cellContent . '</td>';
-        //     $count++;
-        //   }
-        // }
+        $html .='<td class="not-editable"></td>';
+        for ($i = 1; $i <= $id; $i++) {
+          $cellContent = $i > 0 ? '<input class="delete-column" type="checkbox" value="'. column_letter($i) .'">' : '';
+          $html .= '<td class="not-editable">' . $cellContent . '</td>';
+        }
         $html .= '</tr>';
         break;
     }
@@ -224,12 +256,12 @@ function renderSheets($file) {
   $html .= '<div class="table-wrap">';
   $html .= '<table class="form-table widefat xtabla-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
   $rowCount = 1;
-  $html .= renderAdminControl('delete-column', $worksheet->getHighestColumn());
+  $html .= renderAdminControl('delete-column', column_number($worksheet->getHighestColumn()));
   foreach ($worksheet->getRowIterator() as $row) {
     $cellIterator = $row->getCellIterator();
     $cellIterator->setIterateOnlyExistingCells(FALSE);
     $html .= '<tr id="row-' . $rowCount . '">' . PHP_EOL;
-    $html .= renderAdminControl('delete-row', false);
+    $html .= renderAdminControl('delete-row', $rowCount);
     foreach ($cellIterator as $cell) {
       $html .= '<td id="' . $cell->getCoordinate() . '">';
       $html .= renderCellContents( $cell->getValue() );
