@@ -18,7 +18,7 @@
   }
 
   let params = { 'action': 'xtabla_actions' }
-
+  
   const setLoading = bool => bool ? $loading.show() : $loading.hide()
 
   const disableAddBtns = bool => $addBtns.attr('disabled', bool)
@@ -84,6 +84,8 @@
   }
   
   function deleteSelected() {
+    const approved = confirm('Are you sure?')
+    if (!approved) return
     setLoading(true)
     disableAddBtns(true)
     params.do = 'delete_selected_rows_columns'
@@ -123,9 +125,7 @@
   const determineHighlight = el => {
     const { checked, value } = el
     const $el = $(el)
-
     setHighlight($el.parent(), checked)
-    
     switch( isNaN(parseInt(value)) ) {
       case true: // is a column
         const index = $el.parent().parent().find('td').index($el.parent())
@@ -134,9 +134,7 @@
         })
         break
       case false: // is a row
-        $el.parent()
-           .siblings()
-           .each(function() { setHighlight($(this), checked) })
+        setHighlight($el.parent().parent(), checked)
         break
     }
   }
@@ -242,5 +240,10 @@
   $deleteBtn.on('click', deleteSelected)
   
   $body.on('change', checkboxClasses, handleCheckboxChange)
+
+  // clear selected on load
+  $deleteCheckboxes.each(function() { 
+    $(this).attr('checked', false)
+  })
 
 })(jQuery)
