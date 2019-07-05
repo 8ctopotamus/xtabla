@@ -80,7 +80,6 @@ function add_spreadsheet_column() {
     
     rename($tempFile, $file);
 
-
     chdir($wp_admin_dir);
     echo $file . ' - New row added!';
   }
@@ -220,7 +219,7 @@ function renderAdminControl($controlName, $id) {
     switch($controlName) {
       case 'delete-row':
         $html .= '<td class="not-editable row-control">';
-        $html .= '<input type="checkbox" class="delete-row" value="' . $id . '">';        
+        $html .= '<input type="checkbox" class="select-row" value="' . $id . '">';        
         $html .= '</td>';
         break;
       case 'delete-column':
@@ -228,7 +227,7 @@ function renderAdminControl($controlName, $id) {
         $html .='<tr id="column-control">';
         $html .='<td class="not-editable"></td>';
         for ($i = 1; $i <= $id; $i++) {
-          $cellContent = $i > 0 ? '<input class="delete-column" type="checkbox" value="'. column_letter($i) .'">' : '';
+          $cellContent = $i > 0 ? '<input class="select-column" type="checkbox" value="'. column_letter($i) .'">' : '';
           $html .= '<td class="not-editable">' . $cellContent . '</td>';
         }
         $html .= '</tr>';

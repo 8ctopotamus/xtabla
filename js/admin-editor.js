@@ -7,7 +7,8 @@
   const $cellLabel = $body.find('.cell-label')
   const $addBtns = $body.find('.add')
   const $deleteBtn = $body.find('.delete')
-  const $deleteCheckboxes = $body.find('.delete-row, .delete-column')
+  const checkboxClasses = '.select-row, .select-column'
+  const $deleteCheckboxes = $body.find(checkboxClasses)
   const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-upload"></span></button>')
 
   const editableCellOptions = {
@@ -84,10 +85,10 @@
     params.selected = { columns: [], rows: [] }
     $checked = $('input[type="checkbox"]:checked')
     $checked.each((i, el) => {
-      $el = $(el)
-      if ($el.hasClass('delete-row')) {
+      const $el = $(el)
+      if ($el.hasClass('select-row')) {
         params.selected.rows.push($el.val())
-      } else if ($el.hasClass('delete-column')) {
+      } else if ($el.hasClass('select-column')) {
         params.selected.columns.push($el.val())
       }
     })
@@ -200,11 +201,20 @@
   })
 
   $deleteBtn.on('click', deleteSelected)
-  $deleteCheckboxes.on('change', toggleHighlightSelected)
+  
+  $body.on('change', checkboxClasses, handleCheckboxChange)
 
-  function toggleHighlightSelected( ) {
+  function countChecked() {
+    return $deleteCheckboxes.filter(":checked").length
+  }
+
+  const setDeleteBtnDisabled = bool => $deleteBtn.attr('disabled', bool) 
+  
+  function handleCheckboxChange( ) {
     console.log(this.value, this.checked)
-
+    countChecked() > 0 ? 
+      setDeleteBtnDisabled(false) : 
+      setDeleteBtnDisabled(true) 
   }
 
 })(jQuery)
