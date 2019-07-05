@@ -6,23 +6,103 @@
   const $loading = $body.find('#xtabla-loading')
   const $cellLabel = $body.find('.cell-label')
   const $addBtns = $body.find('.add')
-  const $deleteBtns = $body.find('.delete')
+  const $deleteBtn = $body.find('.delete')
+  const $deleteCheckboxes = $body.find('.delete-row, .delete-column')
   const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-upload"></span></button>')
 
   const editableCellOptions = {
     cancel    : 'Cancel',
-    submit    : 'OK',
+    submit    : 'Save',
     tooltip   : 'Click to edit...'
   }
 
   let params = { 'action': 'xtabla_actions' }
 
-  const setLoading = bool => {
-    if (bool) {
-      $loading.show()
-    } else {
-      $loading.hide()
-    }
+  const setLoading = bool => bool ? $loading.show() : $loading.hide()
+
+  function addRow() {
+    params.do = 'add_spreadsheet_row'
+    params.file = $tables.first().data('spreadsheetid')
+    $.post(ajax_url, params, function(response) {
+      console.log(response)
+      location.reload()
+      // $clonedRow = $tables.find('tr:last-child').clone()
+      // $clonedRow.children().each(function() {
+      //   $(this).text('')
+      //   // var id = $(this).attr('id')
+      //   // for (var i = 0; i < id.length; i++) {
+      //   //   if (!isNaN(parseInt(id[i]))) {
+            
+      //   //   }
+      //   // }
+      //   $(this).editable(handleCellEdit, editableCellOptions)
+      // })
+      $tables.append($clonedRow)
+    })
+    .fail(function(err) {
+      alert('Addition failed :(')
+    })
+    .done(() => {
+      setLoading(false)
+      disableControls(false)
+    }) 
+  }
+
+  function addColumn() {
+    params.do = 'add_spreadsheet_column'
+    params.file = $tables.first().data('spreadsheetid')
+    $.post(ajax_url, params, function(response) {
+      console.log(response)
+      location.reload()
+      // $rows = $tables.find('tr')
+      // $rows.each((i, row) => {
+      //   $newCell = $('<td id=""></td>')
+      //   $newCell.editable(handleCellEdit, editableCellOptions)
+      //   $(row).append($newCell)
+      // })
+    })
+    .fail(function(err) {
+      alert('Addition failed :(')
+    })
+    .done(() => {
+      setLoading(false)
+      disableControls(false)
+    })    
+  }
+  
+  function handleCellEdit(value, settings) {
+    console.log(this)
+    updateCell(this, value)
+    return value
+  }
+  
+  function deleteSelected() {
+    setLoading(true)
+    disableControls(true)
+    params.do = 'delete_selected_rows_columns'
+    params.file = $tables.first().data('spreadsheetid')
+    params.selected = { columns: [], rows: [] }
+    $checked = $('input[type="checkbox"]:checked')
+    $checked.each((i, el) => {
+      $el = $(el)
+      if ($el.hasClass('delete-row')) {
+        params.selected.rows.push($el.val())
+      } else if ($el.hasClass('delete-column')) {
+        params.selected.columns.push($el.val())
+      }
+    })
+    console.log(params.selected)
+    $.post(ajax_url, params, function(response) {
+      console.log(response)
+      location.reload()
+    })
+    .fail(function(err) {
+      alert('Deletion failed :(')
+    })
+    .done(() => {
+      setLoading(false)
+      disableControls(false)
+    })  
   }
 
   function disableControls(bool) {
@@ -83,62 +163,6 @@
     })
     .done(() => setLoading(false))
   }
-
-  function handleCellEdit(value, settings) {
-    console.log(this)
-    updateCell(this, value)
-    return value
-  }
-
-  function addRow() {
-    params.do = 'add_spreadsheet_row'
-    params.file = $tables.first().data('spreadsheetid')
-    $.post(ajax_url, params, function(response) {
-      console.log(response)
-      location.reload()
-      // $clonedRow = $tables.find('tr:last-child').clone()
-      // $clonedRow.children().each(function() {
-      //   $(this).text('')
-      //   // var id = $(this).attr('id')
-      //   // for (var i = 0; i < id.length; i++) {
-      //   //   if (!isNaN(parseInt(id[i]))) {
-            
-      //   //   }
-      //   // }
-      //   $(this).editable(handleCellEdit, editableCellOptions)
-      // })
-      $tables.append($clonedRow)
-    })
-    .fail(function(err) {
-      alert('Addition failed :(')
-    })
-    .done(() => {
-      setLoading(false)
-      disableControls(false)
-    }) 
-  }
-
-  function addColumn() {
-    params.do = 'add_spreadsheet_column'
-    params.file = $tables.first().data('spreadsheetid')
-    $.post(ajax_url, params, function(response) {
-      console.log(response)
-      location.reload()
-      // $rows = $tables.find('tr')
-      // $rows.each((i, row) => {
-      //   $newCell = $('<td id=""></td>')
-      //   $newCell.editable(handleCellEdit, editableCellOptions)
-      //   $(row).append($newCell)
-      // })
-    })
-    .fail(function(err) {
-      alert('Addition failed :(')
-    })
-    .done(() => {
-      setLoading(false)
-      disableControls(false)
-    })    
-  }
   
   $cells.editable(handleCellEdit, editableCellOptions)
 
@@ -175,39 +199,12 @@
     }
   })
 
-  $deleteBtns.on('click', function() {
-    setLoading(true)
-    disableControls(true)
-    params.do = 'delete_selected_rows_columns'
-    params.file = $tables.first().data('spreadsheetid')
-    params.selected = { columns: [], rows: [] }
-    $checked = $('input[type="checkbox"]:checked')
-    $checked.each((i, el) => {
-      $el = $(el)
-      if ($el.hasClass('delete-row')) {
-        params.selected.rows.push($el.val())
-      } else if ($el.hasClass('delete-column')) {
-        params.selected.columns.push($el.val())
-      }
-    })
-    console.log(params.selected)
-    $.post(ajax_url, params, function(response) {
-      console.log(response)
-      location.reload()
-      // $rows = $tables.find('tr')
-      // $rows.each((i, row) => {
-      //   $newCell = $('<td id=""></td>')
-      //   $newCell.editable(handleCellEdit, editableCellOptions)
-      //   $(row).append($newCell)
-      // })
-    })
-    .fail(function(err) {
-      alert('Deletion failed :(')
-    })
-    .done(() => {
-      setLoading(false)
-      disableControls(false)
-    })  
-  })
+  $deleteBtn.on('click', deleteSelected)
+  $deleteCheckboxes.on('change', toggleHighlightSelected)
+
+  function toggleHighlightSelected( ) {
+    console.log(this.value, this.checked)
+
+  }
 
 })(jQuery)

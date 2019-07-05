@@ -8,17 +8,3 @@ Run `composer install` and `npm install` to install dependencies.
 
 ## Server Requirements
 Same as [PHPOffice/PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet).
-
-### Project Scope
-- [ ] can support xls
-- [ ] can add rows and columns
-- [ ] can delete rows and colums
-- [ ] sanitize inputs
-- [x] editing cell data 
-- [x] click to copy shortcode to clipboard
-- [x] User can upload asset to media library, URL to asset is saved in cell
-- [x] Hyperlinks with file extentions (eg: .pdf) render as linked icons
-
-### Future Development
-- [ ] Spreadsheet Filtering
-- [ ] Spreadsheet Pagination

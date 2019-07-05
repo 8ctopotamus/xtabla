@@ -3,9 +3,11 @@
   const $customCSS = $('#xtable-custom-css')
   const form = document.querySelector('form')
   const copyEmailBtn = Array.from(document.getElementsByClassName('copy-shortcode'))
+  var tabs = document.getElementsByClassName('tab')
+  var tabContent = document.getElementsByClassName('tab-content')
+
   const animationName = 'animated heartBeat fast';
   const animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend'
-
   const copyMsg = 'copy'
 
   let intervalId
@@ -29,6 +31,7 @@
         shortcode.setAttribute('data-msg', copyMsg)
         document.documentElement.style.setProperty('--copyMsgColor', 'inherit')
       }, 1400)
+      // bounce
       // $(shortcode).addClass(animationName).one(animationend,function() {
       //   $(this).removeClass(animationName);
       // });
@@ -80,5 +83,26 @@
     btn.setAttribute('data-msg', copyMsg);
     btn.addEventListener('click', copyToClipboard)
   }) 
+
+  // Tabs
+  function handleTabClick(e) {
+    e.preventDefault()
+    var targetId = e.target.getAttribute('href').replace('#', '')
+    Object.keys(tabs).forEach(function(el) {
+      tabs[el].classList.remove('active')
+    })
+    Object.keys(tabContent).forEach(function(el) {
+      tabContent[el].classList.remove('show')
+      if (tabContent[el].id === targetId) {
+        tabContent[el].classList.add('show')
+      }
+    })
+    e.target.classList.add('active')
+  }
+
+  // Tabs addListeners
+  Object.keys(tabs).forEach(function(el) {
+    tabs[el].addEventListener('click', handleTabClick)
+  })
 
 })(jQuery)

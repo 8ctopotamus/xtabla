@@ -32,6 +32,21 @@
   text-align: center;
 }
 
+
+/* Tabs */
+.active {
+	font-weight: 600;
+	background: #f1f1f1;
+}
+
+.tab-content {
+	display: none;
+}
+
+.show {
+	display: block;
+}
+
 #xtabla-loading {
   position: fixed;
   bottom: 10%;
