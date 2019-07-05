@@ -21,6 +21,12 @@
 
   const setLoading = bool => bool ? $loading.show() : $loading.hide()
 
+  const disableAddBtns = bool => $addBtns.attr('disabled', bool)
+
+  const setDeleteBtnDisabled = bool => $deleteBtn.attr('disabled', bool) 
+  
+  const countChecked = _ => $deleteCheckboxes.filter(":checked").length
+
   function addRow() {
     params.do = 'add_spreadsheet_row'
     params.file = $tables.first().data('spreadsheetid')
@@ -45,7 +51,7 @@
     })
     .done(() => {
       setLoading(false)
-      disableControls(false)
+      disableAddBtns(false)
     }) 
   }
 
@@ -67,7 +73,7 @@
     })
     .done(() => {
       setLoading(false)
-      disableControls(false)
+      disableAddBtns(false)
     })    
   }
   
@@ -79,7 +85,7 @@
   
   function deleteSelected() {
     setLoading(true)
-    disableControls(true)
+    disableAddBtns(true)
     params.do = 'delete_selected_rows_columns'
     params.file = $tables.first().data('spreadsheetid')
     params.selected = { columns: [], rows: [] }
@@ -102,12 +108,45 @@
     })
     .done(() => {
       setLoading(false)
-      disableControls(false)
+      disableAddBtns(false)
     })  
   }
+  
+  const setHighlight = ($el, checked) => { 
+    if (checked) {
+      $el.addClass('selected')
+    } else {
+      $el.removeClass('selected')
+    }
+  }
 
-  function disableControls(bool) {
-    $addBtns.attr('disabled', bool)
+  const determineHighlight = el => {
+    const { checked, value } = el
+    const $el = $(el)
+
+    setHighlight($el.parent(), checked)
+    
+    switch( isNaN(parseInt(value)) ) {
+      case true: // is a column
+        const index = $el.parent().parent().find('td').index($el.parent())
+        $('tr').each(function() {
+          setHighlight($(this).children().eq(index), checked)
+        })
+        break
+      case false: // is a row
+        $el.parent()
+           .siblings()
+           .each(function() { setHighlight($(this), checked) })
+        break
+    }
+  }
+
+  function handleCheckboxChange() {
+    determineHighlight(this)
+
+    countChecked() > 0 ? 
+      setDeleteBtnDisabled(false) : 
+      setDeleteBtnDisabled(true)
   }
 
   function openWPMediaLibrary(e) {
@@ -188,7 +227,7 @@
 
   $addBtns.on('click', function() {
     setLoading(true)
-    disableControls(true)
+    disableAddBtns(true)
     const direction = $(this).data('add')
     switch(direction) {
       case 'row':
@@ -203,18 +242,5 @@
   $deleteBtn.on('click', deleteSelected)
   
   $body.on('change', checkboxClasses, handleCheckboxChange)
-
-  function countChecked() {
-    return $deleteCheckboxes.filter(":checked").length
-  }
-
-  const setDeleteBtnDisabled = bool => $deleteBtn.attr('disabled', bool) 
-  
-  function handleCheckboxChange( ) {
-    console.log(this.value, this.checked)
-    countChecked() > 0 ? 
-      setDeleteBtnDisabled(false) : 
-      setDeleteBtnDisabled(true) 
-  }
 
 })(jQuery)

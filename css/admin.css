@@ -6,6 +6,7 @@
   --redRGBA: rgba(231, 68, 39, .5);
   --red-light: #FAB8AD;
   --copyMsgColor: inherit;
+  --lightblue: #e6f5fa;
 }
 
 @keyframes blink {
@@ -138,7 +139,7 @@
 .xtabla-editor th:hover,
 .xtabla-editor td:hover  {
   border: 1px solid #15bcf5;
-  background: #e6f5fa;
+  background: var(--lightblue);
   cursor: pointer;
 }
 
@@ -247,4 +248,8 @@
 .add,
 .delete {
   margin: 12px 5px 12px 0 !important;
+}
+
+.selected {
+  background: var(--lightblue);
 }
