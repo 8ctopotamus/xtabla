@@ -32,18 +32,20 @@
     params.file = $tables.first().data('spreadsheetid')
     $.post(ajax_url, params, function(response) {
       console.log(response)
-      location.reload()
-      // $clonedRow = $tables.find('tr:last-child').clone()
-      // $clonedRow.children().each(function() {
-      //   $(this).text('')
-      //   // var id = $(this).attr('id')
-      //   // for (var i = 0; i < id.length; i++) {
-      //   //   if (!isNaN(parseInt(id[i]))) {
+      // location.reload()
+      $clonedRow = $tables.find('tr:last-child').clone()
+      $clonedRow.children().each(function(i) {
+        $(this).text('')
+        // var id = $(this).attr('id')
+        // for (var i = 0; i < id.length; i++) {
+        //   if (!isNaN(parseInt(id[i]))) {
             
-      //   //   }
-      //   // }
-      //   $(this).editable(handleCellEdit, editableCellOptions)
-      // })
+        //   }
+        // }
+        if (i > 0) {
+          $(this).editable(handleCellEdit, editableCellOptions)
+        }
+      })
       $tables.append($clonedRow)
     })
     .fail(function(err) {
@@ -83,6 +85,12 @@
     return value
   }
   
+  function checkIfDeleteBtnShouldBeDisabled() {
+    countChecked() > 0 ? 
+      setDeleteBtnDisabled(false) : 
+      setDeleteBtnDisabled(true)
+  }
+
   function deleteSelected() {
     const approved = confirm('Are you sure?')
     if (!approved) return
@@ -142,9 +150,7 @@
   function handleCheckboxChange() {
     determineHighlight(this)
 
-    countChecked() > 0 ? 
-      setDeleteBtnDisabled(false) : 
-      setDeleteBtnDisabled(true)
+    checkIfDeleteBtnShouldBeDisabled()
   }
 
   function openWPMediaLibrary(e) {
@@ -202,8 +208,6 @@
     .done(() => setLoading(false))
   }
   
-  $cells.editable(handleCellEdit, editableCellOptions)
-
   $cells.hover(function() {
     const $cell = $(this)
     $cellLabel
@@ -236,14 +240,18 @@
         break
     }
   })
-
+  
   $deleteBtn.on('click', deleteSelected)
   
   $body.on('change', checkboxClasses, handleCheckboxChange)
+
+  $cells.editable(handleCellEdit, editableCellOptions)
 
   // clear selected on load
   $deleteCheckboxes.each(function() { 
     $(this).attr('checked', false)
   })
+
+  checkIfDeleteBtnShouldBeDisabled()
 
 })(jQuery)
