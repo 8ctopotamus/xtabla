@@ -44,7 +44,7 @@ add_action('admin_menu', 'xtabla_options_page');
 
 // design section heading
 function xtable_design_settings_section_callback() {
-	echo 'Click to enable editor.';
+  echo '<p>Customize the look of your tables on the frontend of your site. Click editor to enable.</p>';
 }
 // design fields
 function xtable_design_settings_render() { 

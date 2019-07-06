@@ -27,30 +27,33 @@
   
   const countChecked = _ => $deleteCheckboxes.filter(":checked").length
 
+  const splitId = id => id.match(/[a-z]+|[^a-z]+/gi)
+
   function addRow() {
     params.do = 'add_spreadsheet_row'
     params.file = $tables.first().data('spreadsheetid')
+    $clonedRow = $tables.find('tr:last-child').clone()
+    let splitRowId = splitId($clonedRow.attr('id'))
+    console.log('split', splitRowId)
+    let newRowId = String(parseInt(splitRowId[1]) - 1)
+    newRowId = splitRowId[0] + newRowId
+    $clonedRow.attr('id', newRowId)
+    $clonedRow.children().each(function(i, el) {
+      if (i > 0) {
+        const splitCurrentId = splitId(el.id)
+        splitCurrentId[1] = parseInt(splitCurrentId[1]) + 1
+        const newId = splitCurrentId.join('')
+        $(this).attr('id', newId)
+        $(this).text('')
+        $(this).editable(handleCellEdit, editableCellOptions)
+      } else {
+        let count = parseInt($(this).find('input[type="checkbox"]').val())
+        $(this).find('input[type="checkbox"]').val(count + 1)
+      }
+    })
+    $tables.append($clonedRow)
     $.post(ajax_url, params, function(response) {
-      console.log(response)
       // location.reload()
-      $clonedRow = $tables.find('tr:last-child').clone()
-      $clonedRow.children().each(function(i) {
-        // var id = $(this).attr('id')
-        // for (var i = 0; i < id.length; i++) {
-          //   if (!isNaN(parseInt(id[i]))) {
-            
-            //   }
-            // }
-        if (i > 0) {
-          $(this).text('')
-          $(this).editable(handleCellEdit, editableCellOptions)
-        } else {
-          let count = parseInt($(this).find('input[type="checkbox"]').val())
-          $(this).find('input[type="checkbox"]').val(count + 1)
-          console.log(count)
-        }
-      })
-      $tables.append($clonedRow)
     })
     .fail(function(err) {
       alert('Addition failed :(')
@@ -62,17 +65,28 @@
   }
 
   function addColumn() {
+    const $rows = $tables.find('tr')
+    $rows.each((i, row) => {
+      if (i > 0) {
+        const splitPrevId = splitId($(row).find('td:last-child').attr('id'))
+        const nextLetter = nextString(splitPrevId[0])
+        const newColId = nextLetter + splitPrevId[1]
+        $newCell = $('<td id="' +  newColId + '"></td>')
+        $newCell.editable(handleCellEdit, editableCellOptions)
+        $(row).append($newCell)
+      } else {
+        let $newCell = $(row).find('td:last-child').clone()
+        const $input = $newCell.find('input')
+        const currentLetter = $input.val()
+        const nextLetter = nextString(currentLetter)
+        $input.val(nextLetter)
+        $(row).append($newCell)
+      }
+    })
     params.do = 'add_spreadsheet_column'
     params.file = $tables.first().data('spreadsheetid')
     $.post(ajax_url, params, function(response) {
-      console.log(response)
-      location.reload()
-      // $rows = $tables.find('tr')
-      // $rows.each((i, row) => {
-      //   $newCell = $('<td id=""></td>')
-      //   $newCell.editable(handleCellEdit, editableCellOptions)
-      //   $(row).append($newCell)
-      // })
+      // location.reload()
     })
     .fail(function(err) {
       alert('Addition failed :(')
