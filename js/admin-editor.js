@@ -35,15 +35,19 @@
       // location.reload()
       $clonedRow = $tables.find('tr:last-child').clone()
       $clonedRow.children().each(function(i) {
-        $(this).text('')
         // var id = $(this).attr('id')
         // for (var i = 0; i < id.length; i++) {
-        //   if (!isNaN(parseInt(id[i]))) {
+          //   if (!isNaN(parseInt(id[i]))) {
             
-        //   }
-        // }
+            //   }
+            // }
         if (i > 0) {
+          $(this).text('')
           $(this).editable(handleCellEdit, editableCellOptions)
+        } else {
+          let count = parseInt($(this).find('input[type="checkbox"]').val())
+          $(this).find('input[type="checkbox"]').val(count + 1)
+          console.log(count)
         }
       })
       $tables.append($clonedRow)

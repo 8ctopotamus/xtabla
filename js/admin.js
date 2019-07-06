@@ -2,18 +2,20 @@
   const { ajax_url } = wp_data
   const $customCSS = $('#xtable-custom-css')
   const form = document.querySelector('form')
+  const $shortcodeListItems = $('.shortcodes-list-item')
+  const $shortcodeListItemsLinks = $shortcodeListItems.find('a')
   const copyEmailBtn = Array.from(document.getElementsByClassName('copy-shortcode'))
   var tabs = document.getElementsByClassName('tab')
   var tabContent = document.getElementsByClassName('tab-content')
+
 
   const animationName = 'animated heartBeat fast';
   const animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend'
   const copyMsg = 'copy'
 
-  let intervalId
+  let existingFilenames = []
 
-  // init codemirror
-  wp.codeEditor.initialize($customCSS, cm_settings)
+  let intervalId
 
   function copyToClipboard() {
     var shortcode = this
@@ -31,7 +33,7 @@
         shortcode.setAttribute('data-msg', copyMsg)
         document.documentElement.style.setProperty('--copyMsgColor', 'inherit')
       }, 1400)
-      // bounce
+      // bounce animation
       // $(shortcode).addClass(animationName).one(animationend,function() {
       //   $(this).removeClass(animationName);
       // });
@@ -65,6 +67,10 @@
     const formData = new FormData()
     for (let i = 0; i < files.length; i++) {
       let file = files[i]
+      if (existingFilenames.includes(file.name)) {
+        const approved = confirm(file.name + ' already exists. Overwrite existing file?')
+        if (!approved) return
+      }
       formData.append('files[]', file)
     }
     formData.append('action', 'xtabla_actions')
@@ -82,9 +88,8 @@
   copyEmailBtn.forEach(btn => {
     btn.setAttribute('data-msg', copyMsg);
     btn.addEventListener('click', copyToClipboard)
-  }) 
+  })
 
-  // Tabs
   function handleTabClick(e) {
     e.preventDefault()
     var targetId = e.target.getAttribute('href').replace('#', '')
@@ -104,5 +109,10 @@
   Object.keys(tabs).forEach(function(el) {
     tabs[el].addEventListener('click', handleTabClick)
   })
+
+  // init codemirror
+  wp.codeEditor.initialize($customCSS, cm_settings)
+
+  $shortcodeListItemsLinks.each((i, el) => existingFilenames.push(el.text.trim()))
 
 })(jQuery)
