@@ -131,7 +131,7 @@ function delete_selected_rows_columns() {
 function update_spreadsheet() {
   $file = $_POST['file'];
   $cellId = $_POST['cellId'];
-  $value = $_POST['value'];
+  $value = htmlspecialchars($_POST['value']);
   if ( !empty($file) && !empty($cellId) && !empty($value) ) {
     $wp_admin_dir = getcwd(); // wp-admin
 
