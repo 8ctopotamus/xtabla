@@ -253,3 +253,11 @@
 .selected {
   background: var(--lightblue);
 }
+
+.CodeMirror {
+	border: 1px solid #ddd;
+}
+
+.CodeMirror pre.CodeMirror-line {
+	padding-left: 50px;
+}
