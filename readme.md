@@ -3,6 +3,8 @@ Upload and edit Spreadsheets. Display in your site using the shortcode `[xtabla 
 
 Uploaded files saved in `wp-content/uploads/xtabla-uploads`.
 
+*¡Ojo!* _Currently, this folder does not get removed upon uninstallation. You need to manually delete it if you no longer want to keep the spreadsheets on your server._
+
 # Dev Setup
 Run `composer install` and `npm install` to install dependencies.
 
