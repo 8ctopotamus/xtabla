@@ -3,7 +3,7 @@ Upload and edit Spreadsheets. Display in your site using the shortcode `[xtabla 
 
 Uploaded files saved in `wp-content/uploads/xtabla-uploads`.
 
-# Setup
+# Dev Setup
 Run `composer install` and `npm install` to install dependencies.
 
 ## Server Requirements

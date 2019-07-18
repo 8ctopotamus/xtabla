@@ -60,6 +60,8 @@ function xtabla_submenu_page_callback() {
   endif;
   ?>
     <div class="wrap xtabla-editor">
+      <img class="xtable-logo" src="<?php echo plugins_url('/img/xtable-logo.svg',  __DIR__ ); ?>" alt="Xtable logo" />
+    
       <?php 
       $sheet = $_GET['sheet'];
       if ( isset( $sheet ) ):
@@ -92,6 +94,7 @@ function xtabla_options_page_html() {
 ?>
   <div class="wrap">
     
+    <img class="xtable-logo" src="<?php echo plugins_url('/img/xtable-logo.svg',  __DIR__ ); ?>" alt="Xtable logo" />
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
     
     <div class="tabs">

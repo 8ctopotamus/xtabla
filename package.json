@@ -17,7 +17,6 @@
   },
   "homepage": "https://github.com/8ctopotamus/xtabla#readme",
   "dependencies": {
-    "dropzone": "^5.5.1",
     "jquery-jeditable": "^2.0.8"
   }
 }
