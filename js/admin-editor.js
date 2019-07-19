@@ -240,7 +240,7 @@
   })
   
   $cells.on('click', function() {
-    $(this).find('form').append($uploadButton)
+    setTimeout(() => $(this).find('form').append($uploadButton), 50)
   })
 
   $body.on('click', '.open-wp-media', openWPMediaLibrary)

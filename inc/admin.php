@@ -143,12 +143,17 @@ function xtabla_options_page_html() {
                   <p class="copy-shortcode">[xtabla file="<?php echo $sheet; ?>"]</p>
                 </div>
                   <div class="text-right">
-                    <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
+                    <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Edit">
                       <button type="button"> 
                         <span class="dashicons dashicons-edit"></span>
                       </button>
                     </a>
-                    <button class="delete-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>"> 
+                    <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Download" download="<?php echo $sheet; ?>">
+                      <button type="button"> 
+                        <span class="dashicons dashicons-download"></span>
+                      </button>
+                    </a>
+                    <button class="delete-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Delete"> 
                       <span class="dashicons dashicons-trash"></span>
                     </button>
                   </div>

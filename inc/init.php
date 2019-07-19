@@ -14,6 +14,7 @@ $node_modules_path = plugin_dir_url( __DIR__ ) . 'node_modules/';
 
 $spreadsheetFileExtensions = ['.csv', '.xlsx', '.xls'];
 $imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+$documentFileExtensions = ['.pdf', '.doc', '.docx'];
 
 /*
 ** create xtabla-uploads directory in wp-content/uploads

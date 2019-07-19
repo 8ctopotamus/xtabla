@@ -29,7 +29,6 @@ function add_spreadsheet_row() {
       $writer = new Xlsx($spreadsheet);
     } else if ( $extension === 'Xls' ) {
       $writer = new Xls($spreadsheet);
-      echo 'yarrrr';
     } else if ( $extension === 'Csv' ) {
       $writer = new Csv($spreadsheet);
     }
@@ -69,7 +68,6 @@ function add_spreadsheet_column() {
       $writer = new Xlsx($spreadsheet);
     } else if ( $extension === 'Xls' ) {
       $writer = new Xls($spreadsheet);
-      echo 'yarrrr';
     } else if ( $extension === 'Csv' ) {
       $writer = new Csv($spreadsheet);
     }
@@ -112,7 +110,6 @@ function delete_selected_rows_columns() {
       $writer = new Xlsx($spreadsheet);
     } else if ( $extension === 'Xls' ) {
       $writer = new Xls($spreadsheet);
-      echo 'yarrrr';
     } else if ( $extension === 'Csv' ) {
       $writer = new Csv($spreadsheet);
     }
@@ -238,25 +235,30 @@ function renderAdminControl($controlName, $id) {
 }
 
 function renderSheets($file) {
+  $html = '';
   $parts = explode('.', $file);
   $filename = $parts[0];
   $extension = ucfirst( $parts[1] );
-
+  
   $spreadsheet = new Spreadsheet();
   $inputFileType = $extension;
   $inputFileName = XTABLA_UPLOADS_DIR .'/' . $file;
+  
+  if (!file_exists($inputFileName)) {
+    $html = '<strong>' . $file . '</strong> does not exist.';
+    return $html;
+  }
 
   $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader( $inputFileType );
-  $reader->setReadDataOnly(TRUE);
   $spreadsheet = $reader->load( $inputFileName );
   
   $worksheet = $spreadsheet->getActiveSheet();
-  
-  $html = '';
+
   $html .= '<div class="table-wrap">';
   $html .= '<table class="form-table widefat xtabla-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
   $rowCount = 1;
   $html .= renderAdminControl('delete-column', column_number($worksheet->getHighestColumn()));
+  
   foreach ($worksheet->getRowIterator() as $row) {
     $cellIterator = $row->getCellIterator();
     $cellIterator->setIterateOnlyExistingCells(FALSE);
@@ -264,7 +266,10 @@ function renderSheets($file) {
     $html .= renderAdminControl('delete-row', $rowCount);
     foreach ($cellIterator as $cell) {
       $html .= '<td id="' . $cell->getCoordinate() . '">';
-      $html .= renderCellContents( $cell->getValue() );
+      if ($cell->hasHyperlink()) {
+        $html .= '<p>Test: <a href="' . $cell->getHyperlink()->getUrl() . '">'. $cell->getFormattedValue() .'</a></p>';
+      }
+      $html .= renderCellContents( $cell->getFormattedValue() );
       $html .= '</td>' . PHP_EOL;
     }
     $html .= '</tr>' . PHP_EOL;
