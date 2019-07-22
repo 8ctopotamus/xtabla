@@ -194,19 +194,46 @@ function column_number($col){
 
 function renderCellContents( $cell ) {
   global $imageFileExtensions;
-  if ( strpos($cell, 'http://') !== false || strpos($cell, 'https://') !== false ) {
-    $preceedingEl = '<img class="download-file-icon" src="' . plugin_dir_url( __DIR__ ) . "/img/download-file-icon.svg" . '" />';
-    // $preceedingEl = '<i class="fa fa-file-pdf-o fa-2x"></i>';
-    // $preceedingEl = '<span class="dashicons dashicons-media-spreadsheet"></span>';
-    foreach ( $imageFileExtensions as $ext) {
-      if ( strpos($cell, $ext) ) {
-        $preceedingEl = '<img src="' . $cell . '" width="50" height="auto" />';
-        break;
-      }
+  global $spreadsheetFileExtensions;
+  global $documentFileExtensions;
+
+  $shouldCreateLink = false;
+  $content = $cell->getValue();
+
+  // if image link
+  foreach ( $imageFileExtensions as $ext) {
+    if ( strpos($cell->getValue(), $ext) ) {
+      $content = '<img src="' . $cell->getValue() . '" width="50" height="auto" />';
+      $shouldCreateLink = true;
+      break;
     }
-    $cell = '<a href="'. $cell .'" target="_blank" rel="noreferrer noopener" download>' . $preceedingEl . '<br/><small class="hidden-cell-val">' . $cell . '</small></a>';
   }
-  return $cell;
+
+  // if PDF link
+  foreach ( $documentFileExtensions as $ext) {
+    if ( strpos($cell->getValue(), $ext) ) {
+      $content = '<img class="download-file-icon" src="' . plugin_dir_url( __DIR__ ) . "/img/download-file-icon.svg" . '" />';
+      $shouldCreateLink = true;
+      break;
+    }
+  }
+
+  $html = '';
+
+  // open link
+  if ($cell->hasHyperlink() || $shouldCreateLink) {
+    $html .= '<a href="' . $cell->getHyperlink()->getUrl() . '" target="_blank" rel="noreferrer noopener">';
+  }
+  
+  $html .= $content;
+  $html .= '<small class="hidden-cell-val">' . $cell->getValue() . '</small></a>';
+
+  // close link
+  if ($cell->hasHyperlink()) {
+    $html .= '</a>';
+  }
+
+  return $html;
 }
 
 // add delete row control
@@ -266,10 +293,11 @@ function renderSheets($file) {
     $html .= renderAdminControl('delete-row', $rowCount);
     foreach ($cellIterator as $cell) {
       $html .= '<td id="' . $cell->getCoordinate() . '">';
-      if ($cell->hasHyperlink()) {
-        $html .= '<p>Test: <a href="' . $cell->getHyperlink()->getUrl() . '">'. $cell->getFormattedValue() .'</a></p>';
-      }
-      $html .= renderCellContents( $cell->getFormattedValue() );
+      // if ($cell->hasHyperlink()) {
+      //   $html .= '<p>Test: <a href="' . $cell->getHyperlink()->getUrl() . '">'. $cell->getFormattedValue() .'</a></p>';
+      // }
+      // $html .= renderCellContents( $cell->getFormattedValue() );
+      $html .= renderCellContents( $cell );
       $html .= '</td>' . PHP_EOL;
     }
     $html .= '</tr>' . PHP_EOL;
