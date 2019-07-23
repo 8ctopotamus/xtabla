@@ -34,5 +34,5 @@
   $xtables.basictable()
 
   // merge cells
-  summerizeTable($xtables)
+  // summerizeTable($xtables)
 })(jQuery)

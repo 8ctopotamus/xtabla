@@ -192,6 +192,31 @@ function column_number($col){
   return $i;
 }
 
+// add delete row control
+function renderAdminControl($controlName, $id) {
+  $html = '';
+  if ( is_admin() ) {
+    switch($controlName) {
+      case 'delete-row':
+        $html .= '<td class="not-editable row-control">';
+        $html .= '<input type="checkbox" class="select-row" value="' . $id . '">';        
+        $html .= '</td>';
+        break;
+      case 'delete-column':
+          // add a row to hold column controls
+        $html .='<tr id="column-control">';
+        $html .='<td class="not-editable"></td>';
+        for ($i = 1; $i <= $id; $i++) {
+          $cellContent = $i > 0 ? '<input class="select-column" type="checkbox" value="'. column_letter($i) .'">' : '';
+          $html .= '<td class="not-editable">' . $cellContent . '</td>';
+        }
+        $html .= '</tr>';
+        break;
+    }
+  }
+  return $html;
+}
+
 function renderCellContents( $cell ) {
   global $imageFileExtensions;
   global $spreadsheetFileExtensions;
@@ -222,9 +247,10 @@ function renderCellContents( $cell ) {
 
   // render the result
   $html = '';
+  $isLink = strpos($val, 'http://') !== false || strpos($val, 'https://') !== false;
 
   // if cell value is a link
-  if (strpos($val, 'http://') !== false || strpos($val, 'https://') !== false) {
+  if ( $isLink ) {
     $url = $val;
     if ( $cell->hasHyperlink() ) {
       $url = $cell->getHyperlink()->getUrl();
@@ -232,40 +258,16 @@ function renderCellContents( $cell ) {
     // open link
     $html .= '<a href="' . $url . '" target="_blank" rel="noreferrer noopener" download='. $isDownload . '>';
   }
-
+  
   $html .= $content;
+
   $html .= '<small class="hidden-cell-val">' . $cell->getValue() . '</small></a>';
 
   // close link
-  if ($cell->hasHyperlink() || $shouldCreateLink) {
+  if ( $isLink ) {
     $html .= '</a>';
   }
 
-  return $html;
-}
-
-// add delete row control
-function renderAdminControl($controlName, $id) {
-  $html = '';
-  if ( is_admin() ) {
-    switch($controlName) {
-      case 'delete-row':
-        $html .= '<td class="not-editable row-control">';
-        $html .= '<input type="checkbox" class="select-row" value="' . $id . '">';        
-        $html .= '</td>';
-        break;
-      case 'delete-column':
-          // add a row to hold column controls
-        $html .='<tr id="column-control">';
-        $html .='<td class="not-editable"></td>';
-        for ($i = 1; $i <= $id; $i++) {
-          $cellContent = $i > 0 ? '<input class="select-column" type="checkbox" value="'. column_letter($i) .'">' : '';
-          $html .= '<td class="not-editable">' . $cellContent . '</td>';
-        }
-        $html .= '</tr>';
-        break;
-    }
-  }
   return $html;
 }
 
@@ -300,11 +302,17 @@ function renderSheets($file) {
     $html .= '<tr id="row-' . $rowCount . '">' . PHP_EOL;
     $html .= renderAdminControl('delete-row', $rowCount);
     foreach ($cellIterator as $cell) {
-      $html .= '<td id="' . $cell->getCoordinate() . '">';
-      // if ($cell->hasHyperlink()) {
-      //   $html .= '<p>Test: <a href="' . $cell->getHyperlink()->getUrl() . '">'. $cell->getFormattedValue() .'</a></p>';
-      // }
-      // $html .= renderCellContents( $cell->getFormattedValue() );
+      // handle merged cells
+      $rowspan = 1;
+      if ( !is_admin() && $cell->isInMergeRange() ) {
+        if ( $cell->isMergeRangeValueCell() ) {
+          $rowspan = count( $worksheet->rangeToArray( $cell->getMergeRange() ) );
+        } else {
+          continue;
+        }
+      }
+      // render TD
+      $html .= '<td id="' . $cell->getCoordinate() . '" rowspan="' . $rowspan . '">';
       $html .= renderCellContents( $cell );
       $html .= '</td>' . PHP_EOL;
     }
