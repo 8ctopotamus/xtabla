@@ -9,7 +9,7 @@
   const $deleteBtn = $body.find('.delete')
   const checkboxClasses = '.select-row, .select-column'
   const $deleteCheckboxes = $body.find(checkboxClasses)
-  const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-upload"></span></button>')
+  const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-admin-media"></span></button>')
 
   const editableCellOptions = {
     cancel    : 'Cancel',

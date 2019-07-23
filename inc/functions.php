@@ -224,6 +224,7 @@ function renderCellContents( $cell ) {
 
   $shouldCreateLink = false;
   $isDownload = false;
+  $needsHiddenVal = false;
 
   $val = $cell->getValue();
   $content = $val;
@@ -232,6 +233,7 @@ function renderCellContents( $cell ) {
   foreach ( $imageFileExtensions as $ext) {
     if ( strpos($cell->getValue(), $ext) ) {
       $content = '<img src="' . $cell->getValue() . '" width="50" height="auto" />';
+      $needsHiddenVal = true;
       break;
     }
   }
@@ -240,6 +242,7 @@ function renderCellContents( $cell ) {
   foreach ( $documentFileExtensions as $ext) {
     if ( strpos($cell->getValue(), $ext) ) {
       $content = '<img class="download-file-icon" src="' . plugin_dir_url( __DIR__ ) . "/img/download-file-icon.svg" . '" />';
+      $needsHiddenVal = true;
       $isDownload = true;
       break;
     }
@@ -261,7 +264,9 @@ function renderCellContents( $cell ) {
   
   $html .= $content;
 
-  $html .= '<small class="hidden-cell-val">' . $cell->getValue() . '</small></a>';
+  if ($needsHiddenVal) {
+    $html .= '<small class="hidden-cell-val">' . $cell->getValue() . '</small></a>';
+  }
 
   // close link
   if ( $isLink ) {
