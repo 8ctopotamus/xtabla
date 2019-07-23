@@ -198,13 +198,15 @@ function renderCellContents( $cell ) {
   global $documentFileExtensions;
 
   $shouldCreateLink = false;
-  $content = $cell->getValue();
+  $isDownload = false;
+
+  $val = $cell->getValue();
+  $content = $val;
 
   // if image link
   foreach ( $imageFileExtensions as $ext) {
     if ( strpos($cell->getValue(), $ext) ) {
       $content = '<img src="' . $cell->getValue() . '" width="50" height="auto" />';
-      $shouldCreateLink = true;
       break;
     }
   }
@@ -213,23 +215,29 @@ function renderCellContents( $cell ) {
   foreach ( $documentFileExtensions as $ext) {
     if ( strpos($cell->getValue(), $ext) ) {
       $content = '<img class="download-file-icon" src="' . plugin_dir_url( __DIR__ ) . "/img/download-file-icon.svg" . '" />';
-      $shouldCreateLink = true;
+      $isDownload = true;
       break;
     }
   }
 
+  // render the result
   $html = '';
 
-  // open link
-  if ($cell->hasHyperlink() || $shouldCreateLink) {
-    $html .= '<a href="' . $cell->getHyperlink()->getUrl() . '" target="_blank" rel="noreferrer noopener">';
+  // if cell value is a link
+  if (strpos($val, 'http://') !== false || strpos($val, 'https://') !== false) {
+    $url = $val;
+    if ( $cell->hasHyperlink() ) {
+      $url = $cell->getHyperlink()->getUrl();
+    }
+    // open link
+    $html .= '<a href="' . $url . '" target="_blank" rel="noreferrer noopener" download='. $isDownload . '>';
   }
-  
+
   $html .= $content;
   $html .= '<small class="hidden-cell-val">' . $cell->getValue() . '</small></a>';
 
   // close link
-  if ($cell->hasHyperlink()) {
+  if ($cell->hasHyperlink() || $shouldCreateLink) {
     $html .= '</a>';
   }
 
