@@ -148,7 +148,7 @@ function xtabla_options_page_html() {
                         <span class="dashicons dashicons-edit"></span>
                       </button>
                     </a>
-                    <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Download" download="<?php echo $sheet; ?>">
+                    <a href="<?php echo site_url() . '/wp-content/uploads/xtabla-uploads/' . $sheet; ?>" class="download-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Download" download="<?php echo $sheet; ?>">
                       <button type="button"> 
                         <span class="dashicons dashicons-download"></span>
                       </button>
