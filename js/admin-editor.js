@@ -1,9 +1,9 @@
 (function($) {
   const { ajax_url } = wp_data
   const $body = $('body')
-  const $tables = $body.find('.xtabla-table')
-  const $cells = $body.find('.xtabla-table td:not(.not-editable)')
-  const $loading = $body.find('#xtabla-loading')
+  const $tables = $body.find('.xtable-table')
+  const $cells = $body.find('.xtable-table td:not(.not-editable)')
+  const $loading = $body.find('#xtable-loading')
   const $cellLabel = $body.find('.cell-label')
   const $addBtns = $body.find('.add')
   const $deleteBtn = $body.find('.delete')
@@ -17,7 +17,7 @@
     tooltip   : 'Click to edit...'
   }
 
-  let params = { 'action': 'xtabla_actions' }
+  let params = { 'action': 'xtable_actions' }
   
   const setLoading = bool => bool ? $loading.show() : $loading.hide()
 

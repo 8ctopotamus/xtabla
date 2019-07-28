@@ -11,12 +11,12 @@ function add_spreadsheet_row() {
   $file = $_POST['file'];
   if (!empty($file)) {
     $wp_admin_dir = getcwd(); // wp-admin
-    chdir(XTABLA_UPLOADS_DIR);
+    chdir(XTABLE_UPLOADS_DIR);
 
     $parts = explode('.', $file);
     $filename = $parts[0];
     $extension = ucfirst( $parts[1] );
-    $inputFilePath = XTABLA_UPLOADS_DIR .'/' . $file;
+    $inputFilePath = XTABLE_UPLOADS_DIR .'/' . $file;
     
     $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $inputFilePath );
     $worksheet = $spreadsheet->getActiveSheet();
@@ -49,12 +49,12 @@ function add_spreadsheet_column() {
   $file = $_POST['file'];
   if (!empty($file)) {
     $wp_admin_dir = getcwd(); // wp-admin
-    chdir(XTABLA_UPLOADS_DIR);
+    chdir(XTABLE_UPLOADS_DIR);
 
     $parts = explode('.', $file);
     $filename = $parts[0];
     $extension = ucfirst( $parts[1] );
-    $inputFilePath = XTABLA_UPLOADS_DIR .'/' . $file;
+    $inputFilePath = XTABLE_UPLOADS_DIR .'/' . $file;
     
     $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $inputFilePath );
     $worksheet = $spreadsheet->getActiveSheet();
@@ -88,12 +88,12 @@ function delete_selected_rows_columns() {
   $selected = $_POST['selected'];
   if ( !empty($file) ) {
     $wp_admin_dir = getcwd(); // wp-admin
-    chdir(XTABLA_UPLOADS_DIR);
+    chdir(XTABLE_UPLOADS_DIR);
 
     $parts = explode('.', $file);
     $filename = $parts[0];
     $extension = ucfirst( $parts[1] );
-    $inputFilePath = XTABLA_UPLOADS_DIR .'/' . $file;
+    $inputFilePath = XTABLE_UPLOADS_DIR .'/' . $file;
     
     $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $inputFilePath );
     $worksheet = $spreadsheet->getActiveSheet();
@@ -132,12 +132,12 @@ function update_spreadsheet() {
   if ( !empty($file) && !empty($cellId) && !empty($value) ) {
     $wp_admin_dir = getcwd(); // wp-admin
 
-    chdir(XTABLA_UPLOADS_DIR);
+    chdir(XTABLE_UPLOADS_DIR);
 
     $parts = explode('.', $file);
     $filename = $parts[0];
     $extension = ucfirst( $parts[1] );
-    $inputFilePath = XTABLA_UPLOADS_DIR .'/' . $file;
+    $inputFilePath = XTABLE_UPLOADS_DIR .'/' . $file;
     
     $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load( $inputFilePath );
     $worksheet = $spreadsheet->getActiveSheet();
@@ -284,7 +284,7 @@ function renderSheets($file) {
   
   $spreadsheet = new Spreadsheet();
   $inputFileType = $extension;
-  $inputFileName = XTABLA_UPLOADS_DIR .'/' . $file;
+  $inputFileName = XTABLE_UPLOADS_DIR .'/' . $file;
   
   if (!file_exists($inputFileName)) {
     $html = '<strong>' . $file . '</strong> does not exist.';
@@ -297,7 +297,7 @@ function renderSheets($file) {
   $worksheet = $spreadsheet->getActiveSheet();
 
   $html .= '<div class="table-wrap">';
-  $html .= '<table class="form-table widefat xtabla-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
+  $html .= '<table class="form-table widefat xtable-table" data-spreadsheetid="' . $file . '">' . PHP_EOL;
   $rowCount = 1;
   $html .= renderAdminControl('delete-column', column_number($worksheet->getHighestColumn()));
   
@@ -337,7 +337,7 @@ function filterForSpreadsheets( $doc ) {
 }
 
 function get_spreadsheets() {
-  $docs = scandir(XTABLA_UPLOADS_DIR);
+  $docs = scandir(XTABLE_UPLOADS_DIR);
   $spreadsheets = array_filter($docs, 'filterForSpreadsheets');
   return count($spreadsheets) > 0 ? $spreadsheets : false;
 }
@@ -367,7 +367,7 @@ function upload_spreadsheet() {
       $file_size = $_FILES['files']['size'][$i];
       $file_ext = strtolower(end(explode('.', $_FILES['files']['name'][$i])));
 
-      $file = XTABLA_UPLOADS_DIR . '/' . $file_name;
+      $file = XTABLE_UPLOADS_DIR . '/' . $file_name;
 
       if (!in_array($file_ext, $extensions)) {
           $errors[] = 'Extension not allowed: ' . $file_name . ' ' . $file_type;
@@ -388,7 +388,7 @@ function upload_spreadsheet() {
 
 function delete_spreadsheet() {
   if ( !empty($_POST['file']) ) {
-    unlink(XTABLA_UPLOADS_DIR . '/' . $_POST['file']);
+    unlink(XTABLE_UPLOADS_DIR . '/' . $_POST['file']);
     echo $_POST['file'] . ' deleted.';
     http_response_code(200);
   }

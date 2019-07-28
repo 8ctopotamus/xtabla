@@ -63,7 +63,7 @@
 	display: block;
 }
 
-#xtabla-loading {
+#xtable-loading {
   position: fixed;
   bottom: 10%;
   right: 10%;
@@ -71,7 +71,7 @@
   font-size: 100px;
 }
 
-#xtabla-loading span {
+#xtable-loading span {
   -webkit-animation-name: blink;
           animation-name: blink;
   -webkit-animation-duration: 1.4s;
@@ -82,12 +82,12 @@
           animation-fill-mode: both;
 }
 
-#xtabla-loading span:nth-child(2) {
+#xtable-loading span:nth-child(2) {
   -webkit-animation-delay: .2s;
           animation-delay: .2s;
 }
 
-#xtabla-loading span:nth-child(3) {
+#xtable-loading span:nth-child(3) {
   -webkit-animation-delay: .4s;
           animation-delay: .4s;
 }
@@ -131,7 +131,7 @@
   display: inline;
 }
 
-.xtabla-editor h1 {
+.xtable-editor h1 {
   background: #0074a2;
   color: white;
   margin-bottom: 0;
@@ -139,34 +139,34 @@
   font-weight: bold;
 }
 
-.xtabla-table {
+.xtable-table {
   margin-top: 0;
 }
 
-.xtabla-editor .table-wrap {
+.xtable-editor .table-wrap {
   width: 100%;
   height: 80vh;
   overflow: auto;
 }
 
-.xtabla-editor tr:first-child {
+.xtable-editor tr:first-child {
   font-weight: bold;
 }
 
-.xtabla-editor th,
-.xtabla-editor td {
+.xtable-editor th,
+.xtable-editor td {
   position: relative;
   border: .5px solid lightgrey;
 }
 
-.xtabla-editor th:hover,
-.xtabla-editor td:hover  {
+.xtable-editor th:hover,
+.xtable-editor td:hover  {
   border: 1px solid #15bcf5;
   background: var(--lightblue);
   cursor: pointer;
 }
 
-.xtabla-table input {
+.xtable-table input {
   display: block;
 }
 
@@ -199,8 +199,8 @@
   display: inline-block;
 }
 
-/* .xtabla-editor th:hover .cell-label,
-.xtabla-editor td:hover .cell-label{
+/* .xtable-editor th:hover .cell-label,
+.xtable-editor td:hover .cell-label{
   display: inline;
 } */
 
@@ -247,11 +247,11 @@
   display: none;
 }
 
-.xtabla-table td {
+.xtable-table td {
   vertical-align: middle;
 }
 
-.xtabla-table .dashicons-media-spreadsheet {
+.xtable-table .dashicons-media-spreadsheet {
   font-size: 50px;
   display: block;
   height: 50px;

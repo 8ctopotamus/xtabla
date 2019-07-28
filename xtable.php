@@ -1,18 +1,16 @@
 <?php
 /*
-Plugin Name: Xtabla
+Plugin Name: Xtable
 Plugin URI: 
-Description: Crear tablas de un archivo XLSX o CSV.
+Description: Upload, display as HTML, edit Spreadsheets (Xlsx, xls, csv) in WordPress.
 Version: 0.1.0
 Author: Zylo, LLC & ACM
-Author URI: https://zylo.dev
-Text Domain: xtabla
+Author URI: https://zylocod.es
+Text Domain: xtable
 Domain Path: /languages
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
-
-// register_activation_hook( __FILE__, 'xtabla_activate' );
 
 include 'inc/init.php';
 include 'inc/functions.php';

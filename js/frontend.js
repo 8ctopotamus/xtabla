@@ -1,5 +1,5 @@
 (function($) {
-  const $xtables = $('.xtabla-table')
+  const $xtables = $('.xtable-table')
 
   function summerizeTable($table) {
     $table.each(function() {

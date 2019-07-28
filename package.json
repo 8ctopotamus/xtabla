@@ -1,5 +1,5 @@
 {
-  "name": "xtabla",
+  "name": "xtable",
   "version": "1.0.0",
   "description": "Run `composer install` to install dependencies.",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/8ctopotamus/xtabla.git"
+    "url": "git+https://github.com/8ctopotamus/xtable.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/8ctopotamus/xtabla/issues"
+    "url": "https://github.com/8ctopotamus/xtable/issues"
   },
-  "homepage": "https://github.com/8ctopotamus/xtabla#readme",
+  "homepage": "https://github.com/8ctopotamus/xtable#readme",
   "dependencies": {
     "jquery-jeditable": "^2.0.8"
   }

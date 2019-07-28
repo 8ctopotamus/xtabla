@@ -51,7 +51,7 @@
     const confirmed = confirm('Are you sure you want to delete ' + file + '?')
     if (confirmed) {
       var data = {
-        'action': 'xtabla_actions',
+        'action': 'xtable_actions',
         'do': 'delete_spreadsheet',
         file
       }
@@ -73,7 +73,7 @@
       }
       formData.append('files[]', file)
     }
-    formData.append('action', 'xtabla_actions')
+    formData.append('action', 'xtable_actions')
     formData.append('do', 'upload_spreadsheet')
     fetch(ajax_url, {
       method: 'POST',

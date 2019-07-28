@@ -2,11 +2,11 @@
   display: none;
 }
 
-.xtabla-table td {
+.xtable-table td {
   vertical-align: middle;
 }
 
-.xtabla-table .dashicons-media-spreadsheet {
+.xtable-table .dashicons-media-spreadsheet {
   font-size: 50px;
   display: block;
   height: 50px;
@@ -23,6 +23,6 @@
   border-radius: 5px;
 }
 
-.xtabla-table tr:nth-child(even) {
+.xtable-table tr:nth-child(even) {
   background: #fafafa;
 }
