@@ -22,7 +22,7 @@ function xtabla_options_page() {
     'xtabla_submenu_page_callback'
   );
 
-  	// design tab settings
+  // design tab settings
 	add_settings_section(
 		'xtable_xtableCustomCSS_section', 
 		__( 'Custom styles', 'xtable' ), 
@@ -94,7 +94,8 @@ function xtabla_options_page_html() {
 ?>
   <div class="wrap">
     
-    <img class="xtable-logo" src="<?php echo plugins_url('/img/xtable-logo.svg',  __DIR__ ); ?>" alt="Xtable logo" />
+    <img class="xtable-logo" src="<?php echo plugin_dir_url( dirname( __FILE__ ) ) . 'img/xtable-logo.svg'; ?>" alt="Xtable logo" />
+    
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
     
     <div class="tabs">
@@ -131,11 +132,13 @@ function xtabla_options_page_html() {
                 $parts = explode('.', $sheet);
                 $filename = $parts[0];
                 $extension = $parts[1];
-                $editLink = admin_url() . 'admin.php?page=xtabla-table-editor&sheet=' . $sheet;
+                $editURL = admin_url() . 'admin.php?page=xtabla-table-editor&sheet=' . $sheet;
+                // $downloadURL = admin_url() . 'admin.php?page=xtabla-spreadsheet-download&sheet=' . $sheet;
+                $downloadURL = plugins_url( '/inc/download.php?sheet=' . $sheet . '&XTABLA_UPLOADS_DIR=' . XTABLA_UPLOADS_DIR,  __DIR__ );
               ?>
               <div id="sheet-<?php echo $filename; ?>" class="shortcodes-list-item <?php echo $extension; ?>">
                 <div>
-                  <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
+                  <a href="<?php echo $editURL ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>">
                     <strong><?php echo $sheet; ?></strong>
                   </a>
                 </div>
@@ -143,12 +146,12 @@ function xtabla_options_page_html() {
                   <p class="copy-shortcode">[xtabla file="<?php echo $sheet; ?>"]</p>
                 </div>
                   <div class="text-right">
-                    <a href="<?php echo $editLink ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Edit">
+                    <a href="<?php echo $editURL ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Edit">
                       <button type="button"> 
                         <span class="dashicons dashicons-edit"></span>
                       </button>
                     </a>
-                    <a href="<?php echo site_url() . '/wp-content/uploads/xtabla-uploads/' . $sheet; ?>" class="download-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Download" download="<?php echo $sheet; ?>">
+                    <a href="<?php echo $downloadURL; ?>" class="download-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Download" target="_blank">
                       <button type="button"> 
                         <span class="dashicons dashicons-download"></span>
                       </button>
