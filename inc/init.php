@@ -28,7 +28,7 @@ $documentFileExtensions = ['.pdf', '.doc', '.docx'];
 */
 add_action('plugins_loaded', 'xtable_load_textdomain');
 function xtable_load_textdomain() {
-	load_plugin_textdomain( 'xtable', false, dirname( plugin_basename(__DIR__) ) . '/lang/' );
+	load_plugin_textdomain( 'xtable', false, dirname(plugin_basename(__DIR__)) . '/lang/' );
 }
 
 /*

@@ -15,8 +15,8 @@ function xtable_options_page() {
 
   add_submenu_page( 
     null,
-    __('Xtable Table Editor', 'xtable'),
-    __('Xtable Table Editor', 'xtable'),
+    __('Xtable Editor', 'xtable'),
+    __('Xtable Editor', 'xtable'),
     'manage_options',
     'xtable-table-editor',
     'xtable_submenu_page_callback'
@@ -44,7 +44,7 @@ add_action('admin_menu', 'xtable_options_page');
 
 // design section heading
 function xtable_design_settings_section_callback() {
-  echo '<p>Customize the look of your tables on the frontend of your site. Click editor to enable.</p>';
+  echo '<p>' . __('Customize the look of your tables on the frontend of your site. Click editor to enable.', 'xtable') . '</p>';
 }
 // design fields
 function xtable_design_settings_render() { 
@@ -65,13 +65,12 @@ function xtable_submenu_page_callback() {
       <?php 
       $sheet = $_GET['sheet'];
       if ( isset( $sheet ) ):
-        echo '<p><a href="' . $URL . '"><< Back to xtable dashboard</a></p>';
+        echo '<p><a href="' . $URL . '"><< ' . __('Back to xtable dashboard', 'xtable') . '</a></p>';
         echo '<span id="xtable-loading" class="saving"><span>.</span><span>.</span><span>.</span></span>';
-        echo '<button class="button-secondary add" data-add="row">+ Row</button>';
-        echo '<button class="button-secondary add" data-add="column">+ Column</button>';
-        echo '<button class="button-secondary delete" disabled>- Delete Selected</button>';
+        echo '<button class="button-secondary add" data-add="row">+ ' . __('Row', 'xtable') . '</button>';
+        echo '<button class="button-secondary add" data-add="column">+ ' . __('Column', 'xtable') . '</button>';
+        echo '<button class="button-secondary delete" disabled>- ' . __('Delete Selected', 'xtable') . '</button>';
         echo '<h1>' . $sheet . '</h1>';
-        // echo '<a href="' . XTABLE_UPLOADS_DIR . '/' . $sheet .'" download>Download Spreadsheet</a>';
         echo '<div class="cell-label"></div>';
         echo renderSheets( $sheet );
       endif; ?>
@@ -100,18 +99,18 @@ function xtable_options_page_html() {
     
     <div class="tabs">
 			<nav class="nav-tab-wrapper tab-list">
-				<a class="tab nav-tab active" href="#spreadsheets-tab">Spreadsheets</a>
-				<a class="tab nav-tab"  href="#design-tab">Design</a>
+				<a class="tab nav-tab active" href="#spreadsheets-tab"><?php echo __('Spreadsheets', 'xtable'); ?></a>
+				<a class="tab nav-tab"  href="#design-tab"><?php echo __('Design', 'xtable'); ?></a>
 			</nav>
 			<div id="spreadsheets-tab" class="tab-content show">
         
-        <p>Manage your spreadsheets.</p>
+        <p><?php echo __('Manage your spreadsheets.', 'xtable'); ?></p>
 
-        <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary">Upload spreadsheet</a>
+        <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary"><?php echo __('Upload spreadsheet', 'xtable') ?></a>
 
         <div id="file-upload-modal" style="display:none;">
           <form action="admin.php?page=xtable" method="post" enctype="multipart/form-data">
-            <label for="file">Archivo:</label><br/>
+            <label for="file"><?php echo __('File:', 'xtable') ?></label><br/>
             <input 
               id="file" 
               name="file" 
@@ -123,7 +122,7 @@ function xtable_options_page_html() {
           </form> 
         </div>
 
-        <h2>Spreadsheets</h2>
+        <h2><?php _e('Spreadsheets', 'xtable'); ?></h2>
         <div class="wrap-inner">
           <?php $spreadsheets = get_spreadsheets();
             echo '<div id="shortcodes-list">';
@@ -133,7 +132,6 @@ function xtable_options_page_html() {
                 $filename = $parts[0];
                 $extension = $parts[1];
                 $editURL = admin_url() . 'admin.php?page=xtable-table-editor&sheet=' . $sheet;
-                // $downloadURL = admin_url() . 'admin.php?page=xtable-spreadsheet-download&sheet=' . $sheet;
                 $downloadURL = plugins_url( '/inc/download.php?sheet=' . $sheet . '&XTABLE_UPLOADS_DIR=' . XTABLE_UPLOADS_DIR,  __DIR__ );
               ?>
               <div id="sheet-<?php echo $filename; ?>" class="shortcodes-list-item <?php echo $extension; ?>">
@@ -146,17 +144,17 @@ function xtable_options_page_html() {
                   <p class="copy-shortcode">[xtable file="<?php echo $sheet; ?>"]</p>
                 </div>
                   <div class="text-right">
-                    <a href="<?php echo $editURL ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Edit">
+                    <a href="<?php echo $editURL ; ?>" class="view-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="<?php _e('Edit', 'xtable'); ?>">
                       <button type="button"> 
                         <span class="dashicons dashicons-edit"></span>
                       </button>
                     </a>
-                    <a href="<?php echo $downloadURL; ?>" class="download-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Download" target="_blank">
+                    <a href="<?php echo $downloadURL; ?>" class="download-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="<?php _e('Download', 'xtable'); ?>" target="_blank">
                       <button type="button"> 
                         <span class="dashicons dashicons-download"></span>
                       </button>
                     </a>
-                    <button class="delete-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="Delete"> 
+                    <button class="delete-spreadsheet" data-spreadsheetid="<?php echo $sheet; ?>" title="<?php _e('Delete', 'xtable'); ?>"> 
                       <span class="dashicons dashicons-trash"></span>
                     </button>
                   </div>
@@ -164,7 +162,7 @@ function xtable_options_page_html() {
               <?php 
               endforeach;
             else:
-              echo 'No hay tablas creadas.';
+              _e('No spreadsheets found.', 'xtable');
             endif;
             echo '</div>';
           ?>
