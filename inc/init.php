@@ -20,8 +20,8 @@ if (! is_dir(XTABLE_UPLOADS_DIR)) {
 $node_modules_path = plugin_dir_url( __DIR__ ) . 'node_modules/';
 
 $spreadsheetFileExtensions = ['.csv', '.xlsx', '.xls'];
-$imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.tif'];
-$documentFileExtensions = ['.pdf', '.doc', '.docx'];
+$imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+$documentFileExtensions = ['.pdf', '.doc', '.docx', '.tif', '.tiff']; // note: they want .tif/.tiff files to display as download icon. We know it's really an imageFileExtension. :P
 
 /*
 ** I18n
