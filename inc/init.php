@@ -20,7 +20,7 @@ if (! is_dir(XTABLE_UPLOADS_DIR)) {
 $node_modules_path = plugin_dir_url( __DIR__ ) . 'node_modules/';
 
 $spreadsheetFileExtensions = ['.csv', '.xlsx', '.xls'];
-$imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+$imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.tif'];
 $documentFileExtensions = ['.pdf', '.doc', '.docx'];
 
 /*

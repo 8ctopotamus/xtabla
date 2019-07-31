@@ -226,7 +226,7 @@ function renderCellContents( $cell ) {
   $isDownload = false;
   $needsHiddenVal = false;
 
-  $val = $cell->getValue();
+  $val = $cell->getFormattedValue();
   $content = $val;
 
   // if image link
@@ -239,7 +239,7 @@ function renderCellContents( $cell ) {
   }
 
   // if PDF link
-  foreach ( $documentFileExtensions as $ext) {
+  foreach ( array_merge($documentFileExtensions, $spreadsheetFileExtensions) as $ext) {
     if ( strpos($cell->getValue(), $ext) ) {
       $content = '<img class="download-file-icon" src="' . plugin_dir_url( __DIR__ ) . "/img/download-file-icon.svg" . '" />';
       $needsHiddenVal = true;
