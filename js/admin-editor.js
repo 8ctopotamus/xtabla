@@ -1,5 +1,5 @@
 (function($) {
-  const { ajax_url } = wp_data
+  const { ajax_url, control_labels } = wp_data
   const $body = $('body')
   const $tables = $body.find('.xtable-table')
   const $cells = $body.find('.xtable-table td:not(.not-editable)')
@@ -9,13 +9,7 @@
   const $deleteBtn = $body.find('.delete')
   const checkboxClasses = '.select-row, .select-column'
   const $deleteCheckboxes = $body.find(checkboxClasses)
-  const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-admin-media"></span></button>')
-
-  const editableCellOptions = {
-    cancel    : 'Cancel',
-    submit    : 'Save',
-    tooltip   : 'Click to edit...'
-  }
+  const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-admin-media"></span> ' + control_labels.mediaLibrary + '</button>')
 
   let params = { 'action': 'xtable_actions' }
   
@@ -45,7 +39,7 @@
         const newId = splitCurrentId.join('')
         $(this).attr('id', newId)
         $(this).text('')
-        $(this).editable(handleCellEdit, editableCellOptions)
+        $(this).editable(handleCellEdit, control_labels)
       } else {
         let count = parseInt($(this).find('input[type="checkbox"]').val())
         $(this).find('input[type="checkbox"]').val(count + 1)
@@ -72,7 +66,7 @@
         const nextLetter = nextString(splitPrevId[0])
         const newColId = nextLetter + splitPrevId[1]
         $newCell = $('<td id="' +  newColId + '"></td>')
-        $newCell.editable(handleCellEdit, editableCellOptions)
+        $newCell.editable(handleCellEdit, control_labels)
         $(row).append($newCell)
       } else {
         let $newCell = $(row).find('td:last-child').clone()
@@ -263,7 +257,7 @@
   
   $body.on('change', checkboxClasses, handleCheckboxChange)
 
-  $cells.editable(handleCellEdit, editableCellOptions)
+  $cells.editable(handleCellEdit, control_labels)
 
   // clear selected on load
   $deleteCheckboxes.each(function() { 

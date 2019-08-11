@@ -63,9 +63,21 @@ function xtable_wp_admin_assets( $hook ) {
   wp_register_script('xtable_admin_js', plugin_dir_url( __DIR__ ) . '/js/admin.js', array('jquery'), '', true);
   wp_register_script('xtable_admin_editor_js', plugin_dir_url( __DIR__ ) . '/js/admin-editor.js', array('jquery'), '', true);
 
+  $controlLabels = [
+    'tooltip' => __('Click to edit', 'xtable'),
+    'submit' => __('Save', 'xtable'),
+    'cancel' => __('Cancel', 'xtable'),
+    'mediaLibrary' => __('Media Library', 'xtable'),
+  ];
+
+  $localizationData = [ 
+    'ajax_url' => admin_url( 'admin-ajax.php' ),
+    'plugin_url' => plugin_dir_url( __DIR__ ),
+    'control_labels' => $controlLabels,
+  ];
+
   // main admin view
   if ( $hook === 'toplevel_page_xtable' ) {
-
     // codemirror
     $cm_settings['codeEditor'] = wp_enqueue_code_editor(array('type' => 'text/css'));
     wp_localize_script('jquery', 'cm_settings', $cm_settings);
@@ -77,10 +89,7 @@ function xtable_wp_admin_assets( $hook ) {
     wp_enqueue_style( 'animate_css' );
     wp_enqueue_style( 'xtable_admin_styles' );
     wp_enqueue_script( 'dropzone_js' );
-    wp_localize_script( 'xtable_admin_js', 'wp_data', array( 
-      'ajax_url' => admin_url( 'admin-ajax.php' ),
-      'plugin_url' => plugin_dir_url( __DIR__ ),
-    ) );
+    wp_localize_script( 'xtable_admin_js', 'wp_data', $localizationData );
     wp_enqueue_script( 'xtable_admin_js' );
   }
 
@@ -89,10 +98,7 @@ function xtable_wp_admin_assets( $hook ) {
     wp_enqueue_media();
     wp_enqueue_style( 'xtable_admin_styles' );
     wp_enqueue_script( 'jquery_jeditable' );
-    wp_localize_script( 'xtable_admin_editor_js', 'wp_data', array( 
-      'ajax_url' => admin_url( 'admin-ajax.php' ),
-      'plugin_url' => plugin_dir_url( __DIR__ ),
-    ) );
+    wp_localize_script( 'xtable_admin_editor_js', 'wp_data', $localizationData );
     wp_enqueue_script( 'xtable_admin_editor_js' );
   }
 }

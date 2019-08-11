@@ -118,7 +118,7 @@ function xtable_options_page_html() {
               accept="<?php echo implode(',', $spreadsheetFileExtensions); ?>"
             />
             <br/>
-            <input type="submit" name="submit" value="Submit" class="button-primary">
+            <input type="submit" name="submit" value="<?php _e('Submit', 'xtable'); ?>" class="button-primary">
           </form> 
         </div>
 

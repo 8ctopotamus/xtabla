@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Xtable v1\n"
-"POT-Creation-Date: 2019-07-28 20:06-0500\n"
-"PO-Revision-Date: 2019-07-28 20:09-0500\n"
+"POT-Creation-Date: 2019-08-11 16:11-0500\n"
+"PO-Revision-Date: 2019-08-11 16:13-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -73,13 +73,17 @@ msgstr "Subir tabla"
 msgid "File:"
 msgstr "Archivo:"
 
+#: inc/admin.php:121
+msgid "Submit"
+msgstr "Subir"
+
 #: inc/admin.php:147
 msgid "Edit"
 msgstr "Editar"
 
 #: inc/admin.php:152
 msgid "Download"
-msgstr "Bajar"
+msgstr "Descargar"
 
 #: inc/admin.php:157
 msgid "Delete"
@@ -89,6 +93,35 @@ msgstr "Borrar"
 msgid "No spreadsheets found."
 msgstr "Ningúna tabla encontrada."
 
+#: inc/init.php:69
+msgid "Click to edit"
+msgstr "Click para editar"
+
+#: inc/init.php:70
+msgid "Save"
+msgstr "Guardar"
+
+#: inc/init.php:71
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: inc/init.php:72
+msgid "Media Library"
+msgstr "Mediateca"
+
 #: inc/shortcode.php:7
 msgid "No file provided."
 msgstr "Ningún archivo proporcionado."
+
+#~ msgid ""
+#~ "Upload, display as HTML, edit Spreadsheets (Xlsx, xls, csv) in WordPress."
+#~ msgstr ""
+#~ "Subir, editar y mostrar hojas de cálculo (Xlsx, xls, csv) en WordPress "
+#~ "como HTML en tablas personalizadas."
+
+#~ msgid ""
+#~ "Upload, edit and display spreadsheets (Xlsx, xls, csv) in WordPress as "
+#~ "customized HTML tables."
+#~ msgstr ""
+#~ "Subir, editar y mostrar hojas de cálculo (Xlsx, xls, csv) en WordPress "
+#~ "como HTML en tablas personalizadas."

@@ -2,12 +2,12 @@
 /*
 Plugin Name: Xtable
 Plugin URI: 
-Description: Upload, display as HTML, edit Spreadsheets (Xlsx, xls, csv) in WordPress.
+Description: Upload, edit and display spreadsheets (Xlsx, xls, csv) in WordPress as customized HTML tables.
 Version: 0.1.0
-Author: Zylo, LLC & ACM
+Author: Zylo & ACM
 Author URI: https://zylocod.es
 Text Domain: xtable
-Domain Path: /languages
+Domain Path: /lang
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit;
