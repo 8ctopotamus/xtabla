@@ -84,8 +84,6 @@ function xtable_permission_settings_render() {
     echo __('No eligable users found.', 'xtable');
   }
 }
-// localhost/plugin-dev/wp-admin/admin.php?page=xtable#design-tab
-// http://localhost/plugin-dev/wp-admin/admin.php?page=xtable?success=User+permissions+saved+successfully
 
 // design section heading
 function xtable_design_settings_section_callback() {
@@ -151,7 +149,9 @@ function xtable_options_page_html() {
 			<nav class="nav-tab-wrapper tab-list">
 				<a class="tab nav-tab active" href="#spreadsheets-tab"><?php echo __('Spreadsheets', 'xtable'); ?></a>
         <a class="tab nav-tab"  href="#design-tab"><?php echo __('Design', 'xtable'); ?></a>
-        <a class="tab nav-tab"  href="#permissions-tab"><?php echo __('Permissions', 'xtable'); ?></a>
+        <?php if (current_user_can('manage_options')) { ?>
+          <a class="tab nav-tab"  href="#permissions-tab"><?php echo __('Permissions', 'xtable'); ?></a>
+        <?php } ?>
 			</nav>
 			<div id="spreadsheets-tab" class="tab-content show">
         
@@ -229,15 +229,18 @@ function xtable_options_page_html() {
           ?>
         </form>
       </div><!-- /.design-tab -->
-      <div id="permissions-tab" class="tab-content">
-        <form id="xtable-user-permission-form" action="<?php echo admin_url('admin-ajax.php');  ?>" method="POST">
-          <?php
-            settings_fields( 'xtableUserPermission' );
-            do_settings_sections( 'xtableUserPermission' );
-            submit_button();
-          ?>
-        </form>
-      </div><!-- /.permissions-tab -->
+      
+      <?php if (current_user_can('manage_options')) { ?>
+        <div id="permissions-tab" class="tab-content">
+          <form id="xtable-user-permission-form" action="<?php echo admin_url('admin-ajax.php');  ?>" method="POST">
+            <?php
+              settings_fields( 'xtableUserPermission' );
+              do_settings_sections( 'xtableUserPermission' );
+              submit_button();
+            ?>
+          </form>
+        </div><!-- /.permissions-tab -->
+      <?php } ?>
     </div><!-- /.tab -->
 
   </div>

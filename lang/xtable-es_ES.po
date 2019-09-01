@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Xtable v1\n"
-"POT-Creation-Date: 2019-08-11 16:11-0500\n"
-"PO-Revision-Date: 2019-08-11 16:13-0500\n"
+"POT-Creation-Date: 2019-09-01 17:52-0500\n"
+"PO-Revision-Date: 2019-09-01 17:57-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -29,7 +29,31 @@ msgstr "Estilos personalizados"
 msgid "Custom CSS"
 msgstr "CSS personalizado"
 
-#: inc/admin.php:47
+#: inc/admin.php:44
+msgid "Permission"
+msgstr "Permiso"
+
+#: inc/admin.php:50
+msgid "User Permission"
+msgstr "Permiso de usuario"
+
+#: inc/admin.php:61
+msgid ""
+"All administrators already have access to the Xtable dashboard. If you'd "
+"like to give access to lower level users (Editor, Author, and Contributer "
+"Roles) you can check them here."
+msgstr ""
+"Todos los Administradores ya tienen acceso a modificar Xtable. Si desea "
+"asignar accesos a usuarios con otro tipo de permiso, (Editor, Autor y "
+"Contribuidor) puede seleccionarlos desde esta lista:"
+
+#: inc/admin.php:84
+#, fuzzy
+#| msgid "No spreadsheets found."
+msgid "No eligable users found."
+msgstr "Ningúna tabla encontrada."
+
+#: inc/admin.php:90
 msgid ""
 "Customize the look of your tables on the frontend of your site. Click editor "
 "to enable."
@@ -37,75 +61,79 @@ msgstr ""
 "Personalice el aspecto de sus tablas en el front-end de su sitio. Haga clic "
 "en el editor para habilitarlo."
 
-#: inc/admin.php:68
+#: inc/admin.php:111
 msgid "Back to xtable dashboard"
 msgstr "Volver al panel de control de xtable"
 
-#: inc/admin.php:70
+#: inc/admin.php:113
 msgid "Row"
 msgstr "Fila"
 
-#: inc/admin.php:71
+#: inc/admin.php:114
 msgid "Column"
 msgstr "Columna"
 
-#: inc/admin.php:72
+#: inc/admin.php:115
 msgid "Delete Selected"
 msgstr "Borrar seleccionados"
 
-#: inc/admin.php:102 inc/admin.php:125
+#: inc/admin.php:150 inc/admin.php:176
 msgid "Spreadsheets"
 msgstr "Tablas"
 
-#: inc/admin.php:103
+#: inc/admin.php:151
 msgid "Design"
 msgstr "Diseño"
 
-#: inc/admin.php:107
+#: inc/admin.php:153
+msgid "Permissions"
+msgstr "Permiso"
+
+#: inc/admin.php:158
 msgid "Manage your spreadsheets."
 msgstr "Administre sus hojas de cálculo."
 
-#: inc/admin.php:109
+#: inc/admin.php:160
 msgid "Upload spreadsheet"
 msgstr "Subir tabla"
 
-#: inc/admin.php:113
+#: inc/admin.php:164
 msgid "File:"
 msgstr "Archivo:"
 
-#: inc/admin.php:121
+#: inc/admin.php:172
 msgid "Submit"
 msgstr "Subir"
 
-#: inc/admin.php:147
+#: inc/admin.php:198
 msgid "Edit"
 msgstr "Editar"
 
-#: inc/admin.php:152
+#: inc/admin.php:203
 msgid "Download"
 msgstr "Descargar"
 
-#: inc/admin.php:157
+#: inc/admin.php:208
 msgid "Delete"
 msgstr "Borrar"
 
-#: inc/admin.php:165
+#: inc/admin.php:216
 msgid "No spreadsheets found."
 msgstr "Ningúna tabla encontrada."
 
-#: inc/init.php:69
+#: inc/init.php:82
 msgid "Click to edit"
 msgstr "Click para editar"
 
-#: inc/init.php:70
+#: inc/init.php:83
 msgid "Save"
 msgstr "Guardar"
 
-#: inc/init.php:71
+#: inc/init.php:84
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: inc/init.php:72
+#: inc/init.php:85
 msgid "Media Library"
 msgstr "Mediateca"
 
