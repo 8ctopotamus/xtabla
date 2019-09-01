@@ -243,7 +243,9 @@ function renderCellContents( $cell ) {
     if ( strpos($cell->getValue(), $ext) ) {
       $content = '<img class="download-file-icon" src="' . plugin_dir_url( __DIR__ ) . "/img/download-file-icon.svg" . '" />';
       $needsHiddenVal = true;
-      $isDownload = true;
+      // Supply filename to download attribute
+      $pathArr = explode("/", $cell->getValue());
+      $isDownload = $pathArr[count($pathArr) - 1];
       break;
     }
   }
