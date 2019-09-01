@@ -284,3 +284,8 @@
 .CodeMirror pre.CodeMirror-line {
 	padding-left: 50px;
 }
+
+.xtable-user-permission-label {
+  display: block !important;
+  margin: 10px 0;
+}

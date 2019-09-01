@@ -1,5 +1,5 @@
 <?php
-// $URL = admin_url() . 'admin.php?page=xtabla';
+
 $sheet = $_GET['sheet'];
 $xtableUploadsDir = $_GET['XTABLE_UPLOADS_DIR'];
   

@@ -5,7 +5,9 @@
 $upload_dir = wp_upload_dir();
 $upload_dir = $upload_dir['basedir'];
 $upload_dir = $upload_dir . '/xtable-uploads';
+
 define('XTABLE_UPLOADS_DIR', $upload_dir);
+define('XTABLE_ADMINISTRATOR_CAPABILITY', 'xtable_administrator');
 
 /*
 ** create xtable-uploads directory in wp-content/uploads
@@ -21,7 +23,7 @@ $node_modules_path = plugin_dir_url( __DIR__ ) . 'node_modules/';
 
 $spreadsheetFileExtensions = ['.csv', '.xlsx', '.xls'];
 $imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-$documentFileExtensions = ['.pdf', '.doc', '.docx', '.tif', '.tiff', ".zip", ".rar", ".tar"]; // note: they want .tif/.tiff files to display as download icon. We know it's really an imageFileExtension. :P
+$documentFileExtensions = ['.pdf', '.doc', '.docx', '.tif', '.tiff', ".zip", ".rar", ".tar"]; // note: they want .tif/.tiff files to display as download icon... we know it's really an $imageFileExtension. :P
 
 /*
 ** I18n
@@ -40,6 +42,19 @@ add_action( 'wp_ajax_xtable_actions', 'xtable_actions' );
 function xtable_actions() {
   include( plugin_dir_path( __DIR__ ) . 'inc/actions.php' );
 }
+
+/*
+ * Capabilities
+ * Add capability to all administrators
+ */
+function add_xtable_editing_capabilities() {
+  $cap = XTABLE_ADMINISTRATOR_CAPABILITY;
+  $role = get_role( 'administrator' );
+  if (!$role->has_cap($cap)) {
+    $role->add_cap($cap);
+  }
+}
+add_action('plugins_loaded', 'add_xtable_editing_capabilities');
 
 /*
  * Admin scripts and styles

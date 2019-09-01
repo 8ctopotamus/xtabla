@@ -395,3 +395,22 @@ function delete_spreadsheet() {
     http_response_code(200);
   }
 }
+
+function save_user_permissions() {
+  if ( isset( $_POST['usersToSave'] ) ) {
+    $args = array( 'role__not_in' => array('administrator') );
+    $eligableUsers = get_users($args);
+    foreach( $eligableUsers as $user ) {
+      if ( in_array($user->ID, $_POST['usersToSave']) ) {
+        $user->add_cap( XTABLE_ADMINISTRATOR_CAPABILITY );
+      } else {
+        $user->remove_cap( XTABLE_ADMINISTRATOR_CAPABILITY );
+      }
+    }
+    $params = '&success=User+permissions+saved+successfully';
+  } else {
+    $params = '&error=Saving+user+permissions+failed';
+  }
+  echo $_POST['redirect_url'] . $params;
+  redirect( $_POST['redirect_url'] . $params );
+}

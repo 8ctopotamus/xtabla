@@ -1,13 +1,13 @@
 (function($) {
   const { ajax_url } = wp_data
   const $customCSS = $('#xtable-custom-css')
-  const form = document.querySelector('form')
+  const fileUploadForm = document.getElementById('file-upload-form')
+  // const userPermissionForm = document.getElementById('xtable-user-permission-form')
   const $shortcodeListItems = $('.shortcodes-list-item')
   const $shortcodeListItemsLinks = $shortcodeListItems.find('a')
   const copyEmailBtn = Array.from(document.getElementsByClassName('copy-shortcode'))
-  var tabs = document.getElementsByClassName('tab')
-  var tabContent = document.getElementsByClassName('tab-content')
-
+  const tabs = document.getElementsByClassName('tab')
+  const tabContent = document.getElementsByClassName('tab-content')
 
   const animationName = 'animated heartBeat fast';
   const animationend = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend'
@@ -16,6 +16,11 @@
   let existingFilenames = []
 
   let intervalId
+
+  function saveUserPermissions(e) {
+    e.preventDefault()
+    console.log(e.target.value)
+  }
 
   function copyToClipboard() {
     var shortcode = this
@@ -84,7 +89,12 @@
   }
 
   $('body').on('click', '.delete-spreadsheet', deleteSpreadsheet)
-  form.addEventListener('submit', uploadSpreadsheet)
+
+  fileUploadForm.addEventListener('submit', uploadSpreadsheet)
+  
+  // userPermissionForm.addEventListener('submit', saveUserPermissions)
+  // console.log(userPermissionForm)
+
   copyEmailBtn.forEach(btn => {
     btn.setAttribute('data-msg', copyMsg);
     btn.addEventListener('click', copyToClipboard)

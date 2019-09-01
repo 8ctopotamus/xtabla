@@ -7,17 +7,17 @@ function xtable_options_page() {
   add_menu_page(
     'Xtable',
     'Xtable',
-    'manage_options',
+    'xtable_administrator',
     'xtable',
     'xtable_options_page_html',
     'dashicons-media-spreadsheet'
   );
 
-  add_submenu_page( 
+  add_submenu_page(
     null,
     __('Xtable Editor', 'xtable'),
     __('Xtable Editor', 'xtable'),
-    'manage_options',
+    'xtable_administrator',
     'xtable-table-editor',
     'xtable_submenu_page_callback'
   );
@@ -36,11 +36,56 @@ function xtable_options_page() {
 		'xtableCustomCSS',
 		'xtable_xtableCustomCSS_section' 
 	);
-	register_setting( 'xtableCustomCSS', 'xtable_design_settings' );
+  register_setting( 'xtableCustomCSS', 'xtable_design_settings' );
+  
+  // permission tab settings
+	add_settings_section(
+		'xtable_xtableUserPermission_section', 
+		__( 'Permission', 'xtable' ), 
+		'xtable_permission_settings_section_callback', 
+		'xtableUserPermission'
+	);
+	add_settings_field( 
+		'xtable_allowed_users', 
+		__( 'User Permission', 'xtable' ), 
+		'xtable_permission_settings_render', 
+		'xtableUserPermission',
+		'xtable_xtableUserPermission_section' 
+	);
+	register_setting( 'xtableUserPermission', 'xtable_permission_settings' );
 }
 add_action('admin_menu', 'xtable_options_page');
 
-
+// permission section heading
+function xtable_permission_settings_section_callback() {
+  echo '<p>' . __('All administrators already have access to the Xtable dashboard. If you\'d like to give access to lower level users (Editor, Author, and Contributer Roles) you can check them here.', 'xtable') . '</p>';
+}
+// permission fields
+function xtable_permission_settings_render() {
+  $args = array(
+    'role__not_in' => array('administrator'),
+    'orderby' => 'user_nicename',
+    'order'   => 'ASC'
+  );
+  $eligableUsers = get_users($args);
+  if (count($eligableUsers) > 0) {    
+    echo '<input type="hidden" name="action" value="xtable_actions">';
+    echo '<input type="hidden" name="do" value="save_user_permissions">';
+    echo '<input type="hidden" name="redirect_url" value="' . admin_url('admin.php?page=xtable') . '">';
+    foreach ( $eligableUsers as $user ) {
+      $hasCap = $user->has_cap(XTABLE_ADMINISTRATOR_CAPABILITY);
+      $isChecked = $hasCap ? 'checked' : '';
+      echo '<label class="xtable-user-permission-label">';
+      echo '<input name="usersToSave[]" type="checkbox" value="' . $user->ID . '" ' . $isChecked . ' />';
+      echo esc_html( $user->display_name ) . ' [' . implode(", ", $user->roles ) . ']';
+      echo '</label>';
+    }
+  } else {
+    echo __('No eligable users found.', 'xtable');
+  }
+}
+// localhost/plugin-dev/wp-admin/admin.php?page=xtable#design-tab
+// http://localhost/plugin-dev/wp-admin/admin.php?page=xtable?success=User+permissions+saved+successfully
 
 // design section heading
 function xtable_design_settings_section_callback() {
@@ -84,9 +129,14 @@ function xtable_submenu_page_callback() {
 function xtable_options_page_html() {
   global $spreadsheetFileExtensions;
 
-  if ( !current_user_can('manage_options') ) {
+  if ( !current_user_can('xtable_administrator') ) {
     return;
   }
+
+  if (isset($_GET['success'])) {
+    echo '<p class="notice notice-success">' . $_GET['success'] . '</p>';
+  }
+
   if ( isset($_GET['error']) ){
     echo '<p class="notice notice-error">' . $_GET['error'] . '</p>';
   }
@@ -100,7 +150,8 @@ function xtable_options_page_html() {
     <div class="tabs">
 			<nav class="nav-tab-wrapper tab-list">
 				<a class="tab nav-tab active" href="#spreadsheets-tab"><?php echo __('Spreadsheets', 'xtable'); ?></a>
-				<a class="tab nav-tab"  href="#design-tab"><?php echo __('Design', 'xtable'); ?></a>
+        <a class="tab nav-tab"  href="#design-tab"><?php echo __('Design', 'xtable'); ?></a>
+        <a class="tab nav-tab"  href="#permissions-tab"><?php echo __('Permissions', 'xtable'); ?></a>
 			</nav>
 			<div id="spreadsheets-tab" class="tab-content show">
         
@@ -109,7 +160,7 @@ function xtable_options_page_html() {
         <a href="#TB_inline?&width=600&height=550&inlineId=file-upload-modal" class="thickbox button-secondary"><?php echo __('Upload spreadsheet', 'xtable') ?></a>
 
         <div id="file-upload-modal" style="display:none;">
-          <form action="admin.php?page=xtable" method="post" enctype="multipart/form-data">
+          <form id="file-upload-form" action="admin.php?page=xtable" method="post" enctype="multipart/form-data">
             <label for="file"><?php echo __('File:', 'xtable') ?></label><br/>
             <input 
               id="file" 
@@ -170,7 +221,6 @@ function xtable_options_page_html() {
 
       </div><!-- /.spreadsheets-tab -->
       <div id="design-tab" class="tab-content">
-          
         <form method="post" action="options.php">
           <?php
             settings_fields( 'xtableCustomCSS' );
@@ -178,8 +228,16 @@ function xtable_options_page_html() {
             submit_button();
           ?>
         </form>
-
       </div><!-- /.design-tab -->
+      <div id="permissions-tab" class="tab-content">
+        <form id="xtable-user-permission-form" action="<?php echo admin_url('admin-ajax.php');  ?>" method="POST">
+          <?php
+            settings_fields( 'xtableUserPermission' );
+            do_settings_sections( 'xtableUserPermission' );
+            submit_button();
+          ?>
+        </form>
+      </div><!-- /.permissions-tab -->
     </div><!-- /.tab -->
 
   </div>
