@@ -79,6 +79,10 @@ function xtable_wp_admin_assets( $hook ) {
   wp_register_script('xtable_admin_editor_js', plugin_dir_url( __DIR__ ) . '/js/admin-editor.js', array('jquery'), '', true);
 
   $controlLabels = [
+    'copyError' => __('Oops, unable to copy', 'xtable'),
+    'confirmation' => __('Are you sure?', 'xtable'),
+    'confirmDelete' => __('Are you sure you want to delete', 'xtable'),
+    'fileAlreadyExists' => __('already exists. Overwrite existing file?', 'xtable'),
     'tooltip' => __('Click to edit', 'xtable'),
     'submit' => __('Save', 'xtable'),
     'cancel' => __('Cancel', 'xtable'),

@@ -1,5 +1,5 @@
 (function($) {
-  const { ajax_url } = wp_data
+  const { ajax_url, control_labels } = wp_data
   const $customCSS = $('#xtable-custom-css')
   const fileUploadForm = document.getElementById('file-upload-form')
   // const userPermissionForm = document.getElementById('xtable-user-permission-form')
@@ -43,7 +43,7 @@
       //   $(this).removeClass(animationName);
       // });
     } catch(err) {  
-      console.log('Oops, unable to copy');  
+      console.log(control_labels.copyError);  
     }  
     // Remove the selections - NOTE: Should use
     removeRange(range) // when it is supported  
@@ -53,7 +53,7 @@
   function deleteSpreadsheet() {
     const $btn = $(this)
     const file = $btn.data('spreadsheetid')
-    const confirmed = confirm('Are you sure you want to delete ' + file + '?')
+    const confirmed = confirm(control_labels.confirmDelete + ' ' + file + '?')
     if (confirmed) {
       var data = {
         'action': 'xtable_actions',
@@ -73,7 +73,7 @@
     for (let i = 0; i < files.length; i++) {
       let file = files[i]
       if (existingFilenames.includes(file.name)) {
-        const approved = confirm(file.name + ' already exists. Overwrite existing file?')
+        const approved = confirm(file.name + ' ' + control_labels.fileAlreadyExists)
         if (!approved) return
       }
       formData.append('files[]', file)
@@ -92,9 +92,6 @@
 
   fileUploadForm.addEventListener('submit', uploadSpreadsheet)
   
-  // userPermissionForm.addEventListener('submit', saveUserPermissions)
-  // console.log(userPermissionForm)
-
   copyEmailBtn.forEach(btn => {
     btn.setAttribute('data-msg', copyMsg);
     btn.addEventListener('click', copyToClipboard)

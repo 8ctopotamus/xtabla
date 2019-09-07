@@ -104,7 +104,7 @@
   }
 
   function deleteSelected() {
-    const approved = confirm('Are you sure?')
+    const approved = confirm(control_labels.confirmation)
     if (!approved) return
     setLoading(true)
     disableAddBtns(true)
@@ -161,7 +161,6 @@
 
   function handleCheckboxChange() {
     determineHighlight(this)
-
     checkIfDeleteBtnShouldBeDisabled()
   }
 
@@ -171,7 +170,8 @@
     var image = wp.media({ 
       title: 'Upload Image',
       multiple: false
-    }).open()
+    })
+    .open()
     .on('select', function() {
       var uploaded_image = image.state().get('selection').first()
       var image_url = uploaded_image.toJSON().url
@@ -182,18 +182,18 @@
 
   function nextString(str) {
     if (! str)
-        return 'A' // return 'A' if str is empty or null
+      return 'A' // return 'A' if str is empty or null
     let tail = ''
     let i = str.length -1
     let char = str[i]
     // find the index of the first character from the right that is not a 'Z'
     while (char === 'Z' && i > 0) {
-        i--
-        char = str[i]
-        tail = 'A' + tail // tail contains a string of 'A'
+      i--
+      char = str[i]
+      tail = 'A' + tail // tail contains a string of 'A'
     }
     if (char === 'Z') // the string was made only of 'Z'
-        return 'AA' + tail
+      return 'AA' + tail
     // increment the character that was not a 'Z'
     return str.slice(0, i) + String.fromCharCode(char.charCodeAt(0) + 1) + tail
   }
