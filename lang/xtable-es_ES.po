@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Xtable v1\n"
-"POT-Creation-Date: 2019-09-07 13:47-0500\n"
-"PO-Revision-Date: 2019-09-07 13:49-0500\n"
+"POT-Creation-Date: 2019-09-09 12:31-0500\n"
+"PO-Revision-Date: 2019-09-09 12:31-0500\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -120,34 +120,42 @@ msgid "No spreadsheets found."
 msgstr "Ningúna tabla encontrada."
 
 #: inc/init.php:82
+msgid "Addition failed :("
+msgstr "Error en la adición :("
+
+#: inc/init.php:83
+msgid "Deletion failed :("
+msgstr "Error en la eliminación :("
+
+#: inc/init.php:84
 msgid "Oops, unable to copy"
 msgstr "¡Vaya! No se puede copiar."
 
-#: inc/init.php:83
+#: inc/init.php:85
 msgid "Are you sure?"
 msgstr "¿Está seguro?"
 
-#: inc/init.php:84
+#: inc/init.php:86
 msgid "Are you sure you want to delete"
 msgstr "¿Está seguro que quiere borrar?"
 
-#: inc/init.php:85
+#: inc/init.php:87
 msgid "already exists. Overwrite existing file?"
 msgstr "ya existe. ¿Sobrescribir el archivo existente?"
 
-#: inc/init.php:86
+#: inc/init.php:88
 msgid "Click to edit"
 msgstr "Click para editar"
 
-#: inc/init.php:87
+#: inc/init.php:89
 msgid "Save"
 msgstr "Guardar"
 
-#: inc/init.php:88
+#: inc/init.php:90
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: inc/init.php:89
+#: inc/init.php:91
 msgid "Media Library"
 msgstr "Mediateca"
 

@@ -8,7 +8,7 @@
   const $addBtns = $body.find('.add')
   const $deleteBtn = $body.find('.delete')
   const checkboxClasses = '.select-row, .select-column'
-  const $deleteCheckboxes = $body.find(checkboxClasses)
+  let $deleteCheckboxes// = $body.find(checkboxClasses)
   const $uploadButton = $('<button class="open-wp-media upload-button"><span class="dashicons dashicons-admin-media"></span> ' + control_labels.mediaLibrary + '</button>')
 
   let params = { 'action': 'xtable_actions' }
@@ -19,7 +19,9 @@
 
   const setDeleteBtnDisabled = bool => $deleteBtn.attr('disabled', bool) 
   
-  const countChecked = _ => $deleteCheckboxes.filter(":checked").length
+  const getDeleteCheckboxes = () => $deleteCheckboxes = $body.find(checkboxClasses)
+
+  const countChecked = () => $deleteCheckboxes.filter(":checked").length
 
   const splitId = id => id.match(/[a-z]+|[^a-z]+/gi)
 
@@ -28,7 +30,6 @@
     params.file = $tables.first().data('spreadsheetid')
     $clonedRow = $tables.find('tr:last-child').clone()
     let splitRowId = splitId($clonedRow.attr('id'))
-    console.log('split', splitRowId)
     let newRowId = String(parseInt(splitRowId[1]) - 1)
     newRowId = splitRowId[0] + newRowId
     $clonedRow.attr('id', newRowId)
@@ -42,18 +43,20 @@
         $(this).editable(handleCellEdit, control_labels)
       } else {
         let count = parseInt($(this).find('input[type="checkbox"]').val())
-        $(this).find('input[type="checkbox"]').val(count + 1)
+        const $input = $(this).find('input[type="checkbox"]')
+        $input.val(count + 1)
       }
       $(this).on('click', appendUploadButton)
     })
     
     $tables.append($clonedRow)
-
+    
     $.post(ajax_url, params, function(response) {
       // location.reload()
+      getDeleteCheckboxes()
     })
     .fail(function(err) {
-      alert('Addition failed :(')
+      alert(control_labels.additionFailed)
     })
     .done(() => {
       setLoading(false)
@@ -65,6 +68,7 @@
     const $rows = $tables.find('tr')
     $rows.each((i, row) => {
       let $newCell
+      let $input
       if (i > 0) {
         const splitPrevId = splitId($(row).find('td:last-child').attr('id'))
         const nextLetter = nextString(splitPrevId[0])
@@ -74,11 +78,12 @@
         $(row).append($newCell)
       } else {
         $newCell = $(row).find('td:last-child').clone()
-        const $input = $newCell.find('input')
+        $input = $newCell.find('input')
         const currentLetter = $input.val()
         const nextLetter = nextString(currentLetter)
         $input.val(nextLetter)
         $(row).append($newCell)
+        $deleteCheckboxes.add($newCell.find('input'))
       }
       $newCell.on('click', appendUploadButton)
     })
@@ -86,9 +91,10 @@
     params.file = $tables.first().data('spreadsheetid')
     $.post(ajax_url, params, function(response) {
       // location.reload()
+      getDeleteCheckboxes()
     })
     .fail(function(err) {
-      alert('Addition failed :(')
+      alert(control_labels.additionFailed)
     })
     .done(() => {
       setLoading(false)
@@ -107,6 +113,7 @@
   }
   
   function checkIfDeleteBtnShouldBeDisabled() {
+    console.log(countChecked())
     countChecked() > 0 ? 
       setDeleteBtnDisabled(false) : 
       setDeleteBtnDisabled(true)
@@ -135,7 +142,7 @@
       location.reload()
     })
     .fail(function(err) {
-      alert('Deletion failed :(')
+      alert(control_labels.deletionFailed)
     })
     .done(() => {
       setLoading(false)
@@ -261,6 +268,8 @@
   })
   
   $deleteBtn.on('click', deleteSelected)
+
+  getDeleteCheckboxes()
   
   $body.on('change', checkboxClasses, handleCheckboxChange)
 
@@ -270,6 +279,9 @@
   $deleteCheckboxes.each(function() { 
     $(this).attr('checked', false)
   })
+
+
+  console.log($deleteCheckboxes)
 
   checkIfDeleteBtnShouldBeDisabled()
 

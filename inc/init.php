@@ -79,6 +79,8 @@ function xtable_wp_admin_assets( $hook ) {
   wp_register_script('xtable_admin_editor_js', plugin_dir_url( __DIR__ ) . '/js/admin-editor.js', array('jquery'), '', true);
 
   $controlLabels = [
+    'additionFailed' => __('Addition failed :(', 'xtable'),
+    'deletionFailed' => __('Deletion failed :(', 'xtable'),
     'copyError' => __('Oops, unable to copy', 'xtable'),
     'confirmation' => __('Are you sure?', 'xtable'),
     'confirmDelete' => __('Are you sure you want to delete', 'xtable'),
