@@ -44,8 +44,11 @@
         let count = parseInt($(this).find('input[type="checkbox"]').val())
         $(this).find('input[type="checkbox"]').val(count + 1)
       }
+      $(this).on('click', appendUploadButton)
     })
+    
     $tables.append($clonedRow)
+
     $.post(ajax_url, params, function(response) {
       // location.reload()
     })
@@ -61,6 +64,7 @@
   function addColumn() {
     const $rows = $tables.find('tr')
     $rows.each((i, row) => {
+      let $newCell
       if (i > 0) {
         const splitPrevId = splitId($(row).find('td:last-child').attr('id'))
         const nextLetter = nextString(splitPrevId[0])
@@ -69,13 +73,14 @@
         $newCell.editable(handleCellEdit, control_labels)
         $(row).append($newCell)
       } else {
-        let $newCell = $(row).find('td:last-child').clone()
+        $newCell = $(row).find('td:last-child').clone()
         const $input = $newCell.find('input')
         const currentLetter = $input.val()
         const nextLetter = nextString(currentLetter)
         $input.val(nextLetter)
         $(row).append($newCell)
       }
+      $newCell.on('click', appendUploadButton)
     })
     params.do = 'add_spreadsheet_column'
     params.file = $tables.first().data('spreadsheetid')
@@ -91,8 +96,12 @@
     })    
   }
   
+  function appendUploadButton() {
+    setTimeout(() => $(this).find('form').append($uploadButton), 50)
+  }
+
   function handleCellEdit(value, settings) {
-    console.log(this)
+    // console.log(this)
     updateCell(this, value)
     return value
   }
@@ -120,7 +129,7 @@
         params.selected.columns.push($el.val())
       }
     })
-    console.log(params.selected)
+    // console.log(params.selected)
     $.post(ajax_url, params, function(response) {
       console.log(response)
       location.reload()
@@ -232,10 +241,8 @@
   }, function() {
     $cellLabel.removeClass('shown')
   })
-  
-  $cells.on('click', function() {
-    setTimeout(() => $(this).find('form').append($uploadButton), 50)
-  })
+
+  $cells.on('click', appendUploadButton)
 
   $body.on('click', '.open-wp-media', openWPMediaLibrary)
 
