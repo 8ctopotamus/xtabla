@@ -23,7 +23,7 @@ $node_modules_path = plugin_dir_url( __DIR__ ) . 'node_modules/';
 
 $spreadsheetFileExtensions = ['.csv', '.xlsx', '.xls'];
 $imageFileExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-$documentFileExtensions = ['.pdf', '.doc', '.docx', '.tif', '.tiff', ".zip", ".rar", ".tar"]; // note: they want .tif/.tiff files to display as download icon... we know it's really an $imageFileExtension. :P
+$documentFileExtensions = ['.pdf', '.doc', '.docx', '.tif', '.tiff', ".zip", ".rar", ".tar", ".ppt", ".pptx"]; // note: they want .tif/.tiff files to display as download icon... we know it's really an $imageFileExtension. :P
 
 /*
 ** I18n
